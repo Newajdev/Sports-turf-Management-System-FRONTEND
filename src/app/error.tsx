@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AlertTriangle, Home, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import GlobalError from "@/components/shared/global-error";
+import { GlobalErrorContent } from "@/components/shared/global-error";
 
 export default function Error({
   error,
@@ -19,5 +19,5 @@ export default function Error({
     console.error("Uncaught error:", error);
   }, [error]);
 
-  return <GlobalError error={error} reset={reset} />;
+  return <GlobalErrorContent error={error} reset={reset} />;
 }

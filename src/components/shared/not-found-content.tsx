@@ -34,8 +34,8 @@ export default function NotFoundContent() {
             Pitch Out of Bounds
           </h2>
           <p className="mt-6 text-lg leading-8 text-muted-foreground">
-            The page you're looking for seems to have been substituted or doesn't exist on this pitch. 
-            Let's get you back in the game.
+            {`The page you're looking for seems to have been substituted or doesn't exist on this pitch. 
+            Let's get you back in the game.`}
           </p>
           
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
