@@ -1,6 +1,11 @@
-"use client"; // Error boundaries must be Client Components
+"use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
+import { AlertTriangle, Home, RotateCcw } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import GlobalError from "@/components/shared/global-error";
 
 export default function Error({
   error,
@@ -11,20 +16,8 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error(error);
+    console.error("Uncaught error:", error);
   }, [error]);
 
-  return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
-    </div>
-  );
+  return <GlobalError error={error} reset={reset} />;
 }
