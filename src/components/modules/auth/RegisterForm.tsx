@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { LoginAction } from "@/app/(commonLayout)/(authRoutes)/auth/login/_action";
+import { RegisterAction } from "@/app/(commonLayout)/(authRoutes)/auth/register/_action";
 import AppField from "@/components/shared/form/AppField";
 import FormSubmitBtn from "@/components/shared/form/FormSubmitBtn";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -13,25 +13,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
+import { IRegistrationPayload, registerPlayerZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const { mutateAsync } = useMutation({
-    mutationFn: (payload: ILoginPayload) => LoginAction(payload),
+    mutationFn: (payload: IRegistrationPayload) => RegisterAction(payload),
   });
 
   const form = useForm({
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      contactNumber: "",
     },
     onSubmit: async ({ value }) => {
       setServerError(null);
@@ -39,26 +41,26 @@ const LoginForm = () => {
         const result = (await mutateAsync(value)) as any;
 
         if (!result.success) {
-          setServerError(result.message || "login failed");
+          setServerError(result.message || "Registration failed");
           return;
         }
       } catch (error: any) {
-        console.log(`login faild: ${error.message}`);
-        setServerError("login failed: " + error.message);
+        console.log(`Registration failed: ${error.message}`);
+        setServerError("Registration failed: " + error.message);
       }
     },
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12">
       <Card className="w-full max-w-md p-6">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold mb-4">
-            Welcome Back!
+          <CardTitle className="text-2xl font-bold mb-4 uppercase italic tracking-wider">
+            Join the Arena
           </CardTitle>
 
           <CardDescription className="mb-6">
-            Please enter your credentials to log in to your account.
+            Create your account to start booking top-tier sports venues.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -74,8 +76,22 @@ const LoginForm = () => {
             className="space-y-4"
           >
             <form.Field
+              name="name"
+              validators={{ onChange: registerPlayerZodSchema.shape.name }}
+            >
+              {(field) => (
+                <AppField
+                  field={field}
+                  label="Full Name"
+                  type="text"
+                  placeholder="Enter your name"
+                />
+              )}
+            </form.Field>
+
+            <form.Field
               name="email"
-              validators={{ onChange: loginZodSchema.shape.email }}
+              validators={{ onChange: registerPlayerZodSchema.shape.email }}
             >
               {(field) => (
                 <AppField
@@ -88,25 +104,34 @@ const LoginForm = () => {
             </form.Field>
 
             <form.Field
+              name="contactNumber"
+            >
+              {(field) => (
+                <AppField
+                  field={field}
+                  label="Contact Number (Optional)"
+                  placeholder="+8801XXXXXXXXX"
+                />
+              )}
+            </form.Field>
+
+            <form.Field
               name="password"
-              validators={{ onChange: loginZodSchema.shape.password }}
+              validators={{ onChange: registerPlayerZodSchema.shape.password }}
             >
               {(field) => (
                 <AppField
                   field={field}
                   label="Password"
                   type={passwordVisible ? "text" : "password"}
-                  placeholder="Enter your password"
-                  aria-label={
-                    passwordVisible ? "Hide password" : "Show password"
-                  }
+                  placeholder="Create a strong password"
                   append={
                     <Button
                       type="button"
                       onClick={() => setPasswordVisible(!passwordVisible)}
                       variant="ghost"
-                          size="icon"
-                          className={"cursor-pointer "}
+                      size="icon"
+                      className={"cursor-pointer "}
                     >
                       {passwordVisible ? (
                         <EyeOff className="size-4" aria-hidden="true" />
@@ -119,18 +144,9 @@ const LoginForm = () => {
               )}
             </form.Field>
 
-            <div className="flex items-center justify-end">
-              <Link
-                href="/forgot-password"
-                className="text-sm text-primary hover:underline underline-offset-4"
-              >
-                Forgot passowrd?
-              </Link>
-            </div>
-
             {serverError && (
               <Alert variant="destructive">
-                <AlertTitle className="text-red-600">Login Failed</AlertTitle>
+                <AlertTitle className="text-red-600">Error</AlertTitle>
                 <AlertDescription>{serverError}</AlertDescription>
               </Alert>
             )}
@@ -140,7 +156,7 @@ const LoginForm = () => {
             >
               {([canSubmit, isSubmitting]) => (
                 <FormSubmitBtn isPending={isSubmitting} disabled={!canSubmit}>
-                  Log In
+                  Register Now
                 </FormSubmitBtn>
               )}
             </form.Subscribe>
@@ -151,32 +167,32 @@ const LoginForm = () => {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">
-                Or continue with
+              <span className="bg-white px-2 text-gray-500 uppercase italic tracking-tighter">
+                Or join with
               </span>
             </div>
           </div>
 
           <Button
             variant="outline"
-            className="w-full mb-2"
+            className="w-full mb-2 uppercase font-black italic tracking-widest hover:bg-primary/10 transition-all border-primary/20"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
               window.location.href = `${baseUrl}/auth/login/google`;
             }}
           >
-            Continue with Google
+            Google Arena
           </Button>
         </CardContent>
 
         <CardFooter>
-          <p className="text-sm text-center text-muted-foreground">
-            Don&apos;t have an account?{" "}
+          <p className="text-sm text-center w-full text-muted-foreground">
+            Already a member?{" "}
             <Link
-              href="/auth/register"
-              className="text-primary hover:underline underline-offset-4"
+              href="/auth/login"
+              className="text-primary font-bold hover:underline underline-offset-4"
             >
-              Sign up
+              Log in here
             </Link>
           </p>
         </CardFooter>
@@ -185,4 +201,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
