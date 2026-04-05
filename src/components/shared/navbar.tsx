@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { Trophy, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,17 +21,22 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Browse Turfs", href: "/browse" },
-    { name: "Features", href: "/#features" },
-    { name: "How it Works", href: "/#how-it-works" },
+    { name: "Book a Turf", href: "/book-a-turf" },
+    { name: "Features", href: "/features" },
+    { name: "How it Works", href: "/how-it-works" },
     { name: "Blogs", href: "/blogs" },
   ];
+
+  // Logic to show active state (background & colored text)
+  // On Home page (/), only show active state when scrolled.
+  // On all other pages, ALWAYS show active state.
+  const showActiveState = isScrolled || pathname !== "/";
 
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        isScrolled
+        showActiveState
           ? "bg-background/90 backdrop-blur-xl border-b border-white/10 py-3 shadow-lg shadow-black/20"
           : "bg-transparent py-5"
       )}
@@ -42,7 +49,7 @@ export default function Navbar() {
             </div>
             <span className={cn(
               "text-2xl font-black tracking-tighter transition-colors duration-300",
-              isScrolled ? "text-primary" : "text-white drop-shadow-md"
+              showActiveState ? "text-primary" : "text-white drop-shadow-md"
             )}>
               TurfFlow
             </span>
@@ -56,7 +63,7 @@ export default function Navbar() {
                   href={link.href}
                   className={cn(
                     "text-sm font-bold transition-all hover:scale-105 tracking-wide uppercase italic",
-                    isScrolled 
+                    showActiveState 
                       ? "text-foreground hover:text-primary" 
                       : "text-white/90 hover:text-white drop-shadow-sm opacity-80 hover:opacity-100"
                   )}
@@ -73,7 +80,7 @@ export default function Navbar() {
               className={cn(
                 buttonVariants({ variant: "ghost" }),
                 "font-bold italic transition-colors duration-300",
-                isScrolled ? "text-foreground hover:text-primary" : "text-white/90 hover:text-white hover:bg-white/10"
+                showActiveState ? "text-foreground hover:text-primary" : "text-white/90 hover:text-white hover:bg-white/10"
               )}
             >
               Log in
@@ -83,7 +90,7 @@ export default function Navbar() {
               className={cn(
                 buttonVariants(),
                 "bg-primary hover:bg-primary/90 text-white border-none px-8 font-black uppercase italic tracking-wider transition-all hover:scale-105 shadow-lg",
-                isScrolled ? "shadow-primary/20" : "shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
+                showActiveState ? "shadow-primary/20" : "shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
               )}
             >
               Join the Pitch
@@ -92,7 +99,10 @@ export default function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2 text-white bg-white/10 rounded-lg backdrop-blur-md border border-white/20"
+            className={cn(
+              "md:hidden p-2 rounded-lg backdrop-blur-md border border-white/20 transition-all",
+              showActiveState ? "text-foreground bg-primary/10" : "text-white bg-white/10"
+            )}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

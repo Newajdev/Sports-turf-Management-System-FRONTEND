@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import BlogCard, { BlogItem } from "@/components/modules/blogs/blog-card";
 
-const BLOG_POSTS = [
+const BLOG_POSTS: BlogItem[] = [
   {
     id: "1",
     title: "Mastering the Pitch: 5 Tactics for Urban Football",
@@ -15,6 +16,7 @@ const BLOG_POSTS = [
     date: "March 24, 2024",
     author: "Coach Arifin",
     category: "Tactics",
+    readingTime: "5 min read",
   },
   {
     id: "2",
@@ -24,6 +26,7 @@ const BLOG_POSTS = [
     date: "March 18, 2024",
     author: "Tech Lab",
     category: "Technology",
+    readingTime: "7 min read",
   },
   {
     id: "3",
@@ -33,6 +36,7 @@ const BLOG_POSTS = [
     date: "March 12, 2024",
     author: "Eco Teams",
     category: "Maintenance",
+    readingTime: "4 min read",
   },
 ];
 
@@ -62,59 +66,7 @@ export default function BlogsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {BLOG_POSTS.map((post) => (
-            <article
-              key={post.id}
-              className="group relative bg-card rounded-3xl overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-500 flex flex-col"
-            >
-              {/* Image Container */}
-              <div className="relative h-56 w-full overflow-hidden">
-                <Image
-                  src={post.image}
-                  alt={post.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-                
-                <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 rounded-full bg-primary text-[0.6rem] font-black text-white uppercase tracking-widest italic shadow-lg shadow-primary/20">
-                    {post.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-8 flex-1 flex flex-col">
-                <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5 text-primary" />
-                    <span>{post.date}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <User className="h-3.5 w-3.5 text-primary" />
-                    <span>{post.author}</span>
-                  </div>
-                </div>
-
-                <h3 className="text-2xl font-black italic uppercase leading-tight text-foreground group-hover:text-primary transition-colors mb-4 line-clamp-2">
-                  {post.title}
-                </h3>
-
-                <p className="text-muted-foreground line-clamp-3 mb-8 text-sm leading-relaxed">
-                  {post.excerpt}
-                </p>
-
-                <div className="mt-auto">
-                  <Link
-                    href={`/blogs/${post.id}`}
-                    className="inline-flex items-center gap-2 text-primary font-black uppercase italic text-xs tracking-widest group/link"
-                  >
-                    Read Full Insight 
-                    <div className="h-px w-8 bg-primary/30 group-hover/link:w-12 transition-all duration-300" />
-                  </Link>
-                </div>
-              </div>
-            </article>
+            <BlogCard key={post.id} blog={post} />
           ))}
         </div>
       </div>

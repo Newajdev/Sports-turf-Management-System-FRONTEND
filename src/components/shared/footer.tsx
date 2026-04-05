@@ -6,9 +6,9 @@ export default function Footer() {
 
   const footerLinks = {
     platform: [
-      { name: "Browse Turfs", href: "/browse" },
-      { name: "Sport Types", href: "/#features" },
-      { name: "How it Works", href: "/#how-it-works" },
+      { name: "Book a Turf", href: "/book-a-turf" },
+      { name: "Sport Types", href: "/features" },
+      { name: "How it Works", href: "/how-it-works" },
       { name: "Pricing", href: "/pricing" },
     ],
     support: [

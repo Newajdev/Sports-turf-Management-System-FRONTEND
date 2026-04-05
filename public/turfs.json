@@ -1,0 +1,68 @@
+[
+  {
+    "id": "1",
+    "name": "Emerald Arena North",
+    "image": "/images/turf-football.png",
+    "sport": "Football",
+    "rating": 4.9,
+    "location": "Gulshan 1, Dhaka",
+    "price": 1200,
+    "amenities": ["Parking", "Locker Room", "Canteen", "Lights"],
+    "isAvailable": true
+  },
+  {
+    "id": "2",
+    "name": "Elite Indoor Arena",
+    "image": "/images/turf-multi.png",
+    "sport": "Multi-sport",
+    "rating": 4.8,
+    "location": "Banani, Dhaka",
+    "price": 1500,
+    "amenities": ["Parking", "Lights", "Referees"],
+    "isAvailable": true
+  },
+  {
+    "id": "3",
+    "name": "Stadium Lights Cricket",
+    "image": "/images/turf-cricket.png",
+    "sport": "Cricket",
+    "rating": 4.9,
+    "location": "Chittagong, BD",
+    "price": 1100,
+    "amenities": ["Parking", "Lights", "Water"],
+    "isAvailable": false
+  },
+  {
+    "id": "4",
+    "name": "Emerald Basketball Court",
+    "image": "/images/turf-multi.png",
+    "sport": "Basketball",
+    "rating": 4.7,
+    "location": "Bashundhara R/A, Dhaka",
+    "price": 1300,
+    "amenities": ["Parking", "Locker Room", "Lights"],
+    "isAvailable": true
+  },
+  {
+    "id": "5",
+    "name": "Grand Soccer Pitch",
+    "image": "/images/turf-football.png",
+    "sport": "Football",
+    "rating": 4.8,
+    "location": "Uttara, Dhaka",
+    "price": 1000,
+    "amenities": ["Parking", "Canteen", "Lights"],
+    "isAvailable": true
+  },
+  {
+    "id": "6",
+    "name": "Championship Cricket Field",
+    "image": "/images/turf-cricket.png",
+    "sport": "Cricket",
+    "rating": 4.9,
+    "location": "Sylhet City, BD",
+    "price": 950,
+    "amenities": ["Parking", "Lights", "Dressing Room"],
+    "isAvailable": true
+  }
+]

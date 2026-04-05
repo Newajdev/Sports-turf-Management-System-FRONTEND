@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "title": "Mastering the Pitch: 5 Tactics for Urban Football",
+    "excerpt": "Learn how to dominate small-sided games with these pro-level positional strategies and quick-transition drills.",
+    "image": "/images/blog-tactics.png",
+    "date": "March 24, 2024",
+    "author": "Coach Arifin",
+    "category": "Tactics",
+    "readingTime": "5 min read"
+  },
+  {
+    "id": "2",
+    "title": "The Rise of Smart Turfs: Wearable Tech in 2024",
+    "excerpt": "How IoT and wearable sensors are transforming player performance tracking on modern turf facilities.",
+    "image": "/images/blog-tech.png",
+    "date": "March 18, 2024",
+    "author": "Tech Lab",
+    "category": "Technology",
+    "readingTime": "7 min read"
+  },
+  {
+    "id": "3",
+    "title": "Eco-Friendly Turf: The Future of Sustainable Play",
+    "excerpt": "Discover the latest innovations in recycled turf materials that provide pro-level performance with zero environmental impact.",
+    "image": "/images/blog-maintenance.png",
+    "date": "March 12, 2024",
+    "author": "Eco Teams",
+    "category": "Maintenance",
+    "readingTime": "4 min read"
+  },
+  {
+    "id": "4",
+    "title": "Mental Toughness: Preparing for Game Night",
+    "excerpt": "Elite athletes share their rituals and psychological triggers to stay focused and calm under stadium lights.",
+    "image": "/images/blog-tactics.png",
+    "date": "March 05, 2024",
+    "author": "Elite Sports",
+    "category": "Strategy",
+    "readingTime": "6 min read"
+  },
+  {
+    "id": "5",
+    "title": "Digital Scouting: Finding the Next Star",
+    "excerpt": "How video analysis and AI-driven scouting are changing the landscape of amateur and semi-pro football recruitment.",
+    "image": "/images/blog-tech.png",
+    "date": "February 28, 2024",
+    "author": "Scout AI",
+    "category": "Technology",
+    "readingTime": "8 min read"
+  },
+  {
+    "id": "6",
+    "title": "Winter Pitch Care: Keeping the Emerald Green",
+    "excerpt": "Practical tips for groundkeepers to maintain turf quality and drainage during the harsh rainy and cold seasons.",
+    "image": "/images/blog-maintenance.png",
+    "date": "February 22, 2024",
+    "author": "Pitch Masters",
+    "category": "Maintenance",
+    "readingTime": "5 min read"
+  }
+]
