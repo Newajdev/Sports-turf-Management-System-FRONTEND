@@ -32,6 +32,10 @@ export default function Navbar() {
   // On all other pages, ALWAYS show active state.
   const showActiveState = isScrolled || pathname !== "/";
 
+  if (pathname.startsWith("/auth")) {
+    return null; 
+  }
+
   return (
     <header
       className={cn(

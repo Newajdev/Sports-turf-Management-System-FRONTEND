@@ -1,7 +1,7 @@
 import { Role, UserStatus } from "@/interface/enum.interface";
 
 export interface ILoginResponse {
-  token: string;
+  betterAuthToken: string;
   accessToken: string;
   refreshToken: string;
   user: {

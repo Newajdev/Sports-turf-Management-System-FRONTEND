@@ -7,6 +7,7 @@ export default function CommonLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <div className="relative flex min-h-screen bg-green-50 flex-col overflow-x-hidden">
       <Navbar />

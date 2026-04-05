@@ -1,8 +1,14 @@
+"use client";
 import Link from "next/link";
 import { Trophy, Facebook, Twitter, Instagram, Mail } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  if (pathname.startsWith("/auth")) {
+    return null; 
+  }
 
   const footerLinks = {
     platform: [

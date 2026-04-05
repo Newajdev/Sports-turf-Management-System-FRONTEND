@@ -17,12 +17,12 @@ type AppFieldProps = {
   label: string;
   type?: "text" | "number" | "password" | "email";
   placeholder?: string;
-  append: React.ReactNode;
-  prepend: React.ReactNode;
+  append?: React.ReactNode;
+  prepend?: React.ReactNode;
   className?: string;
   disabled?: boolean;
 };
-
+  
 const Appfield = ({
   field,
   label,

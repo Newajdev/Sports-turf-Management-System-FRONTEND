@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 type AppubmitBtnProps = {
   isPending: boolean;
   children: React.ReactNode;
-  pendingLabel: string;
+  pendingLabel?: string;
   className?: string;
   disabled?: boolean;
 };
