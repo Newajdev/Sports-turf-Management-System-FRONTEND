@@ -56,7 +56,7 @@ export default function PopularTurfs() {
             </p>
           </div>
           <Link
-            href="/browse"
+            href="/book-a-turf"
             className={cn(
               buttonVariants({ variant: "outline" }),
               "h-12 px-6 font-bold uppercase italic border-primary/20 hover:bg-primary/10 hover:text-primary transition-all group"

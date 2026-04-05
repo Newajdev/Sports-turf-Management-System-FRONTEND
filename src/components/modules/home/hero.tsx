@@ -51,7 +51,7 @@ export default function HeroSection() {
               Book a Pitch <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
             </Link>
             <Link
-              href="/browse"
+              href="/book-a-turf"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
                 "h-16 px-10 text-xl font-bold bg-white/5 backdrop-blur-xl border-white/20 hover:bg-white/10 text-white shadow-xl italic"
