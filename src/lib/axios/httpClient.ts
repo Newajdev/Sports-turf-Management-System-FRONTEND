@@ -1,3 +1,4 @@
+import { ApiResponse } from '@/types/api.type';
 import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -22,67 +23,72 @@ export interface APIRequestOptions {
     headers?: Record<string, string>;
 }
 
-const httpGet = async(endpoint:string, options?: APIRequestOptions) => {
+const httpGet = async <T>(endpoint:string, options?: APIRequestOptions):Promise<ApiResponse<T>> => {
     try {
-        const response = await axiosInstance().get(endpoint, {
+        const instance = await axiosInstance();
+        const response = await instance.get<ApiResponse<T>>(endpoint, {
             params: options?.params,
             headers: options?.headers,
         });
         return response.data;
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error(`Error fetching data from ${endpoint}:`, error);
         throw error;
     }
 };
 
-const httpPost = async(endpoint:string, data?: unknown, options?: APIRequestOptions) => {
+const httpPost = async <T>(endpoint:string, data?: unknown, options?: APIRequestOptions):Promise<ApiResponse<T>> => {
     try {
-        const response = await axiosInstance().post(endpoint, data, {
+        const instance = await axiosInstance();
+        const response = await instance.post<ApiResponse<T>>(endpoint, data, {
             params: options?.params,
             headers: options?.headers,
         });
         return response.data;
     } catch (error) {
-        console.error('Error posting data:', error);
+        console.error(`Error posting data to ${endpoint}:`, error);
         throw error;
     }
 };
 
-const httpPut = async(endpoint:string, data?: unknown, options?: APIRequestOptions) => {
+const httpPut = async <T>(endpoint:string, data?: unknown, options?: APIRequestOptions):Promise<ApiResponse<T>> => {
     try {
-        const response = await axiosInstance().put(endpoint, data, {
+        const instance   = await axiosInstance();
+        const response = await instance.put<ApiResponse<T>>(endpoint, data, {
             params: options?.params,
             headers: options?.headers,
         });
         return response.data;
     } catch (error) {
-        console.error('Error putting data:', error);
+        console.error(`Error putting data to ${endpoint}:`, error);
         throw error;
     }
 };
-const httpPatch = async(endpoint:string, data?: unknown, options?: APIRequestOptions) => {
+const httpPatch = async <T>(endpoint:string, data?: unknown, options?: APIRequestOptions):Promise<ApiResponse<T>> => {
     try {
-        const response = await axiosInstance().patch(endpoint, data, {
+        const instance = await axiosInstance();
+        const response = await instance.patch<ApiResponse<T>>(endpoint, data, {
             params: options?.params,
             headers: options?.headers,
         });
         return response.data;
     } catch (error) {
-        console.error('Error patching data:', error);
+        console.error(`Error patching data to ${endpoint}:`, error);
         throw error;
     }
 };
 
 
-const httpDelete = async(endpoint:string, options?: APIRequestOptions) => {
+const httpDelete = async <T>(endpoint:string, options?: APIRequestOptions):Promise<ApiResponse<T>> => {
     try {
-        const response = await axiosInstance().delete(endpoint, {
+        const instance = await axiosInstance();
+        const response = await instance.delete<ApiResponse<T>>(endpoint, {
             params: options?.params,
             headers: options?.headers,
         });
         return response.data;
     } catch (error) {
-        console.error('Error deleting data:', error);
+        console.error(`Error deleting data from ${endpoint}:`, error);
         throw error;
     }
 };

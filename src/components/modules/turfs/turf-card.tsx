@@ -5,12 +5,12 @@ import Link from "next/link";
 import { Star, MapPin, CheckCircle2, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { SportType, TurfItem } from "@/interface/turf.interface";
+import { ITurf } from "@/interface/turf.interface";
+import { TurfStatus } from "@/interface/enum.interface";
+import { ISportType } from "@/interface/sport-type.interface";
 import { Card } from "@/components/ui/card";
 
-
-
-export default function TurfCard({ turf }: { turf: TurfItem }) {
+export default function TurfCard({ turf }: { turf: ITurf }) {
 
   return (
     <Card
@@ -32,7 +32,7 @@ export default function TurfCard({ turf }: { turf: TurfItem }) {
         {/* Image Container */}
         <div className="relative h-64  w-full overflow-hidden">
           <Image
-            src={turf.image?.[0] || "/images/turf-multi.png"}
+            src={turf.images?.[0] || "/images/turf-multi.png"}
             alt={turf.name}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -48,7 +48,7 @@ export default function TurfCard({ turf }: { turf: TurfItem }) {
               </span>
             </div>
 
-            {turf.turfStatus ? (
+            {turf.turfStatus === TurfStatus.ACTIVE ? (
               <div className="bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-[0.6rem] font-bold text-emerald-400 uppercase tracking-wider">
                 <CheckCircle2 className="h-3 w-3" />
                 Available
@@ -91,7 +91,7 @@ export default function TurfCard({ turf }: { turf: TurfItem }) {
             Sports
           </span>
           <div className="flex items-center gap-2 mt-1">
-            {turf.sportTypes?.map((sports: SportType, index: number) => (
+            {turf.sportTypes?.map((sports: ISportType, index: number) => (
               <span
                 key={index}
                 className="px-2 py-0.5 rounded-full bg-primary/20 text-[0.65rem] font-bold text-primary uppercase tracking-widest italic shadow-sm shadow-primary/20"
@@ -122,10 +122,10 @@ export default function TurfCard({ turf }: { turf: TurfItem }) {
             className={cn(
               buttonVariants(),
               "h-14 px-8 bg-primary hover:bg-primary/90 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20",
-              !turf.turfStatus && "opacity-50 pointer-events-none grayscale",
+              turf.turfStatus !== TurfStatus.ACTIVE && "opacity-50 pointer-events-none grayscale",
             )}
           >
-            {turf.turfStatus ? "Reserve Pitch" : "Book Later"}
+            {turf.turfStatus === TurfStatus.ACTIVE ? "Reserve Pitch" : "Book Later"}
           </Link>
         </div>
       </div>

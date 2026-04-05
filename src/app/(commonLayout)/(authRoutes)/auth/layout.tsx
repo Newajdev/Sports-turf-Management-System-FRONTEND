@@ -9,10 +9,9 @@ export default function CommonLayout({
 }>) {
   return (
     <div className="relative flex min-h-screen bg-green-50 flex-col overflow-x-hidden">
-      <Navbar />
       <main className="flex-1">{children}</main>
-      <Footer />
-      <ScrollToTop />
+      <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full border-2 border-primary/20 opacity-100 sm:h-96 sm:w-96" />
+      <div className="absolute -right-24 -top-24 h-64 w-64 rounded-full border-2 border-primary/20 opacity-100 sm:h-96 sm:w-96" />
     </div>
   );
 }

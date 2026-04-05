@@ -6,10 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import TurfCard from "./turf-card";
 import PageHeroSection from "@/components/shared/page-hero-section";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TurfItem } from "@/interface/turf.interface";
+import { ITurf } from "@/interface/turf.interface";
 
 function TurfPage() {
-    const { data, isPending, isError } = useQuery({
+    const { data, isPending, isError } = useQuery<{ data: ITurf[] }>({
         queryKey: ["turfs"],
         queryFn: () => getTurfs(),
     });
@@ -55,7 +55,7 @@ function TurfPage() {
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {turfs.map((turf: TurfItem) => (
+                {turfs.map((turf: ITurf) => (
                   <TurfCard key={turf.id} turf={turf} />
                 ))}
               </div>

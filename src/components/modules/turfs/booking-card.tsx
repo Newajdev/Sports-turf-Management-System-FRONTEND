@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { format } from "date-fns"
-import { Calendar as CalendarIcon} from "lucide-react"
+import { Calendar as CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -12,17 +12,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { TurfItem, TurfSlot } from "@/interface/turf.interface"
+import { ITurf } from "@/interface/turf.interface"
+import { ITurfSlot } from "@/interface/slot.interface"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 
 interface BookingCardProps {
-  turf: TurfItem
+  turf: ITurf
 }
 
 export function BookingCard({ turf }: BookingCardProps) {
   const [date, setDate] = React.useState<Date | undefined>(new Date())
-  const [selectedSlot, setSelectedSlot] = React.useState<TurfSlot | null>(null)
+  const [selectedSlot, setSelectedSlot] = React.useState<ITurfSlot | null>(null)
 
   const handleBooking = () => {
     if (!date || !selectedSlot) return
@@ -35,18 +36,18 @@ export function BookingCard({ turf }: BookingCardProps) {
   }
 
   return (
-    <Card className="sticky top-24 w-full  border-border/50 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden">
-      <CardHeader className=" border-b border-emerald-500/20 py-6">
+    <Card className="sticky top-24 w-full bg-zinc-950/40 border-border/50 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden">
+      <CardHeader className="bg-emerald-500/10 border-b border-emerald-500/20 pb-6">
         <div className="flex items-baseline justify-between">
-          <CardTitle className="text-5xl font-bold text-foreground italic uppercase">৳ {turf.hourlyRate}</CardTitle>
+          <CardTitle className="text-3xl font-bold text-foreground italic uppercase">৳ {turf.hourlyRate}</CardTitle>
           <span className="text-sm text-muted-foreground uppercase tracking-widest font-semibold">/ Per Hour</span>
         </div>
-        <CardDescription className="text-emerald-500 font-medium">Free cancellation up to 24h before</CardDescription>
+        <CardDescription className="text-emerald-500 font-medium font-bold uppercase tracking-widest text-[10px]">Free cancellation up to 24h before</CardDescription>
       </CardHeader>
       
       <CardContent className="pt-6 space-y-6">
         {/* Date Selection */}
-        <div className="flex items-center justify-between">
+        <div className="space-y-3">
           <label className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground ml-1">Select Date</label>
           <Popover>
             <PopoverTrigger>
@@ -56,6 +57,7 @@ export function BookingCard({ turf }: BookingCardProps) {
                   "w-full justify-start text-left font-medium h-12 rounded-xl bg-secondary/30 border-border/50 hover:bg-secondary/50 transition-all",
                   !date && "text-muted-foreground"
                 )}
+                type="button"
               >
                 <CalendarIcon className="mr-2 h-4 w-4 text-emerald-500" />
                 {date ? format(date, "PPP") : <span>Pick a date</span>}
@@ -91,13 +93,14 @@ export function BookingCard({ turf }: BookingCardProps) {
                     : "bg-secondary/30 hover:bg-secondary/50"
                 )}
                 onClick={() => setSelectedSlot(ts)}
+                type="button"
               >
-                <span className="text-sm font-bold">{ts.slot.startTime}</span>
+                <span className="text-sm font-bold">{ts.slot?.startTime}</span>
                 <span className={cn(
                   "text-[10px] uppercase font-bold tracking-wider",
                   selectedSlot?.id === ts.id ? "text-emerald-100" : "text-muted-foreground"
                 )}>
-                  {ts.slot.duration} Min
+                  {ts.slot?.duration} Min
                 </span>
               </Button>
             ))}
@@ -110,8 +113,8 @@ export function BookingCard({ turf }: BookingCardProps) {
         {/* Pricing Summary (Optional) */}
         {selectedSlot && (
           <div className="p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 flex items-center justify-between">
-            <span className="text-sm font-medium text-emerald-500">Selected: {selectedSlot.slot.startTime}</span>
-            <Badge variant="outline" className="bg-emerald-500/10 border-emerald-500/20 text-emerald-500 font-bold uppercase">Ready</Badge>
+            <span className="text-sm font-medium text-emerald-500">Selected: {selectedSlot.slot?.startTime}</span>
+            <Badge variant="outline" className="bg-emerald-500/10 border-emerald-500/20 text-emerald-500 font-bold uppercase text-[10px]">Ready</Badge>
           </div>
         )}
       </CardContent>
@@ -121,6 +124,7 @@ export function BookingCard({ turf }: BookingCardProps) {
           className="w-full h-14 text-white text-lg font-bold rounded-2xl bg-emerald-500 hover:bg-emerald-600 shadow-xl shadow-emerald-500/20 transition-all active:scale-[0.98]"
           disabled={!date || !selectedSlot}
           onClick={handleBooking}
+          type="button"
         >
           {selectedSlot ? `Book for ৳ ${selectedSlot.price}` : "Select a Slot"}
         </Button>

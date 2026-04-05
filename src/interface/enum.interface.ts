@@ -1,0 +1,73 @@
+export enum Role {
+  SYSTEM_ADMIN = "SYSTEM_ADMIN",
+  TURF_OWNER = "TURF_OWNER",
+  PLAYER = "PLAYER",
+}
+
+export enum UserStatus {
+  ACTIVE = "ACTIVE",
+  BLOCKED = "BLOCKED",
+  DELETED = "DELETED",
+}
+
+export enum BookingStatus {
+  CONFIRMED = "CONFIRMED",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED",
+  COMPLETED = "COMPLETED",
+}
+
+export enum PaymentStatus {
+  PENDING = "PENDING",
+  SUCCESS = "SUCCESS",
+  FAILED = "FAILED",
+  REFUNDED = "REFUNDED",
+}
+
+export enum SlotType {
+  MORNING = "MORNING",
+  AFTERNOON = "AFTERNOON",
+  EVENING = "EVENING",
+  NIGHT = "NIGHT",
+}
+
+export enum WeeklyOffDay {
+  FRIDAY = "FRIDAY",
+  SATURDAY = "SATURDAY",
+  SUNDAY = "SUNDAY",
+  MONDAY = "MONDAY",
+  TUESDAY = "TUESDAY",
+  WEDNESDAY = "WEDNESDAY",
+  THURSDAY = "THURSDAY",
+}
+
+export enum TurfStatus {
+  ACTIVE = "ACTIVE",
+  DISABLED = "DISABLED",
+  MAINTENANCE = "MAINTENANCE",
+}
+
+export enum NotificationType {
+  BOOKING = "BOOKING",
+  PAYMENT = "PAYMENT",
+  MAINTENANCE = "MAINTENANCE",
+  SYSTEM = "SYSTEM",
+  ACCOUNT = "ACCOUNT",
+}
+
+export enum ReportReason {
+  MISLEADING_INFORMATION = "MISLEADING_INFORMATION",
+  BAD_SERVICE = "BAD_SERVICE",
+  SAFETY_CONCERNS = "SAFETY_CONCERNS",
+  UNHYGIENIC = "UNHYGIENIC",
+  OVERPRICED = "OVERPRICED",
+  OTHER = "OTHER",
+}
+
+export enum CustomSlotStatus {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED",
+  COMPLETED = "COMPLETED",
+}
