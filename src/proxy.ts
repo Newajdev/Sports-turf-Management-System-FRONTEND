@@ -145,7 +145,7 @@ export async function proxy(request: NextRequest) {
 
         if (userInfo.emailVerified === false) {
           if (pathname !== "/auth/verify-email") {
-            const verifyEmailUrl = new URL("  /auth/verify-email", request.url);
+            const verifyEmailUrl = new URL("/auth/verify-email", request.url);
             verifyEmailUrl.searchParams.set("email", userInfo.email);
             return NextResponse.redirect(verifyEmailUrl);
           }

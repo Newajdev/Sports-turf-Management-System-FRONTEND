@@ -19,4 +19,9 @@ export interface ILoginResponse {
     deletedAt?: Date;
   };
 }
+
+export interface OtpVerificationResponse {
+  success: boolean;
+  message: string;
+}
    

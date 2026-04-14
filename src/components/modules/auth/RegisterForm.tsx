@@ -178,7 +178,7 @@ const RegisterForm = () => {
             className="w-full mb-2 uppercase font-black italic tracking-widest hover:bg-primary/10 transition-all border-primary/20"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-              window.location.href = `${baseUrl}/auth/login/google`;
+              window.location.href = `${baseUrl}/api/v1/auth/login/social/google`;
             }}
           >
             Google Arena

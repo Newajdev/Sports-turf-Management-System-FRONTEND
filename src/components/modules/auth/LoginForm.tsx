@@ -34,7 +34,6 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
     mutationFn: (payload: ILoginPayload) => LoginAction(payload, redirectPath),
   });
 
-  console.log(mutateAsync)
 
   const form = useForm({
     defaultValues: {
@@ -45,16 +44,14 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
       setServerError(null);
       try {
         const result = (await mutateAsync(value)) as any;
-
-        setServerError("Login Check:"+ result);
-        console.log("Login Check:"+ result);
-        // if (!result.success) {
-        //   setServerError(result || "login failed");
-        //   return;
-        // }
+        if (result && !result.success) {
+          setServerError(result.message || "Login failed");
+        }
       } catch (error: any) {
-        console.log(`login faild: ${error.message}`);
-        setServerError(error);
+        if (error.message?.includes("NEXT_REDIRECT")) {
+          return;
+        }
+        setServerError(error.message || "An unexpected error occurred");
       }
     },
   });
@@ -105,7 +102,7 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                 <AppField
                   field={field}
                   label="Password"
-                  type={passwordVisible ? "text" : "text"}
+                  type={passwordVisible ? "text" : "password"}
                   placeholder="Enter your password"
                   aria-label={
                     passwordVisible ? "Hide password" : "Show password"
@@ -134,7 +131,7 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                 href="/auth/forgot-password"
                 className="text-sm text-primary hover:underline underline-offset-4"
               >
-                Forgot passowrd?
+                Forgot password?
               </Link>
             </div>
 
@@ -172,7 +169,7 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
             className="w-full mb-2"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-              window.location.href = `${baseUrl}/auth/login/google`;
+              window.location.href = `${baseUrl}/api/v1/auth/login/social/google`;
             }}
           >
             Continue with Google
