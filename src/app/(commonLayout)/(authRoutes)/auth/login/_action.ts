@@ -7,7 +7,6 @@ import { setTokenInCookies } from "@/lib/tokenUtils";
 import { ApiError } from "@/types/api.type";
 import { ILoginResponse } from "@/types/auth.type";
 import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
-import { el } from "date-fns/locale";
 import { redirect } from "next/navigation";
 
 export const LoginAction = async (
@@ -18,7 +17,7 @@ export const LoginAction = async (
 
   if (!parsedPayload.success) {
     const errorMessages =
-      parsedPayload.error.issues[0].message || "Invalid input";
+      parsedPayload.error.issues[0].message;
     return {
       success: false,
       message: errorMessages,
@@ -29,6 +28,8 @@ export const LoginAction = async (
       "/auth/login",
       parsedPayload.data,
     );
+
+    console.log(response)
     const { accessToken, refreshToken, betterAuthToken, user } = response.data;
     const { role, emailVerified, needPasswordChange, email } = user;
 
@@ -38,16 +39,14 @@ export const LoginAction = async (
 
     if (emailVerified) {
       redirect("/auth/verify-email");
-    }else if (needPasswordChange) {
+    } else if (needPasswordChange) {
       redirect(`/auth/change-password?email=${email}`);
     } else {
       const targetPath = redirectPath && isValidRedirectForRole(redirectPath, role)
         ? redirectPath
         : defaultDashboardRoute(role);
       redirect(targetPath);
-      
     }
-
 
   } catch (error: any) {
     if (
@@ -59,9 +58,14 @@ export const LoginAction = async (
     ) {
       throw error;
     }
+
+    if (error && error.response && error.response.data.message === "Email not verified") {
+      redirect("/auth/verify-email")
+    }
     return {
       success: false,
       message: `Login failed: ${error.message}`,
     };
   }
 };
+

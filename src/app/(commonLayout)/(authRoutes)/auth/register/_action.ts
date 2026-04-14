@@ -3,24 +3,25 @@
 
 import { httpClient } from "@/lib/axios/httpClient";
 import { setTokenInCookies } from "@/lib/tokenUtils";
-import { ApiError } from "@/types/api.type";
+import { ApiError, ApiResponse } from "@/types/api.type";
 import { IRegistrationPayload, registerPlayerZodSchema } from "@/zod/auth.validation";
 import { redirect } from "next/navigation";
 
 export interface IRegistrationResponse {
-  success: boolean;
-  message: string;
-  data?: any;
+  accessToken: string;
+  refreshToken: string;
+  betterAuthToken: string;
+  user: any;
 }
 
 export const RegisterAction = async (
   payload: IRegistrationPayload,
-): Promise<IRegistrationResponse | ApiError> => {
+): Promise<ApiResponse<IRegistrationResponse> | ApiError> => {
   const parsedPayload = registerPlayerZodSchema.safeParse(payload);
 
   if (!parsedPayload.success) {
     const errorMessages =
-      parsedPayload.error.issues[0].message || "Invalid input";
+      parsedPayload.error.issues[0].message;
     return {
       success: false,
       message: errorMessages,
@@ -32,22 +33,27 @@ export const RegisterAction = async (
       "/auth/register-player",
       parsedPayload.data,
     );
+   
+    if (response.success) {
+      const { accessToken, refreshToken, betterAuthToken } = response.data;
+      
+      await setTokenInCookies("accessToken", accessToken);
+      await setTokenInCookies("refreshToken", refreshToken);
+      await setTokenInCookies("better-auth.session_token", betterAuthToken);
+  
+      // Force email verification after registration
+      redirect(`/auth/verify-email?email=${payload.email}`);
+    }
 
-    const { accessToken, refreshToken, betterAuthToken } = response.data?.data;
-    console.log(response.data)
-    
-        await setTokenInCookies("accessToken", accessToken);
-        await setTokenInCookies("refreshToken", refreshToken);
-        await setTokenInCookies("better-auth.session_token", betterAuthToken);
-    
-        redirect("/dashboard")
+    return response;
+
   } catch (error: any) {
     if (error && typeof error === "object" && "digest" in error && typeof error.digest === "string" && error.digest.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
     return {
       success: false,
-      message: `Registration failed: ${error.message}`,
+      message: error.response?.data?.message || (error.message === "Request failed with status code 409" ? "Email already exists" : "Registration failed"),
     };
   }
 };

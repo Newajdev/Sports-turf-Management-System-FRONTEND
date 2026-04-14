@@ -2,10 +2,10 @@ export interface ApiResponse<T> {
   success: boolean;
   message: string;
   data: T;
-  meta?: paginationMeta;
+  meta?: PaginationMeta;
 }
 
-export interface paginationMeta {
+export interface PaginationMeta {
   total: number;
   page: number;
   limit: number;

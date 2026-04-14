@@ -34,6 +34,8 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
     mutationFn: (payload: ILoginPayload) => LoginAction(payload, redirectPath),
   });
 
+  console.log(mutateAsync)
+
   const form = useForm({
     defaultValues: {
       email: "",
@@ -44,13 +46,15 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
       try {
         const result = (await mutateAsync(value)) as any;
 
-        if (!result.success) {
-          setServerError(result.message || "login failed");
-          return;
-        }
+        setServerError("Login Check:"+ result);
+        console.log("Login Check:"+ result);
+        // if (!result.success) {
+        //   setServerError(result || "login failed");
+        //   return;
+        // }
       } catch (error: any) {
         console.log(`login faild: ${error.message}`);
-        setServerError("login failed: " + error.message);
+        setServerError(error);
       }
     },
   });
@@ -101,7 +105,7 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                 <AppField
                   field={field}
                   label="Password"
-                  type={passwordVisible ? "text" : "password"}
+                  type={passwordVisible ? "text" : "text"}
                   placeholder="Enter your password"
                   aria-label={
                     passwordVisible ? "Hide password" : "Show password"
@@ -111,8 +115,8 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                       type="button"
                       onClick={() => setPasswordVisible(!passwordVisible)}
                       variant="ghost"
-                          size="icon"
-                          className={"cursor-pointer "}
+                      size="icon"
+                      className={"cursor-pointer "}
                     >
                       {passwordVisible ? (
                         <EyeOff className="size-4" aria-hidden="true" />
@@ -127,7 +131,7 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
 
             <div className="flex items-center justify-end">
               <Link
-                href="/forgot-password"
+                href="/auth/forgot-password"
                 className="text-sm text-primary hover:underline underline-offset-4"
               >
                 Forgot passowrd?

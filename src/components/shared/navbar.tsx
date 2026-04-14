@@ -33,7 +33,7 @@ export default function Navbar() {
   const showActiveState = isScrolled || pathname !== "/";
 
   if (pathname.startsWith("/auth")) {
-    return null; 
+    return null;
   }
 
   return (
@@ -67,8 +67,8 @@ export default function Navbar() {
                   href={link.href}
                   className={cn(
                     "text-sm font-bold transition-all hover:scale-105 tracking-wide uppercase italic",
-                    showActiveState 
-                      ? "text-foreground hover:text-primary" 
+                    showActiveState
+                      ? "text-foreground hover:text-primary"
                       : "text-white/90 hover:text-white drop-shadow-sm opacity-80 hover:opacity-100"
                   )}
                 >
@@ -80,7 +80,7 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center gap-6">
             <Link
-              href="/login"
+              href="/auth/login"
               className={cn(
                 buttonVariants({ variant: "ghost" }),
                 "font-bold italic transition-colors duration-300",
@@ -90,7 +90,7 @@ export default function Navbar() {
               Log in
             </Link>
             <Link
-              href="/register"
+              href="/auth/register"
               className={cn(
                 buttonVariants(),
                 "bg-primary hover:bg-primary/90 text-white border-none px-8 font-black uppercase italic tracking-wider transition-all hover:scale-105 shadow-lg",

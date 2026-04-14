@@ -13,7 +13,7 @@ export async function getNewTokensWithRefreshToken(
   refreshToken: string,
 ): Promise<boolean> {
   try {
-    const res = await fetch(`${BASE_API_URL}/auth/refresh-token`, {
+    const result = await fetch(`${BASE_API_URL}/auth/refresh-token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,13 +21,13 @@ export async function getNewTokensWithRefreshToken(
       },
     });
 
-    if (!res.ok) {
+    if (!result.ok) {
       return false;
     }
 
-    const { data } = await res.json();
+    const { data } = await result.json();
 
-    const { accessToken, refreshToken: newRefreshToken, token } = data;
+    const { accessToken, refreshToken: newRefreshToken, sessionToken } = data;
 
     if (accessToken) {
       await setTokenInCookies("accessToken", accessToken);
@@ -37,8 +37,8 @@ export async function getNewTokensWithRefreshToken(
       await setTokenInCookies("refreshToken", newRefreshToken);
     }
 
-    if (token) {
-      await setTokenInCookies("better-auth.session_token", token, 24 * 60 * 60); // 1 day in seconds
+    if (sessionToken) {
+      await setTokenInCookies("better-auth.session_token", sessionToken, 24 * 60 * 60);
     }
 
     return true;
@@ -58,7 +58,7 @@ export async function getUserInfo() {
       return null;
     }
 
-    const res = await fetch(`${BASE_API_URL}/auth/me`, {
+    const result = await fetch(`${BASE_API_URL}/auth/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -66,12 +66,12 @@ export async function getUserInfo() {
       },
     });
 
-    if (!res.ok) {
-      console.error("Failed to fetch user info:", res.status, res.statusText);
+    if (!result.ok) {
+      console.error("Failed to fetch user info:", result.status, result.statusText);
       return null;
     }
 
-    const { data } = await res.json();
+    const { data } = await result.json();
 
     return data;
   } catch (error) {

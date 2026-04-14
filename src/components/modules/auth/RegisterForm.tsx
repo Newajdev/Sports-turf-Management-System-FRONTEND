@@ -40,12 +40,12 @@ const RegisterForm = () => {
       try {
         const result = (await mutateAsync(value)) as any;
 
+
         if (!result.success) {
-          setServerError(result.message || "Registration failed");
+          setServerError(result.message);
           return;
         }
       } catch (error: any) {
-        console.log(`Registration failed: ${error.message}`);
         setServerError("Registration failed: " + error.message);
       }
     },

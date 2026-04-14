@@ -32,8 +32,10 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <QueryProviders>
-          {children}
-          <Toaster position="top-right" richColors />
+
+            {children}
+            <Toaster position="top-right" richColors />
+
         </QueryProviders>
       </body>
     </html>
