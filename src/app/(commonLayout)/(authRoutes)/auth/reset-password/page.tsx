@@ -11,7 +11,6 @@ import { useMutation } from "@tanstack/react-query";
 import { ResetPasswordAction } from "./_action";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 
 interface ResetPasswordPageProps {
@@ -27,29 +26,24 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const { mutate, isPending } = useMutation({
     mutationFn: ResetPasswordAction,
     onSuccess: (data) => {
       if (data && !data.success) {
-        setError(data.message || "Failed to reset password.");
         toast.error(data.message || "Reset failed");
       } else {
         toast.success("Password reset successful! Redirecting to login...");
-        // Handle redirect on the client side
         router.push("/auth/login?reset=success");
       }
     },
     onError: (error: any) => {
-      setError(error.message || "An unexpected error occurred.");
-      toast.error(error.message || "Request failed");
+      toast.error(error?.response?.data?.message || error.message || "Request failed");
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
 
     if (!email) {
       toast.error("Email address missing.");
@@ -72,24 +66,24 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 bg-slate-50/50 py-12">
-      <Card className="w-full max-w-md shadow-2xl border-slate-200 overflow-hidden relative">
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-primary" />
-        
-        <CardHeader className="text-center pt-8 pb-4">
-          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 border border-primary/20">
-            <Lock className="w-8 h-8 text-primary" />
+    <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-background via-muted to-background py-12">
+      <Card className="w-full max-w-md border-none shadow-2xl bg-white/10 backdrop-blur-md overflow-hidden">
+        <CardHeader className="text-center space-y-1">
+          <div className="flex justify-center mb-4">
+            <div className="p-3 bg-primary/20 rounded-full">
+              <Lock className="size-8 text-primary" />
+            </div>
           </div>
-          <CardTitle className="text-2xl font-black italic tracking-tight uppercase">Set New Password</CardTitle>
-          <CardDescription className="text-slate-500">
-            Enter the 6-digit code sent to <span className="font-bold text-slate-900">{email || "your email"}</span> and your new password.
+          <CardTitle className="text-2xl font-bold tracking-tight">Set New Password</CardTitle>
+          <CardDescription className="text-muted-foreground text-balance">
+            Enter the 6-digit code sent to <span className="font-semibold text-foreground">{email || "your email"}</span> and your new password.
           </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-3">
-              <Label className="text-sm font-bold uppercase tracking-wider text-slate-700 block text-center">Verification Code</Label>
+              <Label className="text-sm font-semibold text-foreground/80 block text-center uppercase tracking-wide">Verification Code</Label>
               <div className="flex justify-center">
                 <InputOTP
                   maxLength={6}
@@ -98,15 +92,15 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
                   className="gap-2"
                 >
                   <InputOTPGroup>
-                    <InputOTPSlot index={0} className="w-10 h-12 text-lg font-bold border-2" />
-                    <InputOTPSlot index={1} className="w-10 h-12 text-lg font-bold border-2" />
-                    <InputOTPSlot index={2} className="w-10 h-12 text-lg font-bold border-2" />
+                    <InputOTPSlot index={0} className="w-10 h-12 text-lg font-bold border-2 bg-white/5 border-muted-foreground/20" />
+                    <InputOTPSlot index={1} className="w-10 h-12 text-lg font-bold border-2 bg-white/5 border-muted-foreground/20" />
+                    <InputOTPSlot index={2} className="w-10 h-12 text-lg font-bold border-2 bg-white/5 border-muted-foreground/20" />
                   </InputOTPGroup>
-                  <InputOTPSeparator />
+                  <InputOTPSeparator className="text-muted-foreground" />
                   <InputOTPGroup>
-                    <InputOTPSlot index={3} className="w-10 h-12 text-lg font-bold border-2" />
-                    <InputOTPSlot index={4} className="w-10 h-12 text-lg font-bold border-2" />
-                    <InputOTPSlot index={5} className="w-10 h-12 text-lg font-bold border-2" />
+                    <InputOTPSlot index={3} className="w-10 h-12 text-lg font-bold border-2 bg-white/5 border-muted-foreground/20" />
+                    <InputOTPSlot index={4} className="w-10 h-12 text-lg font-bold border-2 bg-white/5 border-muted-foreground/20" />
+                    <InputOTPSlot index={5} className="w-10 h-12 text-lg font-bold border-2 bg-white/5 border-muted-foreground/20" />
                   </InputOTPGroup>
                 </InputOTP>
               </div>
@@ -114,14 +108,14 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="password font-bold uppercase tracking-wider">New Password</Label>
+                <Label htmlFor="password" className="text-sm font-semibold text-foreground/80">New Password</Label>
                 <div className="relative">
-                  <KeyRound className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                  <KeyRound className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-10 h-11"
+                    className="pl-10 h-11 bg-white/5 border-muted-foreground/20 focus:ring-primary/20 focus:border-primary transition-all"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -129,7 +123,7 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
+                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -137,14 +131,14 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword font-bold uppercase tracking-wider">Confirm New Password</Label>
+                <Label htmlFor="confirmPassword" className="text-sm font-semibold text-foreground/80">Confirm New Password</Label>
                 <div className="relative">
-                  <CheckCircle2 className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                  <CheckCircle2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="confirmPassword"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-10 h-11"
+                    className="pl-10 h-11 bg-white/5 border-muted-foreground/20 focus:ring-primary/20 focus:border-primary transition-all"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
@@ -153,15 +147,9 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
               </div>
             </div>
 
-            {error && (
-              <Alert variant="destructive" className="bg-red-50 border-red-200">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-
             <Button
               type="submit"
-              className="w-full h-11 font-black italic tracking-widest uppercase transition-all active:scale-[0.98]"
+              className="w-full h-11 font-bold shadow-lg transition-all active:scale-[0.98]"
               disabled={isPending}
             >
               {isPending ? (
@@ -176,10 +164,10 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
           </form>
         </CardContent>
 
-        <CardFooter className="bg-slate-50 border-t py-4 justify-center">
+        <CardFooter className="flex justify-center border-t border-muted-foreground/10 py-4">
           <Link 
             href="/auth/login" 
-            className="text-sm font-bold text-slate-500 hover:text-primary transition-colors"
+            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
           >
             Back to Login
           </Link>

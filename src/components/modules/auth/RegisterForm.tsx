@@ -3,7 +3,6 @@
 import { RegisterAction } from "@/app/(commonLayout)/(authRoutes)/auth/register/_action";
 import AppField from "@/components/shared/form/AppField";
 import FormSubmitBtn from "@/components/shared/form/FormSubmitBtn";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,12 +15,12 @@ import {
 import { IRegistrationPayload, registerPlayerZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const RegisterForm = () => {
-  const [serverError, setServerError] = useState<string | null>(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const { mutateAsync } = useMutation({
@@ -35,37 +34,35 @@ const RegisterForm = () => {
       password: ""
     },
     onSubmit: async ({ value }) => {
-      setServerError(null);
       try {
         const result = (await mutateAsync(value)) as any;
-
-
-        if (!result.success) {
-          setServerError(result.message);
-          return;
+        if (result && !result.success) {
+          toast.error(result.message || "Registration failed");
         }
       } catch (error: any) {
-        setServerError("Registration failed: " + error.message);
+        toast.error(error?.response?.data?.message || error.message || "An unexpected error occurred");
       }
     },
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 py-12">
-      <Card className="w-full max-w-md p-6">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold mb-4 uppercase italic tracking-wider">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-background via-muted to-background">
+      <Card className="w-full max-w-md border-none shadow-2xl bg-white/10 backdrop-blur-md">
+        <CardHeader className="text-center space-y-1">
+          <div className="flex justify-center mb-4">
+            <div className="p-3 bg-primary/20 rounded-full">
+              <UserPlus className="size-8 text-primary" />
+            </div>
+          </div>
+          <CardTitle className="text-2xl font-bold tracking-tight">
             Join the Arena
           </CardTitle>
-
-          <CardDescription className="mb-6">
+          <CardDescription className="text-muted-foreground">
             Create your account to start booking top-tier sports venues.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form
-            method="POST"
-            action={"#"}
             noValidate
             onSubmit={(e) => {
               e.preventDefault();
@@ -118,12 +115,12 @@ const RegisterForm = () => {
                       onClick={() => setPasswordVisible(!passwordVisible)}
                       variant="ghost"
                       size="icon"
-                      className={"cursor-pointer "}
+                      className="hover:bg-primary/10"
                     >
                       {passwordVisible ? (
-                        <EyeOff className="size-4" aria-hidden="true" />
+                        <EyeOff className="size-4" />
                       ) : (
-                        <Eye className="size-4" aria-hidden="true" />
+                        <Eye className="size-4" />
                       )}
                     </Button>
                   }
@@ -131,18 +128,15 @@ const RegisterForm = () => {
               )}
             </form.Field>
 
-            {serverError && (
-              <Alert variant="destructive">
-                <AlertTitle className="text-red-600">Error</AlertTitle>
-                <AlertDescription>{serverError}</AlertDescription>
-              </Alert>
-            )}
-
             <form.Subscribe
               selector={(s) => [s.canSubmit, s.isSubmitting] as const}
             >
               {([canSubmit, isSubmitting]) => (
-                <FormSubmitBtn isPending={isSubmitting} disabled={!canSubmit}>
+                <FormSubmitBtn 
+                  isPending={isSubmitting} 
+                  disabled={!canSubmit}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-all active:scale-[0.98]"
+                >
                   Register Now
                 </FormSubmitBtn>
               )}
@@ -151,10 +145,10 @@ const RegisterForm = () => {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
+              <div className="w-full border-t border-muted-foreground/20" />
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500 uppercase italic tracking-tighter">
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-transparent px-2 text-muted-foreground">
                 Or join with
               </span>
             </div>
@@ -162,22 +156,22 @@ const RegisterForm = () => {
 
           <Button
             variant="outline"
-            className="w-full mb-2 uppercase font-black italic tracking-widest hover:bg-primary/10 transition-all border-primary/20"
+            className="w-full mb-2 bg-white/5 border-muted-foreground/20 hover:bg-white/10"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
               window.location.href = `${baseUrl}/api/v1/auth/login/social/google`;
             }}
           >
-            Google Arena
+            Continue with Google
           </Button>
         </CardContent>
 
-        <CardFooter>
-          <p className="text-sm text-center w-full text-muted-foreground">
+        <CardFooter className="flex flex-col space-y-2 border-t border-muted-foreground/10 pt-4">
+          <p className="text-sm text-center text-muted-foreground">
             Already a member?{" "}
             <Link
               href="/auth/login"
-              className="text-primary font-bold hover:underline underline-offset-4"
+              className="text-primary hover:underline underline-offset-4 font-bold"
             >
               Log in here
             </Link>

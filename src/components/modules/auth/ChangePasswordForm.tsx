@@ -4,7 +4,6 @@
 import { ChangePasswordAction } from "@/app/(commonLayout)/(authRoutes)/auth/change-password/_action";
 import AppField from "@/components/shared/form/AppField";
 import FormSubmitBtn from "@/components/shared/form/FormSubmitBtn";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,6 +17,7 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 
 interface ChangePasswordFormProps {
@@ -25,7 +25,6 @@ interface ChangePasswordFormProps {
 }
 
 const ChangePasswordForm = ({ email }: ChangePasswordFormProps) => {
-  const [serverError, setServerError] = useState<string | null>(null);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -51,7 +50,6 @@ const ChangePasswordForm = ({ email }: ChangePasswordFormProps) => {
       }),
     },
     onSubmit: async ({ value }) => {
-      setServerError(null);
       try {
         const payload = {
           currentPassword: value.currentPassword,
@@ -59,13 +57,13 @@ const ChangePasswordForm = ({ email }: ChangePasswordFormProps) => {
         };
         const result = (await mutateAsync(payload)) as any;
         if (result && !result.success) {
-          setServerError(result.message || "Failed to change password");
+          toast.error(result.message || "Failed to change password");
         }
       } catch (error: any) {
         if (error.message?.includes("NEXT_REDIRECT")) {
           return;
         }
-        setServerError(error.message || "An unexpected error occurred");
+        toast.error(error?.response?.data?.message || error.message || "An unexpected error occurred");
       }
     },
   });
@@ -161,13 +159,6 @@ const ChangePasswordForm = ({ email }: ChangePasswordFormProps) => {
                 />
               )}
             </form.Field>
-
-            {serverError && (
-              <Alert variant="destructive" className="bg-red-500/10 border-red-500/20">
-                <AlertTitle className="text-red-600 font-semibold text-sm">Action Failed</AlertTitle>
-                <AlertDescription className="text-red-500 text-xs">{serverError}</AlertDescription>
-              </Alert>
-            )}
 
             <form.Subscribe
               selector={(s) => [s.canSubmit, s.isSubmitting] as const}
