@@ -5,6 +5,7 @@ import { httpClient } from "@/lib/axios/httpClient";
 import { setTokenInCookies } from "@/lib/tokenUtils";
 import { ApiError, ApiResponse } from "@/types/api.type";
 import { IRegistrationPayload, registerPlayerZodSchema } from "@/zod/auth.validation";
+import { el } from "date-fns/locale";
 import { redirect } from "next/navigation";
 
 export interface IRegistrationResponse {
@@ -35,14 +36,20 @@ export const RegisterAction = async (
     );
    
     if (response.success) {
-      const { accessToken, refreshToken, betterAuthToken } = response.data;
-      
-      await setTokenInCookies("accessToken", accessToken);
-      await setTokenInCookies("refreshToken", refreshToken);
-      await setTokenInCookies("better-auth.session_token", betterAuthToken);
-  
-      // Force email verification after registration
-      redirect(`/auth/verify-email?email=${payload.email}`);
+
+
+      if (!response.data.user.emailVerified) {
+        redirect(`/auth/verify-email?email=${payload.email}`);
+      } else {
+
+        const { accessToken, refreshToken, betterAuthToken } = response.data;
+        
+        await setTokenInCookies("accessToken", accessToken);
+        await setTokenInCookies("refreshToken", refreshToken);
+        await setTokenInCookies("better-auth.session_token", betterAuthToken);
+      }
+
+       
     }
 
     return response;

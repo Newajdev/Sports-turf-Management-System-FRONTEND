@@ -32,8 +32,7 @@ const RegisterForm = () => {
     defaultValues: {
       name: "",
       email: "",
-      password: "",
-      contactNumber: "",
+      password: ""
     },
     onSubmit: async ({ value }) => {
       setServerError(null);
@@ -99,18 +98,6 @@ const RegisterForm = () => {
                   label="Email"
                   type="email"
                   placeholder="you@example.com"
-                />
-              )}
-            </form.Field>
-
-            <form.Field
-              name="contactNumber"
-            >
-              {(field) => (
-                <AppField
-                  field={field}
-                  label="Contact Number (Optional)"
-                  placeholder="+8801XXXXXXXXX"
                 />
               )}
             </form.Field>

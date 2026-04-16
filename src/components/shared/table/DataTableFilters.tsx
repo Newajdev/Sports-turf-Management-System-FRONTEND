@@ -185,7 +185,7 @@ const SingleSelectFilterControl = ({
     <div className="space-y-3">
       <Select
         value={value || "all"}
-        onValueChange={(nextValue) => {
+        onValueChange={(nextValue: string | null) => {
           onFilterChange(filter.id, (nextValue === "all" || nextValue === null) ? undefined : nextValue);
         }}
       >
