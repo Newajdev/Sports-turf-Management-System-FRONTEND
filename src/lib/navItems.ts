@@ -55,6 +55,11 @@ export const adminNavItems: NavSection[] = [
         href: "/admin/dashboard/bookings-management",
         icon: "CalendarCheck",
       },
+      {
+        title: "Master Slots",
+        href: "/admin/dashboard/master-slots-management",
+        icon: "Clock",
+      },
     ],
   },
 ];
