@@ -37,14 +37,9 @@ export const updateTurf = async (id: string, payload: any) => {
 
 export const uploadTurfImages = async (formData: FormData) => {
     try {
-        const response = await fetch(`${BASE_API_URL}/turf/upload-images`, {
-            method: "POST",
-            body: formData,
-            // Header will be set automatically by browser for FormData
-        });
-        const result = await response.json();
+        const response = await httpClient.post("/turf/upload-images", formData);
         revalidatePath("/turf-owner/dashboard/my-turf");
-        return result;
+        return response;
     } catch (error: any) {
         console.error("Error uploading images:", error);
         return { success: false, message: "Failed to upload images" };

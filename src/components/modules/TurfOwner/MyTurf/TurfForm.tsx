@@ -180,7 +180,7 @@ const TurfForm = ({ initialData, onSuccess }: TurfFormProps) => {
                                             }
                                         }}
                                     />
-                                    <Label htmlFor={sport.id} className="cursor-pointer font-medium">{sport.name}</Label>
+                                    <Label htmlFor={sport.id} className="cursor-pointer font-medium">{sport.title}</Label>
                                 </div>
                             )}
                         </form.Field>
