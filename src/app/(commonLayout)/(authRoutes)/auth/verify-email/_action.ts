@@ -26,6 +26,9 @@ export const VerifyEmailAction = async (payload: IOtpVerify): Promise<OtpVerific
       if (refreshToken) {
         await setTokenInCookies("refreshToken", refreshToken);
       }
+      if (response.data.token) {
+        await setTokenInCookies("better-auth.session_token", response.data.token);
+      }
 
       // Success - Redirect to dashboard.
       redirect("/dashboard");

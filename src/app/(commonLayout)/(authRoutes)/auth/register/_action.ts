@@ -41,11 +41,11 @@ export const RegisterAction = async (
         redirect(`/auth/verify-email?email=${payload.email}`);
       } else {
 
-        const { accessToken, refreshToken, betterAuthToken } = response.data;
+        const { accessToken, refreshToken, token } = response.data;
         
         await setTokenInCookies("accessToken", accessToken);
         await setTokenInCookies("refreshToken", refreshToken);
-        await setTokenInCookies("better-auth.session_token", betterAuthToken);
+        await setTokenInCookies("better-auth.session_token", token);
       }
 
        
