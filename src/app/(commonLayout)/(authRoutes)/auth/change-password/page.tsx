@@ -9,7 +9,13 @@ interface ChangePasswordParams {
 async function ChangePasswordPage({ searchParams }: ChangePasswordParams) {
   const { email } = await searchParams;
 
-  return <ChangePasswordForm email={email || ""} />;
+  return (
+    <ChangePasswordForm
+      email={email || ""}
+      title="Security Update"
+      description="You are required to change your password"
+    />
+  );
 }
 
 export default ChangePasswordPage;

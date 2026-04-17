@@ -5,7 +5,6 @@ import { httpClient } from "@/lib/axios/httpClient";
 import { setTokenInCookies } from "@/lib/tokenUtils";
 import { ApiError, ApiResponse } from "@/types/api.type";
 import { IRegistrationPayload, registerPlayerZodSchema } from "@/zod/auth.validation";
-import { el } from "date-fns/locale";
 import { redirect } from "next/navigation";
 
 export interface IRegistrationResponse {

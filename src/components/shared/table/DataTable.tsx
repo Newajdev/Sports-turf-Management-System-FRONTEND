@@ -76,12 +76,14 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, toolbarActi
 
                 return (
                     <DropdownMenu>
-                    <DropdownMenuTrigger>
-                            <Button variant={"ghost"} className="h-8 w-8 p-0">
-                                <span className="sr-only">Open Menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button variant={"ghost"} className="h-8 w-8 p-0">
+                          <span className="sr-only">Open Menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      }
+                    />
 
                         <DropdownMenuContent align="end">
                             {

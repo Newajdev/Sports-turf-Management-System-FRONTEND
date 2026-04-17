@@ -18,13 +18,22 @@ import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { z } from "zod";
 
 interface ChangePasswordFormProps {
-  email: string;
+  email?: string;
+  title?: string;
+  description?: string;
+  showBackground?: boolean;
 }
 
-const ChangePasswordForm = ({ email }: ChangePasswordFormProps) => {
+const ChangePasswordForm = ({ 
+    email, 
+    title = "Update Password", 
+    description = "Ensure your account is secure with a strong password.",
+    showBackground = true 
+}: ChangePasswordFormProps) => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -69,8 +78,13 @@ const ChangePasswordForm = ({ email }: ChangePasswordFormProps) => {
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-background via-muted to-background">
-      <Card className="w-full max-w-md border-none shadow-2xl bg-white/10 backdrop-blur-md">
+    <div className={cn(
+        showBackground && "flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-background via-muted to-background"
+    )}>
+      <Card className={cn(
+        "w-full max-w-md border-none shadow-2xl",
+        showBackground ? "bg-white/10 backdrop-blur-md" : "bg-background/50 backdrop-blur-sm mx-auto"
+      )}>
         <CardHeader className="text-center space-y-1">
           <div className="flex justify-center mb-4">
             <div className="p-3 bg-primary/20 rounded-full">
@@ -78,10 +92,10 @@ const ChangePasswordForm = ({ email }: ChangePasswordFormProps) => {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">
-            Security Update
+            {title}
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            You are required to change your password for {email}.
+            {description} {email && <>for {email}</>}
           </CardDescription>
         </CardHeader>
         <CardContent>

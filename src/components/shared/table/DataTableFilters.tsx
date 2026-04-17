@@ -365,16 +365,18 @@ const DataTableFilters = ({
 
         return (
           <Popover key={`${filter.id}-${JSON.stringify(filterValue ?? null)}`}>
-          <PopoverTrigger>
-              <Button variant="outline" className={triggerClass} disabled={isLoading}>
-                {filter.label}
-                {activeCount > 0 && (
-                  <Badge className="h-5 min-w-5 px-1.5" variant="secondary">
-                    {activeCount}
-                  </Badge>
-                )}
-              </Button>
-            </PopoverTrigger>
+            <PopoverTrigger
+              render={
+                <Button variant="outline" className={triggerClass} disabled={isLoading}>
+                  {filter.label}
+                  {activeCount > 0 && (
+                    <Badge className="h-5 min-w-5 px-1.5" variant="secondary">
+                      {activeCount}
+                    </Badge>
+                  )}
+                </Button>
+              }
+            />
 
             <PopoverContent align="start" className="w-80">
               <div className="mb-3 flex items-center justify-between">

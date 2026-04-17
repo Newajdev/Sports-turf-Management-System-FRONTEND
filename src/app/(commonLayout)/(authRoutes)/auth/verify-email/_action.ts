@@ -7,9 +7,6 @@ import { OtpVerificationResponse } from "@/types/auth.type";
 import { redirect } from "next/navigation";
 import { setTokenInCookies } from "@/lib/tokenUtils";
 
-/**
- * Action to verify email with OTP
- */
 interface IOtpVerify {
   email: string;
   otp: string;

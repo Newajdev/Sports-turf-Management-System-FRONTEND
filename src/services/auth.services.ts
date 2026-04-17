@@ -3,7 +3,7 @@
 import { setTokenInCookies } from "@/lib/tokenUtils";
 import { cookies } from "next/headers";
 
-const BASE_API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const BASE_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`;
 
 if (!BASE_API_URL) {
   throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
@@ -58,7 +58,7 @@ export async function getUserInfo() {
       return null;
     }
 
-    const result = await fetch(`${BASE_API_URL}/auth/me`, {
+    const result = await fetch(`${BASE_API_URL}/user/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -78,4 +78,11 @@ export async function getUserInfo() {
     console.error("Error fetching user info:", error);
     return null;
   }
+}
+
+export async function logoutUser() {
+  const cookieStore = await cookies();
+  cookieStore.delete("accessToken");
+  cookieStore.delete("refreshToken");
+  cookieStore.delete("better-auth.session_token");
 }
