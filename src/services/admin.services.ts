@@ -123,3 +123,17 @@ export async function getAllBookings(queryString: string = "") {
     };
   }
 }
+
+export async function createTurfOwner(payload: any) {
+  try {
+    const response = await httpClient.post<any>("/auth/create-turf-owner", payload);
+    return response;
+  } catch (error: any) {
+    console.error("Error creating turf owner:", error);
+    return {
+      success: false,
+      message: error.message || "An error occurred while creating turf owner.",
+      data: null,
+    };
+  }
+}

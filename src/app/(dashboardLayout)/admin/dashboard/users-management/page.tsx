@@ -1,4 +1,5 @@
 import UsersTable from "@/components/modules/Admin/UsersManagement/UsersTable";
+import CreateTurfOwnerModal from "@/components/modules/Admin/UsersManagement/CreateTurfOwnerModal";
 import { getAllUsers } from "@/services/admin.services";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
@@ -27,9 +28,12 @@ const UsersManagementPage = async ({ searchParams }: UsersManagementPageProps) =
 
   return (
     <div className="space-y-6">
-       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Users Management</h1>
-        <p className="text-muted-foreground">Manage all platform users, their roles, and access status.</p>
+       <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Users Management</h1>
+          <p className="text-muted-foreground">Manage all platform users, their roles, and access status.</p>
+        </div>
+        <CreateTurfOwnerModal />
       </div>
       
       <HydrationBoundary state={dehydrate(queryClient)}>
