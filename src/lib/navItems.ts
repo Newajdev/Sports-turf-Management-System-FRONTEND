@@ -22,9 +22,14 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
       title: "Account",
       items: [
         {
+          title: "My Profile",
+          href: "/profile",
+          icon: "User",
+        },
+        {
           title: "Change Password",
           href: "/change-password",
-          icon: "Settings",
+          icon: "Key",
         },
       ],
     },
@@ -59,6 +64,16 @@ export const adminNavItems: NavSection[] = [
         title: "Master Slots",
         href: "/admin/dashboard/master-slots-management",
         icon: "Clock",
+      },
+      {
+        title: "Reports",
+        href: "/admin/dashboard/reports-management",
+        icon: "Flag",
+      },
+      {
+        title: "Reviews",
+        href: "/admin/dashboard/reviews-management",
+        icon: "MessageSquare",
       },
     ],
   },
@@ -97,9 +112,9 @@ export const playerNavItems: NavSection[] = [
         icon: "Calendar",
       },
       {
-          title: "Favorites",
-          href: "/dashboard/favorites",
-          icon: "Heart"
+        title: "Favorites",
+        href: "/dashboard/favorites",
+        icon: "Heart"
       }
     ],
   },

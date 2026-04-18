@@ -124,6 +124,34 @@ export async function getAllBookings(queryString: string = "") {
   }
 }
 
+export async function getAllReports(queryString: string = "") {
+  try {
+    const response = await httpClient.get<any>(`/report?${queryString}`);
+    return response;
+  } catch (error: any) {
+    console.error("Error fetching reports:", error);
+    return {
+      success: false,
+      message: error.message || "An error occurred while fetching reports.",
+      data: [],
+    };
+  }
+}
+
+export async function deleteReport(id: string) {
+  try {
+    const response = await httpClient.delete<any>(`/report/${id}`);
+    return response;
+  } catch (error: any) {
+    console.error("Error deleting report:", error);
+    return {
+      success: false,
+      message: error.message || "An error occurred while deleting report.",
+      data: null,
+    };
+  }
+}
+
 export async function createTurfOwner(payload: any) {
   try {
     const response = await httpClient.post<any>("/auth/create-turf-owner", payload);

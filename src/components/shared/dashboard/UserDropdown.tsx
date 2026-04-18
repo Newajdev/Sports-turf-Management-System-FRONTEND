@@ -76,22 +76,6 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
 
         <DropdownMenuSeparator className="bg-muted/50" />
 
-        <DropdownMenuItem asChild>
-          <Link href={"/profile"} className="cursor-pointer flex items-center py-2 px-3 rounded-md hover:bg-muted transition-colors">
-            <User className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">My Profile</span>
-          </Link>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem asChild>
-          <Link href={"/change-password"} className="cursor-pointer flex items-center py-2 px-3 rounded-md hover:bg-muted transition-colors">
-            <Key className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">Change Password</span>
-          </Link>
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator className="bg-muted/50" />
-
         <DropdownMenuItem
           onClick={handleLogout}
           className="cursor-pointer flex items-center py-2 px-3 rounded-md text-destructive focus:text-destructive hover:bg-destructive/10 transition-colors"
