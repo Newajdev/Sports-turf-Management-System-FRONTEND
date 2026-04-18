@@ -72,7 +72,7 @@ export const turfColumns: ColumnDef<ITurfListItem>[] = [
         return (
             <div className="flex items-center gap-1 font-semibold text-emerald-600">
                 <DollarSign className="h-4 w-4" />
-                <span>{rate.toFixed(2)}</span>
+                <span>{typeof rate === 'number' ? rate.toFixed(2) : Number(rate || 0).toFixed(2)}</span>
             </div>
         )
     }
