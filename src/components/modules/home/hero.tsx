@@ -42,7 +42,7 @@ export default function HeroSection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-300">
             <Link
-              href="/register"
+              href="/auth/register"
               className={cn(
                 buttonVariants({ size: "lg" }),
                 "h-16 px-10 text-xl font-black bg-primary hover:bg-primary/90 text-white border-none shadow-[0_20px_50px_rgba(var(--primary-rgb),0.4)] group uppercase italic"

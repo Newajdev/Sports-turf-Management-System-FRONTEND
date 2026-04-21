@@ -12,7 +12,7 @@ export const getAllMasterSlots = async () => {
         return response;
     } catch (error: any) {
         console.error("Error fetching master slots:", error);
-        return { success: false, message: "Failed to fetch master slots" };
+        return { success: false, message: "Failed to fetch master slots", data: [] };
     }
 };
 
@@ -25,7 +25,7 @@ export const getTurfSlotsByTurf = async (turfId: string) => {
         return response;
     } catch (error: any) {
         console.error("Error fetching turf slots:", error);
-        return { success: false, message: "Failed to fetch turf slots" };
+        return { success: false, message: "Failed to fetch turf slots", data: [] };
     }
 };
 
@@ -43,7 +43,7 @@ export const bulkCreateTurfSlots = async (payload: {
         return response;
     } catch (error: any) {
         console.error("Error creating turf slots:", error);
-        return { success: false, message: "Failed to create turf slots" };
+        return { success: false, message: "Failed to create turf slots", data: null };
     }
 };
 
@@ -57,7 +57,7 @@ export const deleteTurfSlot = async (id: string) => {
         return response;
     } catch (error: any) {
         console.error("Error deleting turf slot:", error);
-        return { success: false, message: "Failed to delete turf slot" };
+        return { success: false, message: "Failed to delete turf slot", data: null };
     }
 };
 
@@ -77,7 +77,7 @@ export const adminCreateMasterSlot = async (payload: {
         return response;
     } catch (error: any) {
         console.error("Error creating master slot:", error);
-        return { success: false, message: "Failed to create master slot" };
+        return { success: false, message: "Failed to create master slot", data: null };
     }
 };
 
@@ -92,7 +92,7 @@ export const adminUpdateMasterSlot = async (id: string, payload: any) => {
         return response;
     } catch (error: any) {
         console.error("Error updating master slot:", error);
-        return { success: false, message: "Failed to update master slot" };
+        return { success: false, message: "Failed to update master slot", data: null };
     }
 };
 
@@ -107,6 +107,6 @@ export const adminDeleteMasterSlot = async (id: string) => {
         return response;
     } catch (error: any) {
         console.error("Error deleting master slot:", error);
-        return { success: false, message: "Failed to delete master slot" };
+        return { success: false, message: "Failed to delete master slot", data: null };
     }
 };

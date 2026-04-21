@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import { getAllUsers, blockUser } from "@/services/admin.services";
 import { userColumns, IUser } from "./userColumns";
 import { toast } from "sonner";
+import { DataTableFilterConfig } from "@/components/shared/table/DataTableFilters";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -87,7 +88,7 @@ const UsersTable = () => {
     const users = usersResponse?.data ?? [];
     const meta = usersResponse?.meta;
 
-    const filterConfigs = useMemo(() => {
+    const filterConfigs: DataTableFilterConfig[] = useMemo(() => {
       return [
         {
           id: "role",

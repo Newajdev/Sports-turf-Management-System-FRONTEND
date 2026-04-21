@@ -21,7 +21,7 @@ export const createTurf = async (payload: any) => {
         revalidatePath("/turf-owner/dashboard/my-turf");
         return response;
     } catch (error: any) {
-        return error.response?.data || { success: false, message: "Failed to create turf" };
+        return error.response?.data || { success: false, message: "Failed to create turf", data: null };
     }
 };
 
@@ -31,7 +31,7 @@ export const updateTurf = async (id: string, payload: any) => {
         revalidatePath("/turf-owner/dashboard/my-turf");
         return response;
     } catch (error: any) {
-        return error.response?.data || { success: false, message: "Failed to update turf" };
+        return error.response?.data || { success: false, message: "Failed to update turf", data: null };
     }
 };
 
@@ -42,6 +42,6 @@ export const uploadTurfImages = async (formData: FormData) => {
         return response;
     } catch (error: any) {
         console.error("Error uploading images:", error);
-        return { success: false, message: "Failed to upload images" };
+        return { success: false, message: "Failed to upload images", data: null };
     }
 };

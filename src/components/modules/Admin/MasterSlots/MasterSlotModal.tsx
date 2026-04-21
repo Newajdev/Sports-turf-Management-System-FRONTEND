@@ -41,7 +41,7 @@ export default function MasterSlotModal({
         slotType: "MORNING",
         startTime: "",
         endTime: "",
-        duration: "60"
+        interval: "60"
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 

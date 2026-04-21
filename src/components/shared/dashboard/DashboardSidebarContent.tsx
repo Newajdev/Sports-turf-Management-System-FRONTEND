@@ -21,7 +21,7 @@ const DashboardSidebarContent = ({ userInfo, navItems, dashboardHome }: Dashboar
   const pathname = usePathname();
 
   return (
-    <aside className="hidden border-r bg-background md:flex md:w-72 md:flex-col shadow-premium-subtle">
+    <aside className="hidden border-r bg-background lg:flex lg:w-72 lg:flex-col shadow-premium-subtle">
       {/* Brand Header */}
       <div className="flex h-16 items-center border-b px-6">
         <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-primary">

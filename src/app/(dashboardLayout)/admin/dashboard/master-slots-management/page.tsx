@@ -8,7 +8,7 @@ export const metadata = {
 
 export default async function MasterSlotsManagementPage() {
     const response = await getAllMasterSlots();
-    const masterSlots = response?.success ? response.data : [];
+    const masterSlots = response?.success ? (response.data as any[]) : [];
 
     return (
         <div className="container mx-auto py-8">

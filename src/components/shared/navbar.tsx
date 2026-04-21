@@ -131,14 +131,14 @@ export default function Navbar() {
             </ul>
             <div className="flex flex-col gap-4">
               <Link
-                href="/login"
+                href="/auth/login"
                 className={cn(buttonVariants({ variant: "outline" }), "w-full h-14 border-white/20 text-white font-bold italic")}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Log in
               </Link>
               <Link
-                href="/register"
+                href="/auth/register"
                 className={cn(buttonVariants(), "w-full h-14 bg-primary text-white font-black uppercase italic tracking-widest")}
                 onClick={() => setIsMobileMenuOpen(false)}
               >

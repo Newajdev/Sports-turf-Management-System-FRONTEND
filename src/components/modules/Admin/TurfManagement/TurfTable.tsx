@@ -12,8 +12,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { getAllTurfs } from "@/services/admin.services";
-import { turfColumns, ITurfListItem } from "./turfColumns";
+import { ITurfListItem, turfColumns } from "./turfColumns";
 import { toast } from "sonner";
+import { DataTableFilterConfig } from "@/components/shared/table/DataTableFilters";
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
@@ -76,7 +77,7 @@ const TurfTable = () => {
     const turfs = turfsResponse?.data ?? [];
     const meta = turfsResponse?.meta;
 
-    const filterConfigs = useMemo(() => {
+    const filterConfigs: DataTableFilterConfig[] = useMemo(() => {
       return [
         {
           id: "turfStatus",

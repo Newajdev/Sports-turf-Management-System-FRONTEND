@@ -45,7 +45,7 @@ export default function ReviewsManagementPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Select onValueChange={setSelectedTurfId} value={selectedTurfId}>
+            <Select onValueChange={(val) => setSelectedTurfId(val || "")} value={selectedTurfId}>
                 <SelectTrigger className="w-full bg-muted/40 border-none focus:ring-primary/20">
                     <SelectValue placeholder={isLoadingTurfs ? "Loading..." : "Choose a turf"} />
                 </SelectTrigger>

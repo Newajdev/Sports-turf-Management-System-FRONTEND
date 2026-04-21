@@ -52,7 +52,19 @@ interface DataTableProps<TData> {
 }
 
 
-const DataTable = <TData,>({ data = [] as TData[], columns, actions, toolbarAction, emptyMessage, isLoading, sorting, pagination, search, filters, meta } : DataTableProps<TData>) => {
+function DataTable<TData>({ 
+  data = [] as TData[], 
+  columns, 
+  actions, 
+  toolbarAction, 
+  emptyMessage, 
+  isLoading, 
+  sorting, 
+  pagination, 
+  search, 
+  filters, 
+  meta 
+}: DataTableProps<TData>) {
 
     const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -193,8 +205,9 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, toolbarActi
         )}
 
         {/* // Table */}
-        <div className="rounded-lg border">
-          <Table>
+        <div className="rounded-lg border overflow-hidden bg-background">
+          <div className="overflow-x-auto">
+            <Table className="w-full">
             <TableHeader>
               {table.getHeaderGroups().map((hg) => (
                 <TableRow key={hg.id}>
@@ -257,17 +270,18 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, toolbarActi
               )}
             </TableBody>
           </Table>
-
-          {pagination && (
-            <DataTablePagination
-              table={table}
-              totalPages={meta?.totalPages}
-              totalRows={meta?.total}
-              isLoading={hydratedIsLoading}
-            />
-          )}
         </div>
+
+        {pagination && (
+          <DataTablePagination
+            table={table}
+            totalPages={meta?.totalPages}
+            totalRows={meta?.total}
+            isLoading={hydratedIsLoading}
+          />
+        )}
       </div>
+    </div>
     );
 }
 

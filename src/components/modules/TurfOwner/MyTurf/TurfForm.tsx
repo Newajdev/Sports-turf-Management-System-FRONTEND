@@ -86,7 +86,8 @@ const TurfForm = ({ initialData, onSuccess }: TurfFormProps) => {
             const result = await uploadTurfImages(formData);
             if (result.success) {
                 // If the response returns the whole turf object, extract images
-                const newImages = result.data?.images || result.data || [];
+                const data = result.data as any;
+                const newImages = data?.images || data || [];
                 // If it's just strings, append them
                 if (Array.isArray(newImages)) {
                     setImages((prev) => [...prev, ...newImages]);

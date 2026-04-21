@@ -120,7 +120,7 @@ export async function proxy(request: NextRequest) {
         return NextResponse.next();
       }
 
-      const loginUrl = new URL("/login", request.url);
+      const loginUrl = new URL("/auth/login", request.url);
       loginUrl.searchParams.set("redirect", pathWithQuery);
       return NextResponse.redirect(loginUrl);
     }

@@ -14,6 +14,7 @@ export async function getAllUsers(queryString: string = "") {
       success: false,
       message: error.message || "An error occurred while fetching users.",
       data: [],
+      meta: undefined,
     };
   }
 }
@@ -42,6 +43,7 @@ export async function getAllTurfs(queryString: string = "") {
       success: false,
       message: error.message || "An error occurred while fetching turfs.",
       data: [],
+      meta: undefined,
     };
   }
 }
@@ -114,12 +116,13 @@ export async function getAllBookings(queryString: string = "") {
   try {
     const response = await httpClient.get<any>(`/booking?${queryString}`);
     return response;
-  } catch (error: any) {
+    } catch (error: any) {
     console.error("Error fetching bookings:", error);
     return {
       success: false,
       message: error.message || "An error occurred while fetching bookings.",
       data: [],
+      meta: undefined,
     };
   }
 }
@@ -134,6 +137,7 @@ export async function getAllReports(queryString: string = "") {
       success: false,
       message: error.message || "An error occurred while fetching reports.",
       data: [],
+      meta: undefined,
     };
   }
 }

@@ -48,7 +48,7 @@ const CreateTurfOwnerModal = () => {
       contactNumber: "",
     },
     validators: {
-      onChange: createTurfOwnerZodSchema,
+      onChange: createTurfOwnerZodSchema as any,
     },
     onSubmit: async ({ value }) => {
       mutate(value);
