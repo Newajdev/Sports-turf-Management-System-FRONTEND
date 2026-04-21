@@ -116,7 +116,7 @@ export default function PopularTurfs() {
                     </span>
                   </div>
                   <Link
-                    href={`/turf/${turf.id}`}
+                    href={`/book-a-turf/${turf.id}`}
                     className={cn(
                       buttonVariants({ size: "sm" }),
                       "bg-primary hover:bg-primary/90 text-white font-bold rounded-xl px-5 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
