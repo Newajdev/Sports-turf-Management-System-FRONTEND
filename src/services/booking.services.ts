@@ -1,21 +1,29 @@
 "use server";
 
 import { httpClient } from "@/lib/axios/httpClient";
+import { getApiErrorMessage } from "@/lib/apiError";
+import {
+  IBookingPaymentResult,
+  ICreateBookingPayload,
+} from "@/interface/booking.interface";
 import { revalidatePath } from "next/cache";
 
 /**
  * Player: Create a regular booking (with Stripe payment)
  */
-export async function createBooking(payload: any) {
+export async function createBooking(payload: ICreateBookingPayload) {
   try {
-    const response = await httpClient.post<any>("/booking", payload);
+    const response = await httpClient.post<IBookingPaymentResult>(
+      "/booking",
+      payload,
+    );
     revalidatePath("/dashboard/bookings");
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating booking:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while creating booking.",
+      message: getApiErrorMessage(error, "An error occurred while creating booking."),
       data: null,
     };
   }
@@ -24,16 +32,22 @@ export async function createBooking(payload: any) {
 /**
  * Player: Create a custom slot booking (PENDING state)
  */
-export async function createCustomBooking(payload: any) {
+export async function createCustomBooking(payload: ICreateBookingPayload) {
   try {
-    const response = await httpClient.post<any>("/booking/custom-slot", payload);
+    const response = await httpClient.post<IBookingPaymentResult>(
+      "/booking/custom",
+      payload,
+    );
     revalidatePath("/dashboard/bookings");
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating custom booking:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while creating custom booking.",
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while creating custom booking.",
+      ),
       data: null,
     };
   }
@@ -44,13 +58,33 @@ export async function createCustomBooking(payload: any) {
  */
 export async function makePaymentForCustomSlot(bookingId: string) {
   try {
-    const response = await httpClient.post<any>(`/booking/payment-custom-slot/${bookingId}`, {});
+    const response = await httpClient.post<IBookingPaymentResult>(
+      `/booking/payment/${bookingId}`,
+      {},
+    );
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error processing payment for custom slot:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while processing payment.",
+      message: getApiErrorMessage(error, "An error occurred while processing payment."),
+      data: null,
+    };
+  }
+}
+
+/**
+ * Player: Get a single booking by id
+ */
+export async function getBookingById(bookingId: string) {
+  try {
+    const response = await httpClient.get(`/booking/${bookingId}`);
+    return response;
+  } catch (error: unknown) {
+    console.error("Error fetching booking:", error);
+    return {
+      success: false,
+      message: getApiErrorMessage(error, "An error occurred while fetching booking."),
       data: null,
     };
   }
@@ -61,13 +95,13 @@ export async function makePaymentForCustomSlot(bookingId: string) {
  */
 export async function getMyBookings(queryString: string = "") {
   try {
-    const response = await httpClient.get<any>(`/booking/my-bookings?${queryString}`);
+    const response = await httpClient.get(`/booking/my-bookings?${queryString}`);
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching my bookings:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while fetching your bookings.",
+      message: getApiErrorMessage(error, "An error occurred while fetching your bookings."),
       data: [],
       meta: undefined,
     };
@@ -79,13 +113,13 @@ export async function getMyBookings(queryString: string = "") {
  */
 export async function getTurfBookings(turfId: string, queryString: string = "") {
   try {
-    const response = await httpClient.get<any>(`/booking/turf/${turfId}?${queryString}`);
+    const response = await httpClient.get(`/booking/turf/${turfId}?${queryString}`);
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching turf bookings:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while fetching turf bookings.",
+      message: getApiErrorMessage(error, "An error occurred while fetching turf bookings."),
       data: [],
       meta: undefined,
     };
@@ -97,15 +131,15 @@ export async function getTurfBookings(turfId: string, queryString: string = "") 
  */
 export async function cancelBooking(id: string) {
   try {
-    const response = await httpClient.patch<any>(`/booking/cancel/${id}`, {});
+    const response = await httpClient.patch(`/booking/cancel/${id}`, {});
     revalidatePath("/dashboard/bookings");
     revalidatePath("/turf-owner/dashboard/bookings");
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error cancelling booking:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while cancelling booking.",
+      message: getApiErrorMessage(error, "An error occurred while cancelling booking."),
       data: null,
     };
   }
@@ -116,14 +150,14 @@ export async function cancelBooking(id: string) {
  */
 export async function rejectBooking(id: string) {
   try {
-    const response = await httpClient.patch<any>(`/booking/reject/${id}`, {});
+    const response = await httpClient.patch(`/booking/reject/${id}`, {});
     revalidatePath("/turf-owner/dashboard/bookings");
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error rejecting booking:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while rejecting booking.",
+      message: getApiErrorMessage(error, "An error occurred while rejecting booking."),
       data: null,
     };
   }
@@ -134,14 +168,14 @@ export async function rejectBooking(id: string) {
  */
 export async function acceptBooking(id: string) {
   try {
-    const response = await httpClient.patch<any>(`/booking/accept/${id}`, {});
+    const response = await httpClient.patch(`/booking/accept/${id}`, {});
     revalidatePath("/turf-owner/dashboard/bookings");
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error accepting booking:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while accepting booking.",
+      message: getApiErrorMessage(error, "An error occurred while accepting booking."),
       data: null,
     };
   }

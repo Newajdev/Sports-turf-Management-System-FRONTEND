@@ -91,6 +91,7 @@ const httpPost = async <T>(
     const response = await instance.post<ApiResponse<T>>(endpoint, data, {
       params: options?.params,
       headers: options?.headers,
+      timeout: data instanceof FormData ? 30000 : undefined,
     });
     return response.data;
   } catch (error) {

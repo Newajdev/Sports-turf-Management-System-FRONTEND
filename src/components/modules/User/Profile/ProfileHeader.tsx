@@ -1,8 +1,6 @@
-"use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { User, Edit3, Camera } from "lucide-react";
+import { User, Camera } from "lucide-react";
 import Image from "next/image";
 import UpdateProfileModal from "./UpdateProfileModal";
 

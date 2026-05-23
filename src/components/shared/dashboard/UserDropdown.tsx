@@ -1,5 +1,6 @@
 "use client";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,8 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { logoutUser } from "@/services/auth.services";
-import { Key, LogOut, User } from "lucide-react";
-import Link from "next/link";
+import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -21,6 +21,7 @@ interface UserDropdownProps {
     name: string;
     email: string;
     role: string;
+    image: string
   };
 }
 
@@ -49,15 +50,23 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant={"outline"} size={"icon"} className="rounded-full hover:bg-muted transition-colors">
-            <span className="text-sm font-semibold text-primary">
-              {initials || "U"}
-            </span>
+          <Button
+            variant={"outline"}
+            size={"icon"}
+            className="rounded-full hover:bg-muted transition-colors"
+          >
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={userInfo.image } alt={userInfo.name} />
+              <AvatarFallback>{initials}</AvatarFallback>
+            </Avatar>
           </Button>
         }
       />
 
-      <DropdownMenuContent align={"end"} className="w-60 p-2 shadow-premium-hover border-none">
+      <DropdownMenuContent
+        align={"end"}
+        className="w-60 p-2 shadow-premium-hover border-none"
+      >
         <DropdownMenuGroup>
           <DropdownMenuLabel>
             <div className="flex flex-col space-y-1 p-1">

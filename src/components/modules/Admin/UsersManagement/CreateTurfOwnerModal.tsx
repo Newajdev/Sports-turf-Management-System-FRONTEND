@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm } from "@tanstack/react-form";
@@ -63,7 +64,7 @@ const CreateTurfOwnerModal = () => {
           <span>Add Turf Owner</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md border-none shadow-2xl">
+      <DialogContent className="sm:max-w-md border-none shadow-2xl p-8">
         <DialogHeader>
           <div className="flex justify-center mb-4">
             <div className="p-3 bg-primary/10 rounded-full">
@@ -126,21 +127,13 @@ const CreateTurfOwnerModal = () => {
             )}
           </form.Field>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setOpen(false)}
-              disabled={isPending}
-            >
-              Cancel
-            </Button>
+          <div>
             <form.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
               {([canSubmit, isSubmitting]) => (
                 <FormSubmitBtn
                   isPending={isPending || isSubmitting}
                   disabled={!canSubmit}
-                  className="px-8 shadow-lg active:scale-95 transition-all"
+                  className="py-6 font-semibold"
                 >
                   Create Account
                 </FormSubmitBtn>

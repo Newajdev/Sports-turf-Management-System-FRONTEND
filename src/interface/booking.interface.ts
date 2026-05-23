@@ -32,3 +32,16 @@ export interface IPayment extends IBase {
   bookingId: string;
   booking?: IBooking;
 }
+
+export interface ICreateBookingPayload {
+  turfId: string;
+  date: string;
+  turfSlotId?: string;
+  customSlotId?: string;
+}
+
+export interface IBookingPaymentResult {
+  booking: IBooking;
+  payment: IPayment;
+  paymentUrl: string;
+}

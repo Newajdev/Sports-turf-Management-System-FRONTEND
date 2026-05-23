@@ -3,7 +3,7 @@
 import DataTable from "@/components/shared/table/DataTable";
 import { useQuery } from "@tanstack/react-query";
 import { getMyBookings } from "@/services/booking.services";
-import { playerBookingsColumns } from "./playerBookingsColumns";
+import { playerBookingsColumns, IBooking } from "./playerBookingsColumns";
 import { useState } from "react";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { DataTableFilterConfig } from "@/components/shared/table/DataTableFilters";
@@ -30,7 +30,12 @@ const PlayerBookingsTable = () => {
         queryFn: () => getMyBookings(queryString),
     });
 
-    const bookings = bookingsResponse?.data ?? [];
+    const bookings = ((bookingsResponse?.data ?? []) as Array<
+        IBooking & { payment?: { status?: IBooking["paymentStatus"] } }
+    >).map((booking) => ({
+        ...booking,
+        paymentStatus: booking.paymentStatus ?? booking.payment?.status,
+    }));
     const meta = bookingsResponse?.meta;
 
     const filterConfigs: DataTableFilterConfig[] = [
@@ -43,6 +48,7 @@ const PlayerBookingsTable = () => {
                 { label: "Confirmed", value: "CONFIRMED" },
                 { label: "Cancelled", value: "CANCELLED" },
                 { label: "Rejected", value: "REJECTED" },
+                { label: "Completed", value: "COMPLETED" },
             ],
         },
     ];
@@ -52,7 +58,7 @@ const PlayerBookingsTable = () => {
             data={bookings}
             columns={playerBookingsColumns}
             isLoading={isLoading || isFetching}
-            emptyMessage="You haven't made any bookings yet."
+            emptyMessage="You haven't made any bookings yet. Browse turfs to book your first slot."
             meta={meta}
             pagination={{
                 state: pagination,

@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -44,6 +46,7 @@ const sortSlots = (slots: any[]) => {
 export default function MasterSlotsManagementClient({ 
     initialMasterSlots 
 }: MasterSlotsManagementClientProps) {
+
     const [masterSlots, setMasterSlots] = useState(sortSlots(initialMasterSlots));
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingSlot, setEditingSlot] = useState<any>(null);
@@ -82,7 +85,7 @@ export default function MasterSlotsManagementClient({
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-primary/10 to-transparent p-6 rounded-2xl border border-primary/20">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-linear-to-r from-primary/10 to-transparent p-6 rounded-2xl border border-primary/20">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Master Slots Configuration</h1>
                     <p className="text-muted-foreground mt-1 flex items-center gap-1 italic">

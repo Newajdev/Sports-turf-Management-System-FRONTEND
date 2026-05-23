@@ -19,6 +19,7 @@ import { Eye, EyeOff, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { isRedirectError } from "@/lib/isRedirectError";
 
 const RegisterForm = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -39,8 +40,12 @@ const RegisterForm = () => {
         if (result && !result.success) {
           toast.error(result.message || "Registration failed");
         }
-      } catch (error: any) {
-        toast.error(error?.response?.data?.message || error.message || "An unexpected error occurred");
+      } catch (error: unknown) {
+        if (isRedirectError(error)) return;
+        const err = error as { response?: { data?: { message?: string } }; message?: string };
+        toast.error(
+          err?.response?.data?.message || err?.message || "An unexpected error occurred",
+        );
       }
     },
   });
@@ -159,7 +164,7 @@ const RegisterForm = () => {
             className="w-full mb-2 bg-white/5 border-muted-foreground/20 hover:bg-white/10"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-              window.location.href = `${baseUrl}/api/v1/auth/login/social/google`;
+              window.location.href = `${baseUrl}/api/v1/auth/login/google`;
             }}
           >
             Continue with Google

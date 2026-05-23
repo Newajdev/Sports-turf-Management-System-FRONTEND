@@ -28,7 +28,7 @@ export const ResetPasswordAction = async (payload: {
   } catch (error: any) {
     return {
       success: false,
-      message: error.response?.data?.message || "Failed to reset password. Please try again.",
+      message: error.response?.data?.message,
     };
   }
 };

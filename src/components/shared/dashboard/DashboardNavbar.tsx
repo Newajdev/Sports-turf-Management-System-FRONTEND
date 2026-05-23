@@ -13,6 +13,8 @@ const DashboardNavbar = async () => {
     const navItems = getNavItemsByRole(userInfo.role);
     const dashboardHome = defaultDashboardRoute(userInfo.role);
 
+   
+
     return (
         <DashboardNavbarContent 
             userInfo={userInfo} 

@@ -90,15 +90,15 @@ export async function proxy(request: NextRequest) {
     if (
       isAuth &&
       isValidAccessToken &&
-      pathname !== "/verify-email" &&
-      pathname !== "/reset-password"
+      pathname !== "/auth/verify-email" &&
+      pathname !== "/auth/reset-password"
     ) {
       return NextResponse.redirect(
         new URL(defaultDashboardRoute(userRole as UserRole), request.url),
       );
     }
 
-    if (pathname === "/reset-password") {
+    if (pathname === "/auth/reset-password") {
       const email = request.nextUrl.searchParams.get("email");
 
 
@@ -161,19 +161,27 @@ export async function proxy(request: NextRequest) {
 
 
         if (userInfo.needPasswordChange) {
-          if (pathname !== "/auth/reset-password") {
-            const resetPasswordUrl = new URL(
-              "/auth/reset-password",
+          if (
+            pathname !== "/auth/change-password" &&
+            pathname !== "/change-password"
+          ) {
+            const changePasswordUrl = new URL(
+              "/auth/change-password",
               request.url,
             );
-            resetPasswordUrl.searchParams.set("email", userInfo.email);
-            return NextResponse.redirect(resetPasswordUrl);
+            changePasswordUrl.searchParams.set("email", userInfo.email);
+            return NextResponse.redirect(changePasswordUrl);
           }
 
           return NextResponse.next();
         }
 
-        if (!userInfo.needPasswordChange && pathname === "/auth/reset-password") {
+        if (
+          !userInfo.needPasswordChange &&
+          (pathname === "/auth/reset-password" ||
+            pathname === "/auth/change-password" ||
+            pathname === "/change-password")
+        ) {
           return NextResponse.redirect(
             new URL(defaultDashboardRoute(userRole as UserRole), request.url),
           );
@@ -203,6 +211,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   } catch (error) {
     console.error("Error in proxy middleware:", error);
+    return NextResponse.next();
   }
 }
 

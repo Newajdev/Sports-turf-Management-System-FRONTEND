@@ -24,6 +24,9 @@ export const createTurfSlotSchema = z.object({
 export const createCustomTurfSlotSchema = z.object({
   startTime: z.string("Start time is required"),
   endTime: z.string("End time is required"),
+  date: z.string("Date is required"),
+  sportType: z.string("Sport type is required"),
+  playersCount: z.number().min(1, "At least 1 player is required"),
   turfId: z.string("Turf ID is required"),
 });
 

@@ -1,10 +1,8 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { Star, MapPin, CheckCircle2, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/lib/button-variants";
 import { ITurf } from "@/interface/turf.interface";
 import { TurfStatus } from "@/interface/enum.interface";
 import { ISportType } from "@/interface/sport-type.interface";

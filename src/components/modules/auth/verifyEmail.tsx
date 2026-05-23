@@ -25,6 +25,7 @@ import {
   ResendOTPAction,
   VerifyEmailAction,
 } from "@/app/(commonLayout)/(authRoutes)/auth/verify-email/_action";
+import { isRedirectError } from "@/lib/isRedirectError";
 
 interface VerifyEmailPageProps {
   searchParams: Promise<{
@@ -47,11 +48,11 @@ export default function VerifyEmail({ searchParams }: VerifyEmailPageProps) {
         toast.success("Email verified successfully!");
       }
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
+      if (isRedirectError(error)) return;
+      const err = error as { response?: { data?: { message?: string } }; message?: string };
       toast.error(
-        error?.response?.data?.message ||
-          error.message ||
-          "Verification failed",
+        err?.response?.data?.message || err?.message || "Verification failed",
       );
     },
   });

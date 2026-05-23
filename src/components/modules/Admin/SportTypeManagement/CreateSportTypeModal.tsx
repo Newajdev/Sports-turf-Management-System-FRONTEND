@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -82,7 +83,7 @@ const CreateSportTypeModal = () => {
                     Add Sport Type
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-106.25 p-6">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Create Sport Type</DialogTitle>
@@ -144,10 +145,7 @@ const CreateSportTypeModal = () => {
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isPending}>
-                            Cancel
-                        </Button>
-                        <Button type="submit" disabled={isPending}>
+                        <Button type="submit" disabled={isPending} className="py-5">
                             {isPending ? "Creating..." : "Create Sport Type"}
                         </Button>
                     </DialogFooter>

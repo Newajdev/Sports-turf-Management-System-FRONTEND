@@ -36,7 +36,10 @@ export const TurfOwnerRoutes: RouteConfig = {
 
 export const PlayersRoutes: RouteConfig = {
     pattern: [/^\/dashboard/],
-    exact: ["/payment/success", "/payment/failure"],
+    exact: [
+        "/dashboard/payments/payment-success",
+        "/dashboard/payments/payment-failure",
+    ],
 }
 
 export const isRouteMatches = (pathname: string, route: RouteConfig) => {

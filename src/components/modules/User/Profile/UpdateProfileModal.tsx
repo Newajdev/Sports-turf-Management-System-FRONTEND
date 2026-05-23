@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { updateProfile, uploadProfileImage } from "@/services/user.services";
-import { updateProfileSchema } from "@/zod/user.validation";
 import { 
   Dialog, 
   DialogContent, 
@@ -13,7 +13,6 @@ import {
   DialogTrigger 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import AppField from "@/components/shared/form/AppField";
 import FormSubmitBtn from "@/components/shared/form/FormSubmitBtn";
 import { Edit3, Upload, Loader2, Image as ImageIcon } from "lucide-react";
@@ -35,9 +34,9 @@ const UpdateProfileModal = ({ user }: UpdateProfileModalProps) => {
 
   const form = useForm({
     defaultValues: {
-      name: user.name || "",
-      profilePhoto: user.image || "",
-      contactNumber: roleData.contactNumber || "",
+      name: user.name,
+      profilePhoto: user.image,
+      contactNumber: roleData.contactNumber,
     },
     onSubmit: async ({ value }) => {
       try {
@@ -89,7 +88,7 @@ const UpdateProfileModal = ({ user }: UpdateProfileModalProps) => {
           <Edit3 className="h-4 w-4" /> Edit Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] border-none shadow-2xl">
+      <DialogContent className="sm:max-w-125 p-8 border-none shadow-2xl">
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
           <DialogDescription>
@@ -154,12 +153,9 @@ const UpdateProfileModal = ({ user }: UpdateProfileModalProps) => {
           </div>
 
           <div className="pt-4 flex justify-end gap-3">
-            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
             <form.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting] as const}>
                 {([canSubmit, isSubmitting]) => (
-                    <FormSubmitBtn isPending={isSubmitting} disabled={!canSubmit || uploading}>
+                    <FormSubmitBtn className="py-5" isPending={isSubmitting} disabled={!canSubmit || uploading}>
                         Save Changes
                     </FormSubmitBtn>
                 )}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getAllMasterSlots } from "@/services/slot.services";
 import MasterSlotsManagementClient from "@/components/modules/Admin/MasterSlots/MasterSlotsManagementClient";
 

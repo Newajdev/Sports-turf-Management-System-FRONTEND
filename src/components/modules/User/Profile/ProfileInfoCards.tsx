@@ -1,5 +1,4 @@
-"use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Phone, Calendar, ShieldCheck, Fingerprint } from "lucide-react";
 import { format } from "date-fns";
@@ -40,13 +39,6 @@ const ProfileInfoCards = ({ user }: ProfileInfoCardsProps) => {
       color: "text-indigo-500",
       bg: "bg-indigo-500/10",
     },
-    {
-        label: "Internal ID",
-        value: user.id || "N/A",
-        icon: Fingerprint,
-        color: "text-muted-foreground",
-        bg: "bg-muted",
-    }
   ];
 
   return (

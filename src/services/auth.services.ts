@@ -1,11 +1,12 @@
 "use server";
 
 import { setTokenInCookies } from "@/lib/tokenUtils";
+import { httpClient } from "@/lib/axios/httpClient";
 import { cookies } from "next/headers";
 
 const BASE_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`;
 
-if (!BASE_API_URL) {
+if (!process.env.NEXT_PUBLIC_API_BASE_URL) {
   throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
 }
 
@@ -13,11 +14,21 @@ export async function getNewTokensWithRefreshToken(
   refreshToken: string,
 ): Promise<boolean> {
   try {
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+
+    const cookieHeader = [
+      `refreshToken=${refreshToken}`,
+      sessionToken ? `better-auth.session_token=${sessionToken}` : null,
+    ]
+      .filter(Boolean)
+      .join("; ");
+
     const result = await fetch(`${BASE_API_URL}/auth/refresh-token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Cookie: `refreshToken=${refreshToken}`,
+        Cookie: cookieHeader,
       },
     });
 
@@ -27,7 +38,8 @@ export async function getNewTokensWithRefreshToken(
 
     const { data } = await result.json();
 
-    const { accessToken, refreshToken: newRefreshToken, sessionToken } = data;
+    const { accessToken, refreshToken: newRefreshToken, sessionToken: newSessionToken } =
+      data;
 
     if (accessToken) {
       await setTokenInCookies("accessToken", accessToken);
@@ -37,8 +49,12 @@ export async function getNewTokensWithRefreshToken(
       await setTokenInCookies("refreshToken", newRefreshToken);
     }
 
-    if (sessionToken) {
-      await setTokenInCookies("better-auth.session_token", sessionToken, 24 * 60 * 60);
+    if (newSessionToken) {
+      await setTokenInCookies(
+        "better-auth.session_token",
+        newSessionToken,
+        24 * 60 * 60,
+      );
     }
 
     return true;
@@ -81,6 +97,12 @@ export async function getUserInfo() {
 }
 
 export async function logoutUser() {
+  try {
+    await httpClient.post("/auth/logout", {});
+  } catch (error) {
+    console.error("Error calling logout API:", error);
+  }
+
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");
   cookieStore.delete("refreshToken");

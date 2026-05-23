@@ -112,10 +112,10 @@ export const playerNavItems: NavSection[] = [
         icon: "Calendar",
       },
       {
-        title: "Favorites",
-        href: "/dashboard/favorites",
-        icon: "Heart"
-      }
+        title: "My Reviews",
+        href: "/dashboard/reviews",
+        icon: "MessageSquare",
+      },
     ],
   },
 ];

@@ -2,7 +2,11 @@ import { getTurfByID } from "../_actions";
 import { CarouselSpacing } from "@/components/modules/turfs/Carosol";
 import { TurfInfoSection } from "@/components/modules/turfs/turf-info-section";
 import { BookingCard } from "@/components/modules/turfs/booking-card";
+import { CustomSlotRequestForm } from "@/components/modules/turfs/CustomSlotRequestForm";
+import { ReportTurfDialog } from "@/components/modules/turfs/ReportTurfDialog";
+import { TurfReviewsSection } from "@/components/modules/turfs/TurfReviewsSection";
 import { ITurf } from "@/interface/turf.interface";
+import { getUserInfo } from "@/services/auth.services";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
@@ -12,8 +16,9 @@ const TurfByIDPage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  const response = await getTurfByID(id);
+  const [response, user] = await Promise.all([getTurfByID(id), getUserInfo()]);
   const turf = response?.data as ITurf;
+  const isLoggedIn = !!user;
 
   if (!turf) {
     return <div className="min-h-screen flex items-center justify-center text-foreground font-bold uppercase tracking-widest italic">Turf Not Found</div>;
@@ -21,7 +26,6 @@ const TurfByIDPage = async ({
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-background pb-20">
-      {/* Hero Section */}
       <div className="relative pt-20">
         <div className="absolute top-26 left-4 md:left-20 z-20 flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-emerald-500 bg-background/50 backdrop-blur-md px-4 py-2 rounded-full border border-emerald-500/20">
           <Link href="/" className="hover:text-emerald-400 font-bold uppercase">Home</Link>
@@ -33,13 +37,16 @@ const TurfByIDPage = async ({
         <CarouselSpacing images={turf.images} />
       </div>
 
-      {/* Main Content Container */}
       <div className="container mx-auto px-4 md:px-0 mt-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* Left Column: Details */}
           <div className="lg:col-span-8 space-y-12">
-            <TurfInfoSection turf={turf} />
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div className="flex-1 min-w-0">
+                <TurfInfoSection turf={turf} />
+              </div>
+              <ReportTurfDialog turfId={turf.id} turfName={turf.name} isLoggedIn={isLoggedIn} />
+            </div>
             
             <div className="space-y-6">
               <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-foreground decoration-emerald-500 decoration-3 underline-offset-8">Description</h3>
@@ -48,7 +55,8 @@ const TurfByIDPage = async ({
               </p>
             </div>
 
-            {/* Features/Amenities Placeholder */}
+            <TurfReviewsSection turfId={turf.id} />
+
             <div className="space-y-6 pt-6 border-t border-border/50">
                 <h3 className="text-2xl font-bold uppercase italic tracking-tighter text-foreground">Facility Amenities</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -64,9 +72,9 @@ const TurfByIDPage = async ({
             </div>
           </div>
 
-          {/* Right Column: Sticky Booking Card */}
-          <div className="lg:col-span-4 h-fit">
-            <BookingCard turf={turf} />
+          <div className="lg:col-span-4 space-y-6 h-fit">
+            <BookingCard turf={turf} isLoggedIn={isLoggedIn} />
+            <CustomSlotRequestForm turf={turf} isLoggedIn={isLoggedIn} />
           </div>
 
         </div>

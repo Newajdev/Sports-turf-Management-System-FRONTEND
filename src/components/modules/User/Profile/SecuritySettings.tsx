@@ -1,18 +1,60 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import ChangePasswordForm from "@/components/modules/auth/ChangePasswordForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShieldAlert, KeyRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { ShieldAlert, KeyRound, Trash2, Loader2 } from "lucide-react";
+import { deleteProfile } from "@/services/user.services";
+import { logoutUser } from "@/services/auth.services";
+import { toast } from "sonner";
 
 interface SecuritySettingsProps {
-  user: any;
+  user: {
+    emailVerified?: boolean;
+    needPasswordChange?: boolean;
+    userStatus?: string;
+  };
 }
 
 const SecuritySettings = ({ user }: SecuritySettingsProps) => {
+  const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await deleteProfile();
+      if (response.success) {
+        await logoutUser();
+        toast.success("Your account has been deleted.");
+        router.push("/auth/login");
+        router.refresh();
+      } else {
+        toast.error(response.message || "Failed to delete account");
+      }
+    } catch {
+      toast.error("Failed to delete account");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Password Management */}
         <div className="space-y-4">
             <div className="flex flex-col">
                 <h3 className="text-lg font-semibold flex items-center gap-2">
@@ -29,7 +71,6 @@ const SecuritySettings = ({ user }: SecuritySettingsProps) => {
             />
         </div>
 
-        {/* Security Summary / Status */}
         <div className="space-y-4">
             <div className="flex flex-col">
                 <h3 className="text-lg font-semibold flex items-center gap-2">
@@ -65,8 +106,56 @@ const SecuritySettings = ({ user }: SecuritySettingsProps) => {
                 </CardContent>
             </Card>
 
+            <Card className="border-destructive/20 bg-destructive/5">
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center gap-2 text-destructive">
+                  <Trash2 className="h-4 w-4" />
+                  Danger Zone
+                </CardTitle>
+                <CardDescription>
+                  Permanently delete your account and all associated data.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AlertDialog>
+                  <AlertDialogTrigger
+                    render={
+                      <Button variant="destructive" size="sm">
+                        Delete Account
+                      </Button>
+                    }
+                  />
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. Your account, bookings, and reviews will be permanently removed.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleDeleteAccount}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Deleting...
+                          </>
+                        ) : (
+                          "Delete Account"
+                        )}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </CardContent>
+            </Card>
+
             <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs text-amber-600 leading-relaxed italic">
-                <strong>Tip:</strong> We recommend using a unique password for this platform that you don't use anywhere else.
+                <strong>Tip:</strong> We recommend using a unique password for this platform that you don&apos;t use anywhere else.
             </div>
         </div>
       </div>

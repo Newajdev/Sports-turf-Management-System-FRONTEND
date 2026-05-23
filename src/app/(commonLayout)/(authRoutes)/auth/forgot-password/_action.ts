@@ -5,12 +5,10 @@ import { httpClient } from "@/lib/axios/httpClient";
 import { ApiError } from "@/types/api.type";
 import { forgetPasswordZodSchema } from "@/zod/auth.validation";
 
-/**
- * Action to initiate forgot password process
- */
 export const ForgotPasswordAction = async (payload: {
   email: string;
 }): Promise<any | ApiError> => {
+  
   const parsedPayload = forgetPasswordZodSchema.safeParse(payload);
 
   if (!parsedPayload.success) {
@@ -26,7 +24,7 @@ export const ForgotPasswordAction = async (payload: {
   } catch (error: any) {
     return {
       success: false,
-      message: error.response?.data?.message || "Failed to send reset code. Please try again.",
+      message: error.response?.data?.message,
     };
   }
 };

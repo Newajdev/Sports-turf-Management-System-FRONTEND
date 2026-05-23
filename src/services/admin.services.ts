@@ -19,9 +19,9 @@ export async function getAllUsers(queryString: string = "") {
   }
 }
 
-export async function blockUser(id: string, isBlocked: boolean) {
+export async function blockUser(id: string, status: "BLOCKED" | "ACTIVE") {
   try {
-    const response = await httpClient.patch<any>(`/user/block-user/${id}`, { isBlocked });
+    const response = await httpClient.patch<any>(`/user/block-user/${id}`, { status });
     return response;
   } catch (error: any) {
     console.error("Error blocking user:", error);

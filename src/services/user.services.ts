@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { httpClient } from "@/lib/axios/httpClient";
@@ -48,3 +49,16 @@ export async function uploadProfileImage(formData: FormData) {
       };
     }
   }
+
+export async function deleteProfile() {
+  try {
+    const response = await httpClient.delete("/user/delete-profile");
+    return response;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "An error occurred while deleting your account.",
+      data: null,
+    };
+  }
+}

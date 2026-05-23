@@ -3,7 +3,7 @@
 import DataTable from "@/components/shared/table/DataTable";
 import { useQuery } from "@tanstack/react-query";
 import { getTurfBookings } from "@/services/booking.services";
-import { ownerBookingsColumns } from "./ownerBookingsColumns";
+import { ownerBookingsColumns, IBooking } from "./ownerBookingsColumns";
 import { useState } from "react";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { DataTableFilterConfig } from "@/components/shared/table/DataTableFilters";
@@ -35,7 +35,7 @@ const OwnerBookingsTable = ({ turfId }: OwnerBookingsTableProps) => {
         enabled: !!turfId,
     });
 
-    const bookings = bookingsResponse?.data ?? [];
+    const bookings = (bookingsResponse?.data ?? []) as IBooking[];
     const meta = bookingsResponse?.meta;
 
     const filterConfigs: DataTableFilterConfig[] = [

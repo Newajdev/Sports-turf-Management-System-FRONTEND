@@ -23,13 +23,13 @@ export const LoginAction = async (
       message: errorMessages,
     };
   }
+  
   try {
     const response = await httpClient.post<ILoginResponse>(
       "/auth/login",
       parsedPayload.data,
     );
 
-    console.log(response)
     const { accessToken, refreshToken, betterAuthToken, user } = response.data;
     const { role, emailVerified, needPasswordChange, email } = user;
 

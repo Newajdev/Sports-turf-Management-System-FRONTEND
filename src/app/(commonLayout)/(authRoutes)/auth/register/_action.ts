@@ -35,20 +35,17 @@ export const RegisterAction = async (
     );
    
     if (response.success) {
+      const { accessToken, refreshToken, betterAuthToken } = response.data;
 
+      await setTokenInCookies("accessToken", accessToken);
+      await setTokenInCookies("refreshToken", refreshToken);
+      await setTokenInCookies("better-auth.session_token", betterAuthToken);
 
       if (!response.data.user.emailVerified) {
         redirect(`/auth/verify-email?email=${payload.email}`);
-      } else {
-
-        const { accessToken, refreshToken, betterAuthToken } = response.data;
-        
-        await setTokenInCookies("accessToken", accessToken);
-        await setTokenInCookies("refreshToken", refreshToken);
-        await setTokenInCookies("better-auth.session_token", betterAuthToken);
       }
 
-       
+      redirect("/dashboard");
     }
 
     return response;

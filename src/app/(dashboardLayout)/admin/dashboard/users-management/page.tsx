@@ -11,7 +11,7 @@ const UsersManagementPage = async ({ searchParams }: UsersManagementPageProps) =
   const queryClient = new QueryClient();
   const params = await searchParams;
   
-  // Convert params object to query string
+
   const queryString = Object.entries(params)
     .map(([key, value]) => {
         if (Array.isArray(value)) {

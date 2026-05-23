@@ -113,7 +113,7 @@ const UsersTable = () => {
     }, []);
 
     const { mutate: toggleBlock, isPending: isBlocking } = useMutation({
-        mutationFn: ({ id, status }: { id: string; status: "BLOCKED" | "ACTIVE" }) => blockUser(id, status === "BLOCKED"),
+        mutationFn: ({ id, status }: { id: string; status: "BLOCKED" | "ACTIVE" }) => blockUser(id, status),
         onSuccess: (res) => {
             if (res.success) {
                 toast.success(res.message);

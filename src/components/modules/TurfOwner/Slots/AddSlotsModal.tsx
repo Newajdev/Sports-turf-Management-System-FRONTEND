@@ -87,7 +87,7 @@ export default function AddSlotsModal({
 
         if (res.success) {
             toast.success(`Successfully activated ${selectedSlotIds.length} slots`);
-            onSuccess(res.data); // Backend should return the newly created records
+            onSuccess((res.data ?? []) as any[]);
             setSelectedSlotIds([]);
             onClose();
         } else {

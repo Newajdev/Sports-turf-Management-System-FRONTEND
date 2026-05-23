@@ -60,10 +60,13 @@ export const VerifyEmailAction = async (payload: IOtpVerify): Promise<OtpVerific
  */
 export const ResendOTPAction = async (payload: {
   email: string;
-}): Promise<any | ApiError> => {
+}): Promise<{ success: boolean; message?: string } | ApiError> => {
   try {
     const response = await httpClient.post("/auth/resend-verification-otp", payload);
-    return response.data;
+    return {
+      success: response.success,
+      message: response.message,
+    };
   } catch (error: any) {
     return {
       success: false,

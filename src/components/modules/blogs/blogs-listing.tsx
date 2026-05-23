@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import BlogCard, { BlogItem } from "@/components/modules/blogs/blog-card";
 import { cn } from "@/lib/utils";

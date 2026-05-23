@@ -1,10 +1,7 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/lib/button-variants";
 import BlogCard, { BlogItem } from "@/components/modules/blogs/blog-card";
 
 const BLOG_POSTS: BlogItem[] = [
