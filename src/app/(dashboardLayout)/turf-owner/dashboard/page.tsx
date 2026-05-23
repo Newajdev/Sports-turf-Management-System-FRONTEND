@@ -13,8 +13,8 @@ export default async function TurfOwnerDashboard() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
+            <div>
+                <h1 className="text-2xl font-bold tracking-tight">Dashboard Overview</h1>
                 <p className="text-muted-foreground">
                     Performance analytics and summaries for your turfs.
                 </p>

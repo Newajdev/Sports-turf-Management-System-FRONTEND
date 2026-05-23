@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useMemo } from "react";
@@ -11,9 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CalendarRange, Info, Check, Search, IndianRupee } from "lucide-react";
+import { CalendarRange, Info, Check, Search } from "lucide-react";
 import { bulkCreateTurfSlots } from "@/services/slot.services";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -79,21 +79,28 @@ export default function AddSlotsModal({
         }
 
         setIsSubmitting(true);
-        const res = await bulkCreateTurfSlots({
-            turfId,
-            slotIds: selectedSlotIds,
-            price
-        });
+        try {
+            const res = await bulkCreateTurfSlots({
+                turfId,
+                slotIds: selectedSlotIds,
+                price,
+            });
 
-        if (res.success) {
-            toast.success(`Successfully activated ${selectedSlotIds.length} slots`);
-            onSuccess((res.data ?? []) as any[]);
-            setSelectedSlotIds([]);
-            onClose();
-        } else {
-            toast.error(res.message || "Failed to add slots");
+            if (res.success) {
+                toast.success(`Successfully activated ${selectedSlotIds.length} slots`);
+                onSuccess((res.data ?? []) as any[]);
+                setSelectedSlotIds([]);
+                onClose();
+            } else {
+                toast.error(res.message || "Failed to add slots");
+            }
+        } catch {
+            toast.error(
+                "Request timed out. If slots were created, refresh the page before retrying.",
+            );
+        } finally {
+            setIsSubmitting(false);
         }
-        setIsSubmitting(false);
     };
 
     return (
@@ -115,7 +122,7 @@ export default function AddSlotsModal({
                         </DialogHeader>
                     </div>
 
-                    <div className="flex-1 overflow-hidden p-8 space-y-8 flex flex-col">
+                    <div className="flex-1 overflow-hidden p-8 space-y-8 flex flex-col overflow-y-scroll mb-3">
                         {/* Search and Price Row */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">

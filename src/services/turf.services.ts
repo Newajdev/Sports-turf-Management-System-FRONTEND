@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { httpClient } from "@/lib/axios/httpClient";
@@ -37,11 +38,24 @@ export const updateTurf = async (id: string, payload: any) => {
 
 export const uploadTurfImages = async (formData: FormData) => {
     try {
-        const response = await httpClient.post("/turf/upload-images", formData);
-        revalidatePath("/turf-owner/dashboard/my-turf");
+        const response = await httpClient.post("/turf/upload-images", formData)
         return response;
     } catch (error: any) {
         console.error("Error uploading images:", error);
         return { success: false, message: "Failed to upload images", data: null };
+    }
+};
+
+export const deleteTurfImage = async (turfId: string, imageUrl: string) => {
+    try {
+        const response = await httpClient.delete("/turf/delete-image", {
+            id: turfId,
+            imageUrl,
+        });
+        revalidatePath("/turf-owner/dashboard/my-turf");
+        return response;
+    } catch (error: any) {
+        console.error("Error deleting turf image:", error);
+        return { success: false, message: "Failed to delete image", data: null };
     }
 };

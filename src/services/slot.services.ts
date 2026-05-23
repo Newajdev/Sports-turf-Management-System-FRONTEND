@@ -39,12 +39,23 @@ export const bulkCreateTurfSlots = async (payload: {
     price: number;
 }) => {
     try {
-        const response = await httpClient.post("/turf-slots/bulk", payload);
+        const response = await httpClient.post("/turf-slots/bulk", payload, {
+            timeout: 30000,
+        });
         revalidatePath("/turf-owner/dashboard/slots");
         return response;
     } catch (error: any) {
         console.error("Error creating turf slots:", error);
-        return { success: false, message: "Failed to create turf slots", data: null };
+        const isTimeout =
+            error?.code === "ECONNABORTED" ||
+            error?.message?.toLowerCase?.().includes("timeout");
+        return {
+            success: false,
+            message: isTimeout
+                ? "Request timed out while activating slots"
+                : "Failed to create turf slots",
+            data: null,
+        };
     }
 };
 

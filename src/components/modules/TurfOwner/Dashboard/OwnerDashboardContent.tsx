@@ -5,6 +5,14 @@ import { IOwnerAnalytics } from "@/types/analytics.type";
 import { useQuery } from "@tanstack/react-query";
 import { getOwnerAnalytics } from "@/services/analytics.services";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+const EMPTY_ANALYTICS: IOwnerAnalytics = {
+    revenue: 0,
+    totalBookings: 0,
+    averageRating: 0,
+    turfCount: 0,
+};
 
 const OwnerDashboardContent = () => {
     const { data: analyticsResponse, isLoading } = useQuery({
@@ -12,7 +20,13 @@ const OwnerDashboardContent = () => {
         queryFn: () => getOwnerAnalytics(),
     });
 
-    const analytics = analyticsResponse?.data;
+    const analytics =
+        analyticsResponse?.success === false
+            ? EMPTY_ANALYTICS
+            : (analyticsResponse?.data ?? EMPTY_ANALYTICS);
+
+    const loadWarning =
+        analyticsResponse?.success === false ? analyticsResponse.message : null;
 
     if (isLoading) {
         return (
@@ -24,12 +38,16 @@ const OwnerDashboardContent = () => {
         );
     }
 
-    if (!analytics) {
-        return <div>Failed to load analytics data.</div>;
-    }
-
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
+            {loadWarning && (
+                <Alert variant="destructive">
+                    <AlertDescription>
+                        {loadWarning}. Showing default values until analytics load successfully.
+                    </AlertDescription>
+                </Alert>
+            )}
+
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <StatsCard
                     title="Total Revenue"
@@ -45,7 +63,7 @@ const OwnerDashboardContent = () => {
                 />
                 <StatsCard
                     title="Average Rating"
-                    value={analytics.averageRating.toFixed(1)}
+                    value={Number(analytics.averageRating ?? 0).toFixed(1)}
                     iconName="Star"
                     description="Overall rating from players"
                 />
@@ -56,8 +74,6 @@ const OwnerDashboardContent = () => {
                     description="Number of turfs you manage"
                 />
             </div>
-            
-            {/* Future: Add Owner-specific charts here */}
         </div>
     );
 };

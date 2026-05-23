@@ -21,8 +21,8 @@ export default async function OwnerBookingsPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-3xl font-bold tracking-tight">Turf Bookings</h1>
+            <div>
+                <h1 className="text-2xl font-bold tracking-tight">Turf Bookings</h1>
                 <p className="text-muted-foreground">
                     Manage and track all bookings for {turf.name}.
                 </p>

@@ -62,6 +62,7 @@ const axiosInstance = async () => {
 export interface APIRequestOptions {
   params?: Record<string, unknown>;
   headers?: Record<string, string>;
+  timeout?: number;
 }
 
 const httpGet = async <T>(
@@ -91,7 +92,8 @@ const httpPost = async <T>(
     const response = await instance.post<ApiResponse<T>>(endpoint, data, {
       params: options?.params,
       headers: options?.headers,
-      timeout: data instanceof FormData ? 30000 : undefined,
+      timeout:
+        options?.timeout ?? (data instanceof FormData ? 30000 : undefined),
     });
     return response.data;
   } catch (error) {
@@ -137,6 +139,7 @@ const httpPatch = async <T>(
 
 const httpDelete = async <T>(
   endpoint: string,
+  data?: unknown,
   options?: APIRequestOptions,
 ): Promise<ApiResponse<T>> => {
   try {
@@ -144,6 +147,8 @@ const httpDelete = async <T>(
     const response = await instance.delete<ApiResponse<T>>(endpoint, {
       params: options?.params,
       headers: options?.headers,
+      data,
+      timeout: options?.timeout,
     });
     return response.data;
   } catch (error) {

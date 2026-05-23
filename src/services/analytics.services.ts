@@ -23,10 +23,16 @@ export async function getOwnerAnalytics() {
     const response = await httpClient.get<IOwnerAnalytics>("/analytics/owner");
     return response;
   } catch (error: any) {
-    console.error("Error fetching owner analytics:", error);
+    const apiMessage =
+      error?.response?.data?.message ||
+      error?.message ||
+      "An error occurred while fetching owner analytics.";
+
+    console.error("Error fetching owner analytics:", apiMessage);
+
     return {
       success: false,
-      message: error.message || "An error occurred while fetching owner analytics.",
+      message: apiMessage,
       data: null,
     };
   }
