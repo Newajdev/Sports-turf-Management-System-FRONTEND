@@ -26,6 +26,7 @@ import {
 import { Clock, Layers, Timer } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { toApiTimeValue, toTimeInputValue } from "@/lib/timeUtils";
 
 type SlotType = "MORNING" | "AFTERNOON" | "EVENING" | "NIGHT";
 
@@ -73,8 +74,8 @@ export default function MasterSlotModal({
     if (editingSlot) {
       setFormData({
         slotType: editingSlot.slotType,
-        startTime: editingSlot.startTime,
-        endTime: editingSlot.endTime,
+        startTime: toTimeInputValue(editingSlot.startTime),
+        endTime: toTimeInputValue(editingSlot.endTime),
         interval: "",
       });
 
@@ -109,13 +110,13 @@ export default function MasterSlotModal({
 
       const response = editingSlot
         ? await adminUpdateMasterSlot(editingSlot.id, {
-            startTime,
-            endTime,
+            startTime: toApiTimeValue(startTime),
+            endTime: toApiTimeValue(endTime),
           })
         : await adminCreateMasterSlot({
             slotType,
-            startTime,
-            endTime,
+            startTime: toApiTimeValue(startTime),
+            endTime: toApiTimeValue(endTime),
             interval: interval ? Number.parseInt(interval, 10) : undefined,
           });
 

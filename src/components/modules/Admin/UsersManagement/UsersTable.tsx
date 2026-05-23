@@ -46,6 +46,7 @@ const UsersTable = () => {
     } = useRowActionModalState<IUser>({
         enableEdit: false,
         enableView: false,
+        enableDelete: true,
     });
 
     const {
@@ -157,8 +158,11 @@ const UsersTable = () => {
           }}
           meta={meta}
           actions={{
-            ...tableActions,
-            onDelete: (user) => tableActions.onDelete?.(user), // Overriding delete to be "Block/Unblock"
+            onDelete: tableActions.onDelete,
+            getDeleteLabel: (user) =>
+              user.userStatus === "BLOCKED" ? "Unblock User" : "Block User",
+            canDelete: (user) =>
+              user.role !== "SYSTEM_ADMIN" && user.userStatus !== "DELETED",
           }}
         />
 

@@ -8,6 +8,8 @@ import { getAllSportTypes, deleteSportType } from "@/services/admin.services";
 import { sportTypeColumns, ISportType } from "./sportTypeColumns";
 import { toast } from "sonner";
 import CreateSportTypeModal from "./CreateSportTypeModal";
+import ViewSportTypeModal from "./ViewSportTypeModal";
+import EditSportTypeModal from "./EditSportTypeModal";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,13 +25,19 @@ const SportTypeTable = () => {
     const queryClient = useQueryClient();
     
     const {
+      viewingItem,
+      editingItem,
       deletingItem,
+      isViewDialogOpen,
+      isEditModalOpen,
       isDeleteDialogOpen,
+      onViewOpenChange,
+      onEditOpenChange,
       onDeleteOpenChange,
       tableActions,
     } = useRowActionModalState<ISportType>({
-        enableEdit: false,
-        enableView: false,
+        enableEdit: true,
+        enableView: true,
     });
 
     const { data : sportTypesResponse, isLoading, isFetching } = useQuery({
@@ -79,7 +87,7 @@ const SportTypeTable = () => {
                     <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
                     <AlertDialogAction 
                         disabled={isDeleting}
-                        onClick={() => handleDelete(deletingItem?.id!)}
+                        onClick={() => handleDelete(deletingItem?.id as string)}
                         className="bg-destructive hover:bg-destructive/90"
                     >
                         {isDeleting ? "Deleting..." : "Delete"}
@@ -87,6 +95,18 @@ const SportTypeTable = () => {
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
+
+        <ViewSportTypeModal
+          sportType={viewingItem}
+          open={isViewDialogOpen}
+          onOpenChange={onViewOpenChange}
+        />
+
+        <EditSportTypeModal
+          sportType={editingItem}
+          open={isEditModalOpen}
+          onOpenChange={onEditOpenChange}
+        />
       </>
     )
 

@@ -19,6 +19,12 @@ interface DataTableActions<TData> {
     onView ?: (data : TData) => void;
     onEdit ?: (data : TData) => void;
     onDelete ?: (data : TData) => void;
+    getViewLabel?: (data: TData) => string;
+    getEditLabel?: (data: TData) => string;
+    getDeleteLabel?: (data: TData) => string;
+    canView?: (data: TData) => boolean;
+    canEdit?: (data: TData) => boolean;
+    canDelete?: (data: TData) => boolean;
 }
 
 interface DataTableProps<TData> {
@@ -78,13 +84,20 @@ function DataTable<TData>({
 
     const tableColumns : ColumnDef<TData>[] = actions ? [...columns,
         
-        // Action column
+
         {
-            id : "actions", // Unique id for the column
+            id : "actions",
             header: "Actions",
             enableSorting: false,
             cell: ({ row }) => {
                 const rowData = row.original;
+                const showView = Boolean(actions.onView) && (actions.canView?.(rowData) ?? true);
+                const showEdit = Boolean(actions.onEdit) && (actions.canEdit?.(rowData) ?? true);
+                const showDelete = Boolean(actions.onDelete) && (actions.canDelete?.(rowData) ?? true);
+
+                if (!showView && !showEdit && !showDelete) {
+                  return null;
+                }
 
                 return (
                     <DropdownMenu>
@@ -98,29 +111,23 @@ function DataTable<TData>({
                     />
 
                         <DropdownMenuContent align="end">
-                            {
-                                actions.onView && (
-                                    <DropdownMenuItem onClick={() => actions.onView?.(rowData)}>
-                                        View
-                                    </DropdownMenuItem>
-                                )
-                            }
+                            {showView && (
+                              <DropdownMenuItem onClick={() => actions.onView?.(rowData)}>
+                                {actions.getViewLabel?.(rowData) ?? "View"}
+                              </DropdownMenuItem>
+                            )}
 
-                            {
-                                actions.onEdit && (
-                                    <DropdownMenuItem onClick={() => actions.onEdit?.(rowData)}>
-                                        Edit
-                                    </DropdownMenuItem>
-                                )
-                            }
+                            {showEdit && (
+                              <DropdownMenuItem onClick={() => actions.onEdit?.(rowData)}>
+                                {actions.getEditLabel?.(rowData) ?? "Edit"}
+                              </DropdownMenuItem>
+                            )}
 
-                            {
-                                actions.onDelete && (
-                                    <DropdownMenuItem onClick={() => actions.onDelete?.(rowData)}>
-                                        Delete
-                                    </DropdownMenuItem>
-                                )
-                            }
+                            {showDelete && (
+                              <DropdownMenuItem onClick={() => actions.onDelete?.(rowData)}>
+                                {actions.getDeleteLabel?.(rowData) ?? "Delete"}
+                              </DropdownMenuItem>
+                            )}
 
                         </DropdownMenuContent>
                     </DropdownMenu>
