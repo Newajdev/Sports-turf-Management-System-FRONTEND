@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTurfReviews } from "@/services/review.services";
 import DataTable from "@/components/shared/table/DataTable";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { adminReviewColumns } from "./adminReviewColumns";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info } from "lucide-react";
@@ -32,12 +33,15 @@ const AdminReviewsList = ({ turfId }: AdminReviewsListProps) => {
 
   return (
     <div className="space-y-4">
-      <DataTable
-        columns={adminReviewColumns}
-        data={reviewsResponse?.data || []}
-        isLoading={isLoading}
-        emptyMessage="No reviews found for this turf."
-      />
+      {isLoading ? (
+          <TableSkeleton columns={5} rows={5} />
+        ) : (
+          <DataTable
+            columns={adminReviewColumns}
+            data={reviewsResponse?.data || []}
+            emptyMessage="No reviews found for this turf."
+          />
+        )}
       
       <p className="text-[10px] text-muted-foreground flex items-center gap-1 mt-2">
           <Info className="h-3 w-3" />

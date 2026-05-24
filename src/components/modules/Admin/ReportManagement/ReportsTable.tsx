@@ -6,6 +6,7 @@ import DataTable from "@/components/shared/table/DataTable";
 import { getReportColumns } from "./reportColumns";
 import { toast } from "sonner";
 import { useState } from "react";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -49,19 +50,23 @@ const ReportsTable = () => {
 
   return (
     <>
-      <DataTable
-        columns={columns}
-        data={reportsResponse?.data || []}
-        isLoading={isLoading}
-        search={{
-          placeholder: "Search reports by description...",
-          onDebouncedChange: (value) => {
-            // Logic for searching reports if needed, 
-            // but for now we'll just satisfy the type
-            console.log("Searching reports:", value);
-          }
-        }}
-      />
+      {isLoading ? (
+        <TableSkeleton columns={5} rows={5} />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={reportsResponse?.data || []}
+          emptyMessage="No reports found."
+          search={{
+            placeholder: "Search reports by description...",
+            onDebouncedChange: (value) => {
+              // Logic for searching reports if needed, 
+              // but for now we'll just satisfy the type
+              console.log("Searching reports:", value);
+            }
+          }}
+        />
+      )}
 
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>

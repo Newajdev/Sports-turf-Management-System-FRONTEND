@@ -2,6 +2,7 @@
 "use client";
 
 import DataTable from "@/components/shared/table/DataTable";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { useRowActionModalState } from "@/hooks/useRowActionModalState";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAllSportTypes, deleteSportType } from "@/services/admin.services";
@@ -65,14 +66,17 @@ const SportTypeTable = () => {
 
     return (
       <>
-        <DataTable
-          data={sportTypes}
-          columns={sportTypeColumns}
-          isLoading={isLoading || isFetching}
-          emptyMessage="No sport types found."
-          toolbarAction={<CreateSportTypeModal />}
-          actions={tableActions}
-        />
+{isLoading || isFetching ? (
+          <TableSkeleton columns={5} rows={5} />
+        ) : (
+          <DataTable
+            data={sportTypes}
+            columns={sportTypeColumns}
+            emptyMessage="No sport types found."
+            toolbarAction={<CreateSportTypeModal />}
+            actions={tableActions}
+          />
+        )}
 
         <AlertDialog open={isDeleteDialogOpen} onOpenChange={onDeleteOpenChange}>
             <AlertDialogContent>

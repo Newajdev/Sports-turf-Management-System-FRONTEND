@@ -1,6 +1,7 @@
 "use client";
 
 import DataTable from "@/components/shared/table/DataTable";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 import {
   serverManagedFilter,
   useServerManagedDataTableFilters,
@@ -94,34 +95,37 @@ const TurfTable = () => {
 
     return (
       <>
-        <DataTable
-          data={turfs}
-          columns={turfColumns}
-          isLoading={isLoading || isFetching || isRouteRefreshPending}
-          emptyMessage="No turfs found."
-          sorting={{
-            state: optimisticSortingState,
-            onSortingChange: handleSortingChange,
-          }}
-          pagination={{
-            state: optimisticPaginationState,
-            onPaginationChange: handlePaginationChange,
-          }}
-          search={{
-            initialValue: searchTermFromUrl,
-            placeholder: "Search turf by name, address...",
-            debounceMs: 700,
-            onDebouncedChange: handleDebouncedSearchChange,
-          }}
-          filters={{
-            configs: filterConfigs,
-            values: filterValues,
-            onFilterChange: handleFilterChange,
-            onClearAll: clearAllFilters,
-          }}
-          meta={meta}
-          actions={tableActions}
-        />
+        {isLoading || isFetching || isRouteRefreshPending ? (
+          <TableSkeleton columns={5} rows={5} />
+        ) : (
+          <DataTable
+            data={turfs}
+            columns={turfColumns}
+            emptyMessage="No turfs found."
+            sorting={{
+              state: optimisticSortingState,
+              onSortingChange: handleSortingChange,
+            }}
+            pagination={{
+              state: optimisticPaginationState,
+              onPaginationChange: handlePaginationChange,
+            }}
+            search={{
+              initialValue: searchTermFromUrl,
+              placeholder: "Search turf by name, address...",
+              debounceMs: 700,
+              onDebouncedChange: handleDebouncedSearchChange,
+            }}
+            filters={{
+              configs: filterConfigs,
+              values: filterValues,
+              onFilterChange: handleFilterChange,
+              onClearAll: clearAllFilters,
+            }}
+            meta={meta}
+            actions={tableActions}
+          />
+        )}
         
         {/* View Details Dialog Placeholder - Can be expanded with specialized view component */}
         {isViewDialogOpen && (

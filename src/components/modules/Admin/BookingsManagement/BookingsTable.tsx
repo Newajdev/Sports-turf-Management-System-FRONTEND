@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllBookings } from "@/services/admin.services";
 import { bookingsColumns } from "./bookingsColumns";
 import { useState } from "react";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { DataTableFilterConfig } from "@/components/shared/table/DataTableFilters";
 
@@ -48,34 +49,39 @@ const BookingsTable = () => {
     ];
 
     return (
-        <DataTable
+      <>
+        {isLoading || isFetching ? (
+          <TableSkeleton columns={5} rows={5} />
+        ) : (
+          <DataTable
             data={bookings}
             columns={bookingsColumns}
-            isLoading={isLoading || isFetching}
             emptyMessage="No bookings found."
             meta={meta}
             pagination={{
-                state: pagination,
-                onPaginationChange: setPagination,
+              state: pagination,
+              onPaginationChange: setPagination,
             }}
             sorting={{
-                state: sorting,
-                onSortingChange: setSorting,
+              state: sorting,
+              onSortingChange: setSorting,
             }}
             search={{
-                placeholder: "Search by turf or player...",
-                onDebouncedChange: setSearchTerm,
+              placeholder: "Search by turf or player...",
+              onDebouncedChange: setSearchTerm,
             }}
             filters={{
-                configs: filterConfigs,
-                values: filters,
-                onFilterChange: (id, value) => {
-                    setFilters((prev) => ({ ...prev, [id]: value }));
-                    setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reset to first page
-                },
-                onClearAll: () => setFilters({}),
+              configs: filterConfigs,
+              values: filters,
+              onFilterChange: (id, value) => {
+                setFilters((prev) => ({ ...prev, [id]: value }));
+                setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reset to first page
+              },
+              onClearAll: () => setFilters({}),
             }}
-        />
+          />
+        )}
+      </>
     );
 };
 
