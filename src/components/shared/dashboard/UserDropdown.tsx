@@ -12,8 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { logoutUser } from "@/services/auth.services";
-import { LogOut } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { LayoutDashboardIcon, LogOut } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface UserDropdownProps {
@@ -27,6 +27,8 @@ interface UserDropdownProps {
 
 const UserDropdown = ({ userInfo }: UserDropdownProps) => {
   const router = useRouter();
+  const pathname = usePathname()
+  const dashboard = pathname.startsWith("/dashboard")
 
   const handleLogout = async () => {
     try {
@@ -56,7 +58,7 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
             className="rounded-full hover:bg-muted transition-colors"
           >
             <Avatar className="h-10 w-10">
-              <AvatarImage src={userInfo.image } alt={userInfo.name} />
+              <AvatarImage src={userInfo.image} alt={userInfo.name} />
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
           </Button>
@@ -84,14 +86,32 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator className="bg-muted/50" />
-
-        <DropdownMenuItem
-          onClick={handleLogout}
-          className="cursor-pointer flex items-center py-2 px-3 rounded-md text-destructive focus:text-destructive hover:bg-destructive/10 transition-colors"
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span className="text-sm font-semibold">Logout</span>
-        </DropdownMenuItem>
+        {!dashboard ? (
+          <>
+            <DropdownMenuItem
+              onClick={() => router.push("/dashboard")}
+              className="cursor-pointer flex items-center py-2 px-3 rounded-md text-primary focus:text-primary hover:bg-primary/10 transition-colors"
+            >
+              <LayoutDashboardIcon className="mr-2 h-4 w-4" />
+              <span className="text-sm font-semibold">Dashboard</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="cursor-pointer flex items-center py-2 px-3 rounded-md text-destructive focus:text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              <span className="text-sm font-semibold">Logout</span>
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <DropdownMenuItem
+            onClick={handleLogout}
+            className="cursor-pointer flex items-center py-2 px-3 rounded-md text-destructive focus:text-destructive hover:bg-destructive/10 transition-colors"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span className="text-sm font-semibold">Logout</span>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { getMyNotifications, markAllAsRead, markAsRead } from "@/services/notifi
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 const NotificationDropdown = () => {
   const queryClient = useQueryClient();
@@ -48,9 +50,9 @@ const NotificationDropdown = () => {
       <DropdownMenuTrigger
         render={
           <Button variant={"outline"} size={"icon"} className="rounded-full relative hover:bg-muted transition-colors">
-            <Bell className="h-4 w-4 text-muted-foreground" />
+            <Bell className="h-6 w-6 text-muted-foreground" />
             {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground border-2 border-background">
+                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground border-2 border-background">
                     {unreadCount > 9 ? "9+" : unreadCount}
                 </span>
             )}

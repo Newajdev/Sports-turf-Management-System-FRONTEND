@@ -24,11 +24,14 @@ const DashboardSidebarContent = ({ userInfo, navItems, dashboardHome }: Dashboar
     <aside className="hidden border-r bg-background lg:flex lg:w-72 lg:flex-col shadow-premium-subtle">
       {/* Brand Header */}
       <div className="flex h-16 items-center border-b px-6">
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-primary">
+        <Link
+          href="/"
+          className="flex items-center gap-2 font-bold text-xl tracking-tight text-primary"
+        >
           <div className="rounded-lg bg-primary p-1">
             <Icons.Trophy className="h-6 w-6 text-primary-foreground" />
           </div>
-          <span>TurfPro</span>
+          <span>Turfix</span>
         </Link>
       </div>
 
@@ -44,8 +47,10 @@ const DashboardSidebarContent = ({ userInfo, navItems, dashboardHome }: Dashboar
               <div className="space-y-1">
                 {section.items.map((item) => {
                   const Icon = getIconComponent(item.icon);
-                  const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-                  
+                  const isActive =
+                    pathname === item.href ||
+                    (item.href !== "/" && pathname.startsWith(item.href));
+
                   return (
                     <Link
                       key={item.href}
@@ -54,15 +59,17 @@ const DashboardSidebarContent = ({ userInfo, navItems, dashboardHome }: Dashboar
                         "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
                         isActive
                           ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
                       )}
                     >
                       {Icon && (
-                        <Icon 
+                        <Icon
                           className={cn(
                             "h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110",
-                            isActive ? "text-primary-foreground" : "text-muted-foreground/70 group-hover:text-primary"
-                          )} 
+                            isActive
+                              ? "text-primary-foreground"
+                              : "text-muted-foreground/70 group-hover:text-primary",
+                          )}
                         />
                       )}
                       <span>{item.title}</span>
@@ -81,11 +88,11 @@ const DashboardSidebarContent = ({ userInfo, navItems, dashboardHome }: Dashboar
       {/* User Footer */}
       <div className="border-t p-4">
         <div className="rounded-xl border bg-muted/30 p-3 transition-colors hover:bg-muted/50">
-             <UserInfoCell 
-                name={userInfo?.name || "User"} 
-                email={userInfo?.email || ""} 
-                profilePhoto={userInfo?.image} 
-            />
+          <UserInfoCell
+            name={userInfo?.name || "User"}
+            email={userInfo?.email || ""}
+            profilePhoto={userInfo?.image}
+          />
         </div>
       </div>
     </aside>

@@ -3,9 +3,17 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/lib/button-variants";
 import TurfCard from "@/components/modules/turfs/turf-card";
-import { POPULAR_TURFS } from "@/lib/popularTurfs";
+import { getTurfs } from "@/app/(commonLayout)/book-a-turf/_actions";
+import { ITurf } from "@/interface/turf.interface";
 
-export default function PopularTurfs() {
+const INITIAL_QUERY =
+  "turfStatus=ACTIVE&limit=3&page=1&sortBy=rating&sortOrder=desc";
+
+const PopularTurfs = async () => {
+
+   const turfsResult = await getTurfs(INITIAL_QUERY);
+  
+    const POPULAR_TURFS = (turfsResult?.data ?? []) as ITurf[];
   return (
     <section className="py-24 bg-background relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-7xl z-0 pointer-events-none opacity-20">
@@ -45,3 +53,6 @@ export default function PopularTurfs() {
     </section>
   );
 }
+
+
+export default PopularTurfs;

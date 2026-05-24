@@ -21,7 +21,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { isRedirectError } from "@/lib/isRedirectError";
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  redirectPath?: string;
+}
+
+const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const { mutateAsync } = useMutation({
@@ -164,7 +168,8 @@ const RegisterForm = () => {
             className="w-full mb-2 bg-white/5 border-muted-foreground/20 hover:bg-white/10"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-              window.location.href = `${baseUrl}/api/v1/auth/login/google`;
+              const redirectParam = redirectPath ? `?redirect=${encodeURIComponent(redirectPath)}` : "";
+              window.location.href = `${baseUrl}/api/v1/auth/login/google${redirectParam}`;
             }}
           >
             Continue with Google
