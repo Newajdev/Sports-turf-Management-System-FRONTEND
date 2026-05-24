@@ -112,9 +112,29 @@ export const playerNavItems: NavSection[] = [
         icon: "Calendar",
       },
       {
+        title: "Custom Slot Requests",
+        href: "/dashboard/custom-slots",
+        icon: "Clock",
+      },
+      {
+        title: "Saved Turfs",
+        href: "/dashboard/favorites",
+        icon: "Heart",
+      },
+      {
         title: "My Reviews",
         href: "/dashboard/reviews",
         icon: "MessageSquare",
+      },
+      {
+        title: "My Reports",
+        href: "/dashboard/reports",
+        icon: "Flag",
+      },
+      {
+        title: "Notifications",
+        href: "/dashboard/notifications",
+        icon: "Bell",
       },
     ],
   },

@@ -32,6 +32,7 @@ export interface IBooking {
     endTime: string;
     status?: CustomSlotStatus;
   };
+  review?: { id: string };
 }
 
 export const playerBookingsColumns: ColumnDef<IBooking>[] = [
@@ -128,6 +129,7 @@ export const playerBookingsColumns: ColumnDef<IBooking>[] = [
   },
   {
     id: "actions",
+    header: "Actions",
     cell: ({ row }) => <BookingActionsCell booking={row.original} />,
   },
 ];

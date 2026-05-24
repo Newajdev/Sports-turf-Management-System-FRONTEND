@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 import { Bell, Info, CheckCheck, Clock } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getMyNotifications, markAllAsRead, markAsRead } from "@/services/notification.services";
@@ -116,9 +117,14 @@ const NotificationDropdown = () => {
 
         <DropdownMenuSeparator className="bg-muted/50" />
         <div className="p-1">
-            <Button variant="ghost" className="w-full h-8 text-xs font-semibold text-primary hover:bg-primary/5 hover:text-primary transition-colors">
-                View all activities
-            </Button>
+            <Link href="/dashboard/notifications" className="block">
+              <Button
+                variant="ghost"
+                className="w-full h-8 text-xs font-semibold text-primary hover:bg-primary/5 hover:text-primary transition-colors"
+              >
+                View all notifications
+              </Button>
+            </Link>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

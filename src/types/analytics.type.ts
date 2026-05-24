@@ -17,3 +17,17 @@ export interface IOwnerAnalytics {
   averageRating: number;
   turfCount: number;
 }
+
+export interface IPlayerAnalytics {
+  totalBookings: number;
+  upcomingBookings: number;
+  totalSpent: number;
+  recentBookings: Array<{
+    id: string;
+    status: string;
+    date: string;
+    turf?: { name: string };
+    turfSlot?: { slot?: { startTime: string } };
+    customSlot?: { startTime: string };
+  }>;
+}

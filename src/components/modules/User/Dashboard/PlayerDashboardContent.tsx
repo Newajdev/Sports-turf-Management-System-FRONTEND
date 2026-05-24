@@ -3,12 +3,27 @@
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Calendar, MapPin, Bell, User, ArrowRight } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Calendar,
+  MapPin,
+  Bell,
+  User,
+  ArrowRight,
+  Loader2,
+  DollarSign,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { getMyBookings } from "@/services/booking.services";
+import { getPlayerAnalytics } from "@/services/analytics.services";
 import { getMyNotifications } from "@/services/notification.services";
+import { queryKeys } from "@/lib/queryKeys";
 
 interface PlayerDashboardContentProps {
   user: {
@@ -18,25 +33,18 @@ interface PlayerDashboardContentProps {
 }
 
 export function PlayerDashboardContent({ user }: PlayerDashboardContentProps) {
-  const { data: bookingsResponse } = useQuery({
-    queryKey: ["player-bookings", "dashboard"],
-    queryFn: () =>
-      getMyBookings("limit=3&status=CONFIRMED,PENDING&sort=-date"),
+  const { data: analyticsResponse, isLoading: analyticsLoading } = useQuery({
+    queryKey: queryKeys.playerAnalytics(),
+    queryFn: getPlayerAnalytics,
   });
 
   const { data: notificationsResponse } = useQuery({
-    queryKey: ["notifications", "dashboard"],
+    queryKey: queryKeys.playerNotifications("dashboard"),
     queryFn: () => getMyNotifications("limit=50"),
   });
 
-  const upcomingBookings = (bookingsResponse?.data ?? []) as Array<{
-    id: string;
-    status: string;
-    date: string;
-    turf?: { name: string };
-    turfSlot?: { slot?: { startTime: string } };
-    customSlot?: { startTime: string };
-  }>;
+  const analytics = analyticsResponse?.data;
+  const recentBookings = analytics?.recentBookings ?? [];
   const notifications = (notificationsResponse?.data ?? []) as Array<{
     isRead?: boolean;
   }>;
@@ -53,14 +61,52 @@ export function PlayerDashboardContent({ user }: PlayerDashboardContentProps) {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Total Bookings</CardDescription>
+            <CardTitle className="text-2xl">
+              {analyticsLoading ? (
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              ) : (
+                (analytics?.totalBookings ?? 0)
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-muted-foreground">All time</p>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Upcoming</CardDescription>
-            <CardTitle className="text-2xl">{upcomingBookings.length}</CardTitle>
+            <CardTitle className="text-2xl">
+              {analyticsLoading ? (
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              ) : (
+                (analytics?.upcomingBookings ?? 0)
+              )}
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-xs text-muted-foreground">Active bookings</p>
+            <p className="text-xs text-muted-foreground">Confirmed sessions</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-1">
+              <DollarSign className="h-3 w-3" /> Total Spent
+            </CardDescription>
+            <CardTitle className="text-2xl">
+              {analyticsLoading ? (
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              ) : (
+                `৳${(analytics?.totalSpent ?? 0).toLocaleString()}`
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-muted-foreground">Paid bookings</p>
           </CardContent>
         </Card>
         <Card>
@@ -71,18 +117,9 @@ export function PlayerDashboardContent({ user }: PlayerDashboardContentProps) {
             <CardTitle className="text-2xl">{unreadCount}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-xs text-muted-foreground">Unread messages</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardDescription>Quick action</CardDescription>
-            <CardTitle className="text-lg">Book a turf</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Link href="/book-a-turf">
-              <Button size="sm" className="w-full">
-                Browse turfs <ArrowRight className="ml-2 h-4 w-4" />
+            <Link href="/dashboard/notifications">
+              <Button variant="link" size="sm" className="h-auto p-0 text-xs">
+                View all
               </Button>
             </Link>
           </CardContent>
@@ -109,20 +146,24 @@ export function PlayerDashboardContent({ user }: PlayerDashboardContentProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            Upcoming Bookings
+            Recent Bookings
           </CardTitle>
-          <CardDescription>Your next scheduled sessions</CardDescription>
+          <CardDescription>Your latest scheduled sessions</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {upcomingBookings.length === 0 ? (
+          {analyticsLoading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : recentBookings.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              <p className="mb-4">No upcoming bookings.</p>
+              <p className="mb-4">No bookings yet.</p>
               <Link href="/book-a-turf">
                 <Button>Book a Turf</Button>
               </Link>
             </div>
           ) : (
-            upcomingBookings.map((booking) => (
+            recentBookings.map((booking) => (
               <div
                 key={booking.id}
                 className="flex items-center justify-between rounded-lg border border-border/50 p-4"
@@ -142,13 +183,27 @@ export function PlayerDashboardContent({ user }: PlayerDashboardContentProps) {
               </div>
             ))
           )}
-          {upcomingBookings.length > 0 && (
+          {recentBookings.length > 0 && (
             <Link href="/dashboard/bookings" className="block text-center">
               <Button variant="link" size="sm">
                 View all bookings
               </Button>
             </Link>
           )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-2">
+          <CardDescription>Quick action</CardDescription>
+          <CardTitle className="text-lg">Book a turf</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Link href="/book-a-turf">
+            <Button size="sm" className="w-full md:w-auto">
+              Browse turfs <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </div>

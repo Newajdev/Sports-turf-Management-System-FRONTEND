@@ -50,6 +50,36 @@ export async function uploadProfileImage(formData: FormData) {
     }
   }
 
+export async function getFavoriteTurfs() {
+  try {
+    const response = await httpClient.get("/user/favorites");
+    return response;
+  } catch (error: unknown) {
+    console.error("Error fetching favorites:", error);
+    return {
+      success: false,
+      message:
+        (error as Error)?.message || "An error occurred while fetching favorites.",
+      data: [],
+    };
+  }
+}
+
+export async function toggleFavoriteTurf(turfId: string) {
+  try {
+    const response = await httpClient.post(`/user/favorites/${turfId}`);
+    return response;
+  } catch (error: unknown) {
+    console.error("Error toggling favorite:", error);
+    return {
+      success: false,
+      message:
+        (error as Error)?.message || "An error occurred while updating favorites.",
+      data: null,
+    };
+  }
+}
+
 export async function deleteProfile() {
   try {
     const response = await httpClient.delete("/user/delete-profile");

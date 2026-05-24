@@ -12,6 +12,7 @@ export interface ITurf extends IBase {
   isVerifiedEmail: boolean;
   description?: string | null;
   images: string[];
+  amenities?: string[];
   openingTime: string;
   closingTime: string;
   weeklyOffDays: WeeklyOffDay[];

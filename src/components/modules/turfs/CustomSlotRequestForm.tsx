@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Clock, Loader2, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ITurf } from "@/interface/turf.interface";
 import { createCustomTurfSlot } from "@/services/slot.services";
 import { createCustomBooking } from "@/services/booking.services";
@@ -26,7 +33,10 @@ interface CustomSlotRequestFormProps {
   isLoggedIn?: boolean;
 }
 
-export function CustomSlotRequestForm({ turf, isLoggedIn = false }: CustomSlotRequestFormProps) {
+export function CustomSlotRequestForm({
+  turf,
+  isLoggedIn = false,
+}: CustomSlotRequestFormProps) {
   const router = useRouter();
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -43,6 +53,11 @@ export function CustomSlotRequestForm({ turf, isLoggedIn = false }: CustomSlotRe
       return;
     }
 
+    if (!turf.sportTypes?.length) {
+      toast.error("This turf has no sport types configured.");
+      return;
+    }
+
     const payload = {
       turfId: turf.id,
       startTime,
@@ -51,6 +66,11 @@ export function CustomSlotRequestForm({ turf, isLoggedIn = false }: CustomSlotRe
       sportType,
       playersCount,
     };
+
+    if (startTime >= endTime) {
+      toast.error("End time must be after start time");
+      return;
+    }
 
     const parsed = createCustomTurfSlotSchema.safeParse(payload);
     if (!parsed.success) {
@@ -78,7 +98,7 @@ export function CustomSlotRequestForm({ turf, isLoggedIn = false }: CustomSlotRe
         return;
       }
 
-      toast.success("Custom time request submitted. Awaiting owner approval.");
+      toast.success("Request sent! Pay from My Bookings once the owner approves.");
       router.push("/dashboard/bookings");
     } catch {
       toast.error("Failed to submit custom slot request");
@@ -88,17 +108,38 @@ export function CustomSlotRequestForm({ turf, isLoggedIn = false }: CustomSlotRe
   };
 
   return (
-    <Card className="border-border/50 bg-zinc-950/40 backdrop-blur-xl rounded-3xl">
-      <CardHeader>
-        <CardTitle className="text-xl uppercase italic">Request Custom Time</CardTitle>
+    <Card className="border-border/60 rounded-2xl shadow-sm">
+      <CardHeader className="pb-3">
+        <div className="flex items-center gap-2">
+          <Clock className="h-5 w-5 text-primary" />
+          <CardTitle className="text-lg">Custom time request</CardTitle>
+        </div>
         <CardDescription>
-          Propose a custom slot. After the owner approves, you can pay from My Bookings.
+          Need a time outside listed slots? Propose your own. The owner will review and you can pay after approval.
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {!isLoggedIn && (
+          <Alert className="mb-4">
+            <LogIn className="h-4 w-4" />
+            <AlertDescription>
+              <Button
+                variant="link"
+                className="h-auto p-0 text-primary"
+                onClick={() =>
+                  router.push(`/auth/login?redirect=/book-a-turf/${turf.id}`)
+                }
+              >
+                Sign in
+              </Button>{" "}
+              to submit a custom time request.
+            </AlertDescription>
+          </Alert>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="custom-date">Date</Label>
+            <Label htmlFor="custom-date">Preferred date</Label>
             <Input
               id="custom-date"
               type="date"
@@ -106,33 +147,40 @@ export function CustomSlotRequestForm({ turf, isLoggedIn = false }: CustomSlotRe
               min={format(new Date(), "yyyy-MM-dd")}
               onChange={(e) => setDate(e.target.value)}
               required
+              disabled={!isLoggedIn}
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label htmlFor="start-time">Start Time</Label>
+              <Label htmlFor="start-time">Start time</Label>
               <Input
                 id="start-time"
-                placeholder="e.g. 6:00 PM"
+                type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 required
+                disabled={!isLoggedIn}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="end-time">End Time</Label>
+              <Label htmlFor="end-time">End time</Label>
               <Input
                 id="end-time"
-                placeholder="e.g. 8:00 PM"
+                type="time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 required
+                disabled={!isLoggedIn}
               />
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Sport Type</Label>
-            <Select value={sportType} onValueChange={(v) => v && setSportType(v)}>
+            <Label>Sport</Label>
+            <Select
+              value={sportType}
+              onValueChange={(v) => v && setSportType(v)}
+              disabled={!isLoggedIn || !turf.sportTypes?.length}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select sport" />
               </SelectTrigger>
@@ -146,24 +194,26 @@ export function CustomSlotRequestForm({ turf, isLoggedIn = false }: CustomSlotRe
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="players">Number of Players</Label>
+            <Label htmlFor="players">Players</Label>
             <Input
               id="players"
               type="number"
               min={1}
+              max={50}
               value={playersCount}
               onChange={(e) => setPlayersCount(Number(e.target.value))}
               required
+              disabled={!isLoggedIn}
             />
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full" disabled={isSubmitting || !isLoggedIn}>
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Submitting...
               </>
             ) : (
-              "Submit Custom Request"
+              "Submit request"
             )}
           </Button>
         </form>

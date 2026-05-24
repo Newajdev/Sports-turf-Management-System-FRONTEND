@@ -1,14 +1,52 @@
 "use server";
-import { httpClient } from "@/lib/axios/httpClient";
-import { ITurf } from "@/interface/turf.interface";
-import { ApiResponse } from "@/interface/api.interface"; // Assuming this exists, otherwise I'll define it or use T
 
-export const getTurfs = async (): Promise<ApiResponse<ITurf[]>> => {
-  const turfs = await httpClient.get("/turf");
-  return turfs as ApiResponse<ITurf[]>;
+import { httpClient } from "@/lib/axios/httpClient";
+import { getApiErrorMessage } from "@/lib/apiError";
+import { ITurf } from "@/interface/turf.interface";
+import { ApiResponse } from "@/types/api.type";
+import { ISportType } from "@/interface/sport-type.interface";
+
+export const getTurfs = async (
+  queryString = "turfStatus=ACTIVE&limit=12&page=1&sortBy=rating&sortOrder=desc",
+): Promise<ApiResponse<ITurf[]>> => {
+  try {
+    const response = await httpClient.get<ITurf[]>(`/turf?${queryString}`);
+    return response;
+  } catch (error: unknown) {
+    console.error("Error fetching turfs:", error);
+    return {
+      success: false,
+      message: getApiErrorMessage(error, "Failed to load turfs"),
+      data: [],
+      meta: undefined,
+    };
+  }
 };
 
 export const getTurfByID = async (id: string): Promise<ApiResponse<ITurf>> => {
-  const turf = await httpClient.get(`/turf/${id}`);
-  return turf as ApiResponse<ITurf>;
-}
+  try {
+    const response = await httpClient.get<ITurf>(`/turf/${id}`);
+    return response;
+  } catch (error: unknown) {
+    console.error("Error fetching turf:", error);
+    return {
+      success: false,
+      message: getApiErrorMessage(error, "Failed to load turf details"),
+      data: null as unknown as ITurf,
+    };
+  }
+};
+
+export const getSportTypes = async (): Promise<ApiResponse<ISportType[]>> => {
+  try {
+    const response = await httpClient.get<ISportType[]>("/sport-type");
+    return response;
+  } catch (error: unknown) {
+    console.error("Error fetching sport types:", error);
+    return {
+      success: false,
+      message: getApiErrorMessage(error, "Failed to load sport types"),
+      data: [],
+    };
+  }
+};

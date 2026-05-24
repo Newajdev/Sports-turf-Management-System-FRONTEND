@@ -2,6 +2,7 @@
 "use server";
 
 import { httpClient } from "@/lib/axios/httpClient";
+import { getApiErrorMessage } from "@/lib/apiError";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -161,7 +162,21 @@ export const createCustomTurfSlot = async (payload: {
         return response;
     } catch (error: unknown) {
         console.error("Error creating custom slot:", error);
-        return { success: false, message: "Failed to create custom slot request", data: null };
+        return {
+            success: false,
+            message: getApiErrorMessage(error, "Failed to create custom slot request"),
+            data: null,
+        };
+    }
+};
+
+export const getAllMyCustomSlots = async (queryString = "") => {
+    try {
+        const response = await httpClient.get(`/turf-slots/custom?${queryString}`);
+        return response;
+    } catch (error: unknown) {
+        console.error("Error fetching custom slots:", error);
+        return { success: false, message: "Failed to fetch custom slots", data: [] };
     }
 };
 

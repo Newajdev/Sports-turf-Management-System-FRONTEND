@@ -31,10 +31,14 @@ const PlayerBookingsTable = () => {
     });
 
     const bookings = ((bookingsResponse?.data ?? []) as Array<
-        IBooking & { payment?: { status?: IBooking["paymentStatus"] } }
+        IBooking & {
+            payment?: { status?: IBooking["paymentStatus"] };
+            review?: { id: string };
+        }
     >).map((booking) => ({
         ...booking,
         paymentStatus: booking.paymentStatus ?? booking.payment?.status,
+        review: booking.review,
     }));
     const meta = bookingsResponse?.meta;
 

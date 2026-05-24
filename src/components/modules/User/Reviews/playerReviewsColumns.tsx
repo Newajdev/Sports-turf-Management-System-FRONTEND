@@ -2,17 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Trash2, Star } from "lucide-react";
-import { deleteReview } from "@/services/review.services";
-import { toast } from "sonner";
+import { Star } from "lucide-react";
+import { ReviewActionsCell } from "./ReviewActionsCell";
 
 export interface IReview {
   id: string;
@@ -62,34 +53,6 @@ export const playerReviewsColumns: ColumnDef<IReview>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const review = row.original;
-
-      const handleDelete = async () => {
-        const res = await deleteReview(review.id);
-        if (res.success) toast.success("Review deleted!");
-        else toast.error(res.message);
-      };
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            }
-          />
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={handleDelete} className="text-destructive">
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete Review
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <ReviewActionsCell review={row.original} />,
   },
 ];

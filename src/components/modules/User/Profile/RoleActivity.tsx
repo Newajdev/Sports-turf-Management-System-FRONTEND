@@ -28,8 +28,19 @@ const RoleActivity = ({ user }: RoleActivityProps) => {
                 Summary of your latest interactions on the platform.
             </CardDescription>
           </CardHeader>
-          <CardContent className="h-[200px] flex items-center justify-center text-muted-foreground italic text-sm border-t border-border/20 mt-4">
-             Activity tracking coming soon in the next update.
+          <CardContent className="h-[200px] flex flex-col items-center justify-center gap-3 text-muted-foreground text-sm border-t border-border/20 mt-4">
+            {isPlayer ? (
+              <>
+                <p>View your bookings, reviews, and notifications from the dashboard.</p>
+                <Link href="/dashboard">
+                  <Button variant="outline" size="sm">
+                    Go to Dashboard
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <p className="italic">Activity tracking coming soon in the next update.</p>
+            )}
           </CardContent>
         </Card>
 
@@ -42,7 +53,7 @@ const RoleActivity = ({ user }: RoleActivityProps) => {
 
           <div className="grid gap-4">
              {isPlayer && (
-                 <Link href="/player/dashboard/bookings">
+                 <Link href="/dashboard/bookings">
                     <Button variant="outline" className="w-full justify-between h-14 group hover:border-primary/50 transition-all">
                         <div className="flex items-center gap-3">
                             <div className="p-2 bg-blue-500/10 rounded-md">

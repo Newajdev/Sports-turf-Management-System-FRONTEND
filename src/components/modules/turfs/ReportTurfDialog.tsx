@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -32,6 +33,7 @@ interface ReportTurfDialogProps {
 }
 
 export function ReportTurfDialog({ turfId, turfName, isLoggedIn = false }: ReportTurfDialogProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState<ReportReason>(ReportReason.OTHER);
   const [description, setDescription] = useState("");
@@ -41,7 +43,7 @@ export function ReportTurfDialog({ turfId, turfName, isLoggedIn = false }: Repor
     e.preventDefault();
 
     if (!isLoggedIn) {
-      toast.error("Please log in to report a turf");
+      router.push(`/auth/login?redirect=/book-a-turf/${turfId}`);
       return;
     }
 
