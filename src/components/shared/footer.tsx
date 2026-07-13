@@ -4,22 +4,16 @@ import { FooterVisibility } from "@/components/shared/footer-visibility";
 
 const footerLinks = {
   platform: [
+    { name: "About Us", href: "/about" },
     { name: "Book a Turf", href: "/book-a-turf" },
-    { name: "Sport Types", href: "/features" },
+    { name: "features", href: "/features" },
     { name: "How it Works", href: "/how-it-works" },
-    { name: "Pricing", href: "/pricing" },
+    { name: "Blogs", href: "/blogs" },
   ],
   support: [
-    { name: "Help Center", href: "/support" },
     { name: "Contact Us", href: "/contact" },
     { name: "Terms of Service", href: "/terms" },
     { name: "Privacy Policy", href: "/privacy" },
-  ],
-  company: [
-    { name: "About Us", href: "/about" },
-    { name: "Blogs", href: "/blogs" },
-    { name: "Careers", href: "/careers" },
-    { name: "Press", href: "/press" },
   ],
 };
 
@@ -47,25 +41,25 @@ export default function Footer() {
               </p>
               <div className="flex items-center gap-5">
                 <Link
-                  href="#"
+                  href="https://www.facebook.com"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Facebook className="h-5 w-5" />
                 </Link>
                 <Link
-                  href="#"
+                  href="https://twitter.com"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Twitter className="h-5 w-5" />
                 </Link>
                 <Link
-                  href="#"
+                  href="https://www.instagram.com"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Instagram className="h-5 w-5" />
                 </Link>
                 <Link
-                  href="#"
+                  href="mailto:newaj.gra@gmail.com"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Mail className="h-5 w-5" />
@@ -97,24 +91,6 @@ export default function Footer() {
               </h4>
               <ul className="space-y-4">
                 {footerLinks.support.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-all hover:translate-x-1 inline-block"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-bold text-foreground uppercase tracking-widest mb-6">
-                Company
-              </h4>
-              <ul className="space-y-4">
-                {footerLinks.company.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}

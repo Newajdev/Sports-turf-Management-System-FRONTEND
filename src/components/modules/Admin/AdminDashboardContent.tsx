@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getAdminAnalytics } from "@/services/analytics.services";
 import StatsCard from "@/components/shared/StatsCard";
 import BookingOverviewChart from "@/components/shared/BookingOverviewChart";
+import UserDistributionPieChart from "@/components/shared/UserDistributionPieChart";
+import RevenueOverviewLineChart from "@/components/shared/RevenueOverviewLineChart";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const AdminDashboardContent = () => {
@@ -31,6 +33,21 @@ const AdminDashboardContent = () => {
     status: status.charAt(0).toUpperCase() + status.slice(1).toLowerCase(),
     count,
   })) : [];
+
+  const userDistributionData = stats?.users ? [
+    { name: "Players", value: stats.users.players },
+    { name: "Turf Owners", value: stats.users.owners },
+  ] : [];
+
+  // Mock data for the line chart since we don't have time-series revenue from backend
+  const revenueLineData = [
+    { month: "Jan", revenue: (stats?.revenue || 0) * 0.1 },
+    { month: "Feb", revenue: (stats?.revenue || 0) * 0.15 },
+    { month: "Mar", revenue: (stats?.revenue || 0) * 0.12 },
+    { month: "Apr", revenue: (stats?.revenue || 0) * 0.18 },
+    { month: "May", revenue: (stats?.revenue || 0) * 0.2 },
+    { month: "Jun", revenue: (stats?.revenue || 0) * 0.25 },
+  ];
 
   return (
     <div className="space-y-8">
@@ -64,6 +81,11 @@ const AdminDashboardContent = () => {
           iconName="CalendarCheck"
           description="Confirmed bookings in the system"
         />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <RevenueOverviewLineChart data={revenueLineData} />
+        <UserDistributionPieChart data={userDistributionData} />
       </div>
 
       <div className="grid gap-4">

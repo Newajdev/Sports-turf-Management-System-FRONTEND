@@ -7,6 +7,7 @@ import { ITurf } from "@/interface/turf.interface";
 import { TurfStatus } from "@/interface/enum.interface";
 import { ISportType } from "@/interface/sport-type.interface";
 import { Badge } from "@/components/ui/badge";
+import PrimaryButton from "@/components/shared/primaryButton";
 
 export default function TurfCard({ turf }: { turf: ITurf }) {
   const isActive = turf.turfStatus === TurfStatus.ACTIVE;
@@ -24,7 +25,7 @@ export default function TurfCard({ turf }: { turf: ITurf }) {
           : "opacity-75",
       )}
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden">
+      <div className="relative aspect-16/10 w-full overflow-hidden">
         <Image
           src={turf.images?.[0] || "/images/turf-multi.png"}
           alt={turf.name}
@@ -32,7 +33,7 @@ export default function TurfCard({ turf }: { turf: ITurf }) {
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
 
         <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
           <div className="flex flex-wrap gap-1.5 max-w-[70%]">
@@ -91,21 +92,24 @@ export default function TurfCard({ turf }: { turf: ITurf }) {
             </p>
             <p className="text-2xl font-bold text-primary">
               ৳{turf.hourlyRate}
-              <span className="text-sm font-normal text-muted-foreground">/hr</span>
+              <span className="text-sm font-normal text-muted-foreground">
+                {" "}
+                /hr
+              </span>
             </p>
           </div>
 
-          <Link
+          <PrimaryButton
             href={`/book-a-turf/${turf.id}`}
+            size="sm"
             className={cn(
-              buttonVariants({ size: "sm" }),
-              "rounded-xl gap-1.5 font-semibold",
+              "rounded-xl gap-1.5 p-6 font-semibold",
               !isActive && "pointer-events-none opacity-50",
             )}
           >
             View & Book
             <ArrowRight className="h-4 w-4" />
-          </Link>
+          </PrimaryButton>
         </div>
       </div>
     </article>

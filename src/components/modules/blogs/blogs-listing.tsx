@@ -69,32 +69,29 @@ export default function BlogsContent({ blogs }: BlogsContentProps) {
         </div>
       </section>
 
-      {/* Newsletter Subscription */}
-      <section className="py-24 bg-primary/5 border-t border-primary/10 mb-20 md:mb-0">
+      <section className="py-24 bg-white mb-20 md:mb-0">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className="max-w-4xl mx-auto space-y-8 p-12 rounded-[3rem] bg-background border border-primary/20 shadow-2xl shadow-primary/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] translate-x-1/2 translate-y-[-1/2]" />
+          <div className="max-w-4xl mx-auto space-y-8 p-12 rounded-[3rem] bg-primary border border-primary/20 relative overflow-hidden">
+           
 
-            <h2 className="text-3xl md:text-4xl font-black uppercase italic text-foreground tracking-tighter">
-              Stay in the <span className="text-primary italic">Game</span>
+            <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white tracking-tighter">
+              Stay in the <span className="text-white italic">Game</span>
             </h2>
-            <p className="text-muted-foreground max-w-lg mx-auto text-lg leading-relaxed">
+            <p className="text-white/80 max-w-lg mx-auto text-lg leading-relaxed">
               Join 5,000+ athletes and facility owners for weekly tactical
               breakdowns and platform updates.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-1 h-14 px-6 rounded-2xl bg-muted/50 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none font-bold italic transition-all"
-              />
+
               <PrimaryButton
+                href="/login"
                 type="submit"
-                className="px-8 bg-primary text-white shadow-lg shadow-primary/20"
+                className="w-full p-6 bg-white text-black rounded-full shadow-lg shadow-primary/20"
               >
-                Subscribe
+                Join Now
               </PrimaryButton>
             </div>
+
           </div>
         </div>
       </section>

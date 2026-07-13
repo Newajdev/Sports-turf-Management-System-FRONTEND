@@ -12,7 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IRegistrationPayload, registerPlayerZodSchema } from "@/zod/auth.validation";
+import {
+  IRegistrationPayload,
+  registerPlayerZodSchema,
+} from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
@@ -36,7 +39,7 @@ const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
     defaultValues: {
       name: "",
       email: "",
-      password: ""
+      password: "",
     },
     onSubmit: async ({ value }) => {
       try {
@@ -46,13 +49,22 @@ const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
         }
       } catch (error: unknown) {
         if (isRedirectError(error)) return;
-        const err = error as { response?: { data?: { message?: string } }; message?: string };
+        const err = error as {
+          response?: { data?: { message?: string } };
+          message?: string;
+        };
         toast.error(
-          err?.response?.data?.message || err?.message || "An unexpected error occurred",
+          err?.response?.data?.message ||
+            err?.message ||
+            "An unexpected error occurred",
         );
       }
     },
   });
+
+  
+
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-background via-muted to-background">
@@ -141,8 +153,8 @@ const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
               selector={(s) => [s.canSubmit, s.isSubmitting] as const}
             >
               {([canSubmit, isSubmitting]) => (
-                <FormSubmitBtn 
-                  isPending={isSubmitting} 
+                <FormSubmitBtn
+                  isPending={isSubmitting}
                   disabled={!canSubmit}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-all active:scale-[0.98]"
                 >
@@ -168,7 +180,9 @@ const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
             className="w-full mb-2 bg-white/5 border-muted-foreground/20 hover:bg-white/10"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-              const redirectParam = redirectPath ? `?redirect=${encodeURIComponent(redirectPath)}` : "";
+              const redirectParam = redirectPath
+                ? `?redirect=${encodeURIComponent(redirectPath)}`
+                : "";
               window.location.href = `${baseUrl}/api/v1/auth/login/google${redirectParam}`;
             }}
           >

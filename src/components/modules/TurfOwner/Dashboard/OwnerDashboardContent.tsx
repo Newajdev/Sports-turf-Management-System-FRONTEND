@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getOwnerAnalytics } from "@/services/analytics.services";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import UserDistributionPieChart from "@/components/shared/UserDistributionPieChart";
+import RevenueOverviewLineChart from "@/components/shared/RevenueOverviewLineChart";
 
 const EMPTY_ANALYTICS: IOwnerAnalytics = {
     revenue: 0,
@@ -30,13 +32,32 @@ const OwnerDashboardContent = () => {
 
     if (isLoading) {
         return (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {[1, 2, 3, 4].map((i) => (
-                    <Skeleton key={i} className="h-32 w-full rounded-xl" />
-                ))}
+            <div className="space-y-8">
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    {[1, 2, 3, 4].map((i) => (
+                        <Skeleton key={i} className="h-32 w-full rounded-xl" />
+                    ))}
+                </div>
+                <Skeleton className="h-[400px] w-full rounded-xl" />
             </div>
         );
     }
+
+    // Mock data since owner analytics only gives total values currently
+    const revenueLineData = [
+        { month: "Jan", revenue: (analytics.revenue || 0) * 0.1 },
+        { month: "Feb", revenue: (analytics.revenue || 0) * 0.15 },
+        { month: "Mar", revenue: (analytics.revenue || 0) * 0.12 },
+        { month: "Apr", revenue: (analytics.revenue || 0) * 0.18 },
+        { month: "May", revenue: (analytics.revenue || 0) * 0.2 },
+        { month: "Jun", revenue: (analytics.revenue || 0) * 0.25 },
+    ];
+
+    const bookingDistributionData = [
+        { name: "Confirmed", value: Math.floor(analytics.totalBookings * 0.7) || 7 },
+        { name: "Pending", value: Math.floor(analytics.totalBookings * 0.2) || 2 },
+        { name: "Cancelled", value: Math.floor(analytics.totalBookings * 0.1) || 1 },
+    ];
 
     return (
         <div className="space-y-8">
@@ -73,6 +94,12 @@ const OwnerDashboardContent = () => {
                     iconName="MapPin"
                     description="Number of turfs you manage"
                 />
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <RevenueOverviewLineChart data={revenueLineData} />
+                {/* Reusing UserDistributionPieChart component but passing bookings data */}
+                <UserDistributionPieChart data={bookingDistributionData} />
             </div>
         </div>
     );

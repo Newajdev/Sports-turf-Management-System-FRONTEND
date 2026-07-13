@@ -75,6 +75,11 @@ export const adminNavItems: NavSection[] = [
         href: "/admin/dashboard/reviews-management",
         icon: "MessageSquare",
       },
+      {
+        title: "Blogs",
+        href: "/admin/dashboard/blogs-management",
+        icon: "BookOpen",
+      },
     ],
   },
 ];
@@ -97,6 +102,11 @@ export const ownerNavItems: NavSection[] = [
         title: "Bookings",
         href: "/turf-owner/dashboard/bookings",
         icon: "Calendar",
+      },
+      {
+        title: "Blogs",
+        href: "/turf-owner/dashboard/blogs-management",
+        icon: "BookOpen",
       },
     ],
   },

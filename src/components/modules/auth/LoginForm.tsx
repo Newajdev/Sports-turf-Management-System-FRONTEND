@@ -32,9 +32,6 @@ interface LoginFormProps {
   authError?: string;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-
 const LoginForm = ({ redirectPath, authError }: LoginFormProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -63,13 +60,44 @@ const LoginForm = ({ redirectPath, authError }: LoginFormProps) => {
         }
       } catch (error: unknown) {
         if (isRedirectError(error)) return;
-        const err = error as { response?: { data?: { message?: string } }; message?: string };
+        const err = error as {
+          response?: { data?: { message?: string } };
+          message?: string;
+        };
         toast.error(
-          err?.response?.data?.message || err?.message || "An unexpected error occurred",
+          err?.response?.data?.message ||
+            err?.message ||
+            "An unexpected error occurred",
         );
       }
     },
   });
+
+  // Dummy data credentials
+  const dummyData = {
+    turf: {
+      email: "vipen30494@nuitx.com",
+      password: "Pa$$w0rd!",
+    },
+    player: {
+      email: "koteke1548@bittnex.com",
+      password: "123NewId",
+    },
+  };
+
+  // Handle dummy login
+  const handleDummyLogin = async (type: "turf" | "player") => {
+    const credentials = dummyData[type];
+
+    // Update form fields
+    form.setFieldValue("email", credentials.email);
+    form.setFieldValue("password", credentials.password);
+
+    // Submit form automatically after setting values
+    setTimeout(() => {
+      form.handleSubmit();
+    }, 100);
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-linear-to-br from-background via-muted to-background">
@@ -97,6 +125,24 @@ const LoginForm = ({ redirectPath, authError }: LoginFormProps) => {
             }}
             className="space-y-4"
           >
+            {/* Dummy Login Buttons */}
+            <div className="grid grid-cols-2 gap-3 mb-6 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <button
+                type="button"
+                onClick={() => handleDummyLogin("turf")}
+                className="px-3 py-3 bg-orange-500 hover:bg-primary/90 text-white text-sm font-bold uppercase tracking-wide rounded-lg transition-all active:scale-95 shadow-md"
+              >
+                Dummy Turf
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDummyLogin("player")}
+                className="px-3 py-3 bg-indigo-400 hover:bg-primary/90 text-white text-sm font-bold uppercase tracking-wide rounded-lg transition-all active:scale-95 shadow-md"
+              >
+                Dummy Player
+              </button>
+            </div>
+
             <form.Field
               name="email"
               validators={{ onChange: loginZodSchema.shape.email }}
@@ -180,7 +226,9 @@ const LoginForm = ({ redirectPath, authError }: LoginFormProps) => {
             className="w-full"
             onClick={() => {
               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-              const redirectParam = redirectPath ? `?redirect=${encodeURIComponent(redirectPath)}` : "";
+              const redirectParam = redirectPath
+                ? `?redirect=${encodeURIComponent(redirectPath)}`
+                : "";
               window.location.href = `${baseUrl}/api/v1/auth/login/google${redirectParam}`;
             }}
           >
