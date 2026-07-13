@@ -2,8 +2,7 @@
 
 import { useEffect } from "react";
 import { AlertTriangle, RotateCcw } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import PrimaryButton from "./primaryButton";
 
 interface GlobalErrorProps {
   error: Error & { digest?: string };
@@ -43,26 +42,24 @@ export function GlobalErrorContent({ error, reset }: GlobalErrorProps) {
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-          <button
+          <PrimaryButton
             onClick={() => reset()}
-            className={cn(
-              buttonVariants({ size: "lg" }),
-              "h-12 px-8 text-base transition-all hover:scale-105 active:scale-95 bg-destructive hover:bg-destructive/90 text-white border-none cursor-pointer"
-            )}
+            size="lg"
+            variant="destructive"
+            className="h-12 px-8 text-base bg-destructive hover:bg-destructive/90 text-white border-none"
           >
             <RotateCcw className="mr-2 h-5 w-5" />
             Try to Recover
-          </button>
+          </PrimaryButton>
 
-          <button
+          <PrimaryButton
             onClick={() => window.location.reload()}
-            className={cn(
-              buttonVariants({ variant: "outline", size: "lg" }),
-              "h-12 px-8 text-base hover:bg-muted cursor-pointer"
-            )}
+            variant="outline"
+            size="lg"
+            className="h-12 px-8 text-base hover:bg-muted"
           >
             Full Pitch Reload
-          </button>
+          </PrimaryButton>
         </div>
 
         <footer className="mt-16 text-xs text-muted-foreground/40 font-mono">

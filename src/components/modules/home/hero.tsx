@@ -1,9 +1,6 @@
-
-
 import { Star, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/lib/button-variants";
-import Link from "next/link";
+import PrimaryButton from "@/components/shared/primaryButton";
 import { StadiumHeroBackground } from "@/components/shared/stadium-hero-background";
 import HeroState from "./heroStats";
 
@@ -21,7 +18,7 @@ export default function HeroSection() {
 
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white leading-[0.85] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100 uppercase italic drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
             Score Your <br />
-            <span className="text-transparent bg-clip-text bg-[linear-gradient(90deg,var(--primary),#10b981)] filter saturate-150 brightness-110">
+            <span className="text-transparent bg-clip-text bg-[linear-gradient(90deg,var(--primary),#10b981)] filter saturate-150 brightness-110 p-6">
               Next Match
             </span>
           </h1>
@@ -36,25 +33,22 @@ export default function HeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-300">
-            <Link
+            <PrimaryButton
               href="/auth/register"
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "h-16 px-10 text-xl font-black bg-primary hover:bg-primary/90 text-white border-none shadow-[0_20px_50px_rgba(var(--primary-rgb),0.4)] group uppercase italic",
-              )}
+              size="lg"
+              className="h-16 px-10 text-xl bg-primary hover:bg-primary/90 text-white border-none shadow-[0_20px_50px_rgba(var(--primary-rgb),0.4)] group"
             >
               Book a Pitch{" "}
               <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
-            </Link>
-            <Link
+            </PrimaryButton>
+            <PrimaryButton
               href="/book-a-turf"
-              className={cn(
-                buttonVariants({ variant: "outline", size: "lg" }),
-                "h-16 px-10 text-xl font-bold bg-white/5 backdrop-blur-xl border-white/20 hover:bg-white/10 text-white shadow-xl italic",
-              )}
+              variant="outline"
+              size="lg"
+              className="h-16 px-10 text-xl font-bold bg-white/5 backdrop-blur-xl border-white/20 hover:bg-white/10 text-white shadow-xl"
             >
               Explore Turfs
-            </Link>
+            </PrimaryButton>
           </div>
 
           <HeroState />
