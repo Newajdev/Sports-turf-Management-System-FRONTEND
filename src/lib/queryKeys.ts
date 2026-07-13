@@ -14,4 +14,5 @@ export const queryKeys = {
     ["turf-availability", turfId, date] as const,
   publicTurfs: (queryString = "") => ["public-turfs", queryString] as const,
   sportTypes: () => ["sport-types"] as const,
+  heroState: () => ["hero-state"] as const,
 };

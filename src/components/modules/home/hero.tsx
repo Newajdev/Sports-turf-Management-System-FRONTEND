@@ -1,8 +1,11 @@
-import { Star, Users, MapPin, ArrowRight } from "lucide-react";
+
+
+import { Star, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/lib/button-variants";
 import Link from "next/link";
 import { StadiumHeroBackground } from "@/components/shared/stadium-hero-background";
+import HeroState from "./heroStats";
 
 export default function HeroSection() {
   return (
@@ -12,8 +15,8 @@ export default function HeroSection() {
       <div className="container relative z-10 mx-auto px-4 md:px-6">
         <div className="max-w-5xl mx-auto text-center space-y-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 border border-primary/40 text-[0.65rem] font-black text-primary uppercase tracking-[0.3em] animate-in fade-in slide-in-from-bottom-4 duration-700 backdrop-blur-md shadow-2xl shadow-primary/20 mb-4">
-            <Star className="h-3.5 w-3.5 fill-current" /> Leading Turf Management
-            Platform
+            <Star className="h-3.5 w-3.5 fill-current" /> Leading Turf
+            Management Platform
           </div>
 
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white leading-[0.85] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100 uppercase italic drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
@@ -27,9 +30,9 @@ export default function HeroSection() {
             Book top-tier sports turfs instantly. Whether it&apos;s a friendly
             kickabout or a competitive league,{" "}
             <span className="text-primary font-bold italic underline decoration-primary/30">
-              TurfFlow
+              Turfix
             </span>{" "}
-            simplifies your scheduling and property management.
+            simplifies your scheduling and turf management.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-300">
@@ -54,41 +57,7 @@ export default function HeroSection() {
             </Link>
           </div>
 
-          <div className="pt-20 grid grid-cols-2 md:grid-cols-3 gap-12 border-t border-white/20 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
-            <div className="flex flex-col items-center gap-2 group">
-              <div className="flex items-center gap-3">
-                <Users className="h-5 w-5 text-primary drop-shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]" />
-                <span className="text-3xl font-black italic text-white drop-shadow-md">
-                  50K+
-                </span>
-              </div>
-              <span className="text-[0.7rem] font-bold text-white/50 uppercase tracking-[0.2em] group-hover:text-primary transition-colors">
-                Active Players
-              </span>
-            </div>
-            <div className="flex flex-col items-center gap-2 group">
-              <div className="flex items-center gap-3">
-                <MapPin className="h-5 w-5 text-primary drop-shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]" />
-                <span className="text-3xl font-black italic text-white drop-shadow-md">
-                  200+
-                </span>
-              </div>
-              <span className="text-[0.7rem] font-bold text-white/50 uppercase tracking-[0.2em] group-hover:text-primary transition-colors">
-                Verified Turfs
-              </span>
-            </div>
-            <div className="hidden md:flex flex-col items-center gap-2 group">
-              <div className="flex items-center gap-3">
-                <Star className="h-5 w-5 text-primary drop-shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]" />
-                <span className="text-3xl font-black italic text-white drop-shadow-md">
-                  4.9/5
-                </span>
-              </div>
-              <span className="text-[0.7rem] font-bold text-white/50 uppercase tracking-[0.2em] group-hover:text-primary transition-colors">
-                User Happiness
-              </span>
-            </div>
-          </div>
+          <HeroState />
         </div>
       </div>
 
