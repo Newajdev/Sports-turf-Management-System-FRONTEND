@@ -135,8 +135,6 @@ export default function MasterSlotModal({
 
       onClose();
     } catch (error) {
-      console.error(error);
-
       toast.error("Failed to save slot");
     } finally {
       setIsSubmitting(false);

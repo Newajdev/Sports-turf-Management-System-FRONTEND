@@ -14,10 +14,10 @@ export default function PageHeroSection({
   const titleWords = title.split(" ");
 
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-black flex items-center justify-center">
+    <section className="relative  pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-black flex items-center justify-center">
       <StadiumHeroBackground variant="page" />
 
-      <div className="container relative z-10 mx-auto px-4 md:px-6 text-center space-y-6">
+      <div className="container relative z-20 mx-auto px-4 md:px-6 text-center space-y-6">
         {badge && (
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md mb-4 animate-in fade-in slide-in-from-top-4 duration-700">
             <span className="text-[0.65rem] font-black text-primary uppercase tracking-[0.3em] italic">

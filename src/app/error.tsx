@@ -10,9 +10,7 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    console.error("Uncaught error:", error);
-  }, [error]);
+  useEffect(() => {}, [error]);
 
   return <GlobalErrorContent error={error} reset={reset} />;
 }

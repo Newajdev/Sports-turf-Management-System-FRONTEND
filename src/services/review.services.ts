@@ -8,10 +8,11 @@ import { revalidatePath } from "next/cache";
  */
 export async function getTurfReviews(turfId: string, queryString: string = "") {
   try {
-    const response = await httpClient.get<any>(`/review/turf/${turfId}?${queryString}`);
+    const response = await httpClient.get<any>(
+      `/review/turf/${turfId}?${queryString}`,
+    );
     return response;
   } catch (error: any) {
-    console.error("Error fetching turf reviews:", error);
     return {
       success: false,
       message: error.message || "An error occurred while fetching reviews.",
@@ -26,13 +27,15 @@ export async function getTurfReviews(turfId: string, queryString: string = "") {
  */
 export async function getMyReviews(queryString: string = "") {
   try {
-    const response = await httpClient.get<any>(`/review/my-reviews?${queryString}`);
+    const response = await httpClient.get<any>(
+      `/review/my-reviews?${queryString}`,
+    );
     return response;
   } catch (error: any) {
-    console.error("Error fetching my reviews:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while fetching your reviews.",
+      message:
+        error.message || "An error occurred while fetching your reviews.",
       data: [],
       meta: undefined,
     };
@@ -48,7 +51,6 @@ export async function createReview(payload: any) {
     revalidatePath("/dashboard/reviews");
     return response;
   } catch (error: any) {
-    console.error("Error creating review:", error);
     return {
       success: false,
       message: error.message || "An error occurred while creating review.",
@@ -66,7 +68,6 @@ export async function updateReview(id: string, payload: any) {
     revalidatePath("/dashboard/reviews");
     return response;
   } catch (error: any) {
-    console.error("Error updating review:", error);
     return {
       success: false,
       message: error.message || "An error occurred while updating review.",
@@ -84,7 +85,6 @@ export async function deleteReview(id: string) {
     revalidatePath("/dashboard/reviews");
     return response;
   } catch (error: any) {
-    console.error("Error deleting review:", error);
     return {
       success: false,
       message: error.message || "An error occurred while deleting review.",

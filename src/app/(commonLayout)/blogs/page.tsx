@@ -10,7 +10,7 @@ const mapApiBlogToBlogItem = (apiBlog: any): BlogItem => {
     id: apiBlog.id,
     title: apiBlog.title,
     excerpt: apiBlog.excerpt,
-    image: apiBlog.image || "/images/blog-tactics.png",
+    image: apiBlog.image,
     date: new Date(apiBlog.createdAt).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",

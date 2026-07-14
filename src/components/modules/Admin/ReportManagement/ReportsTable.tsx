@@ -7,15 +7,15 @@ import { getReportColumns } from "./reportColumns";
 import { toast } from "sonner";
 import { useState } from "react";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
-import { 
-  AlertDialog, 
-  AlertDialogAction, 
-  AlertDialogCancel, 
-  AlertDialogContent, 
-  AlertDialogDescription, 
-  AlertDialogFooter, 
-  AlertDialogHeader, 
-  AlertDialogTitle 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
 const ReportsTable = () => {
@@ -60,10 +60,9 @@ const ReportsTable = () => {
           search={{
             placeholder: "Search reports by description...",
             onDebouncedChange: (value) => {
-              // Logic for searching reports if needed, 
+              // Logic for searching reports if needed,
               // but for now we'll just satisfy the type
-              console.log("Searching reports:", value);
-            }
+            },
           }}
         />
       )}
@@ -73,8 +72,8 @@ const ReportsTable = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action will permanently resolve and remove this report from the system. 
-              This action cannot be undone.
+              This action will permanently resolve and remove this report from
+              the system. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

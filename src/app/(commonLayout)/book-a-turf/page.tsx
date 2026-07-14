@@ -5,7 +5,7 @@ import { ITurf } from "@/interface/turf.interface";
 import { Loader2 } from "lucide-react";
 
 const INITIAL_QUERY =
-  "turfStatus=ACTIVE&limit=12&page=1&sortBy=rating&sortOrder=desc";
+  "turfStatus=ACTIVE&limit=6&page=1&sortBy=rating&sortOrder=desc";
 
 function ListingFallback() {
   return (
@@ -15,23 +15,20 @@ function ListingFallback() {
   );
 }
 
-async function BookATurfContent() {
-  const turfsResult = await getTurfs(INITIAL_QUERY);
+export default async function BookATurfPage() {
+
+   const turfsResult = await getTurfs(INITIAL_QUERY);
 
   const turfs = (turfsResult?.data ?? []) as ITurf[];
-
-  return (
-    <BookATurfListing
-      initialTurfs={turfs}
-      initialMeta={turfsResult?.meta}
-    />
-  );
-}
-
-export default function BookATurfPage() {
+  
   return (
     <Suspense fallback={<ListingFallback />}>
-      <BookATurfContent />
+
+      <BookATurfListing
+      initialTurfs={turfs}
+      initialMeta={turfsResult?.meta}
+      />
+      
     </Suspense>
   );
 }

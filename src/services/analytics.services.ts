@@ -13,10 +13,10 @@ export async function getAdminAnalytics() {
     const response = await httpClient.get<IAdminAnalytics>("/analytics/admin");
     return response;
   } catch (error: any) {
-    console.error("Error fetching admin analytics:", error);
     return {
       success: false,
-      message: error.message || "An error occurred while fetching admin analytics.",
+      message:
+        error.message || "An error occurred while fetching admin analytics.",
       data: null,
     };
   }
@@ -32,8 +32,6 @@ export async function getOwnerAnalytics() {
       error?.message ||
       "An error occurred while fetching owner analytics.";
 
-    console.error("Error fetching owner analytics:", apiMessage);
-
     return {
       success: false,
       message: apiMessage,
@@ -44,7 +42,8 @@ export async function getOwnerAnalytics() {
 
 export async function getPlayerAnalytics() {
   try {
-    const response = await httpClient.get<IPlayerAnalytics>("/analytics/player");
+    const response =
+      await httpClient.get<IPlayerAnalytics>("/analytics/player");
     return response;
   } catch (error: unknown) {
     const apiMessage =
@@ -52,8 +51,6 @@ export async function getPlayerAnalytics() {
         ?.message ||
       (error as Error)?.message ||
       "An error occurred while fetching player analytics.";
-
-    console.error("Error fetching player analytics:", apiMessage);
 
     return {
       success: false,

@@ -13,7 +13,6 @@ export const getTurfs = async (
     const response = await httpClient.get<ITurf[]>(`/turf?${queryString}`);
     return response;
   } catch (error: unknown) {
-    console.error("Error fetching turfs:", error);
     return {
       success: false,
       message: getApiErrorMessage(error, "Failed to load turfs"),
@@ -28,7 +27,6 @@ export const getTurfByID = async (id: string): Promise<ApiResponse<ITurf>> => {
     const response = await httpClient.get<ITurf>(`/turf/${id}`);
     return response;
   } catch (error: unknown) {
-    console.error("Error fetching turf:", error);
     return {
       success: false,
       message: getApiErrorMessage(error, "Failed to load turf details"),
@@ -42,7 +40,6 @@ export const getSportTypes = async (): Promise<ApiResponse<ISportType[]>> => {
     const response = await httpClient.get<ISportType[]>("/sport-type");
     return response;
   } catch (error: unknown) {
-    console.error("Error fetching sport types:", error);
     return {
       success: false,
       message: getApiErrorMessage(error, "Failed to load sport types"),

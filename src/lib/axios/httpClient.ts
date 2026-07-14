@@ -1,4 +1,3 @@
-
 import { ApiResponse } from "@/types/api.type";
 import axios from "axios";
 import { isTokenExpiringSoon } from "../tokenUtils";
@@ -28,12 +27,8 @@ async function tryRefreshToken(
 
     try {
       await getNewTokensWithRefreshToken(refreshToken);
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-    }
-  } catch (error) {
-    console.error("Error refreshing token:", error);
-  }
+    } catch (error) {}
+  } catch (error) {}
 }
 
 const axiosInstance = async () => {
@@ -54,7 +49,7 @@ const axiosInstance = async () => {
     baseURL: API_BASE_URL,
     timeout: 10000,
     headers: {
-        Cookie: cookieHeader,
+      Cookie: cookieHeader,
     },
   });
   return instance;
@@ -78,7 +73,6 @@ const httpGet = async <T>(
     });
     return response.data;
   } catch (error) {
-    console.error(`Error fetching data from ${endpoint}:`, error);
     throw error;
   }
 };
@@ -98,7 +92,6 @@ const httpPost = async <T>(
     });
     return response.data;
   } catch (error) {
-    console.error(`Error posting data to ${endpoint}:`, error);
     throw error;
   }
 };
@@ -116,7 +109,6 @@ const httpPut = async <T>(
     });
     return response.data;
   } catch (error) {
-    console.error(`Error putting data to ${endpoint}:`, error);
     throw error;
   }
 };
@@ -133,7 +125,6 @@ const httpPatch = async <T>(
     });
     return response.data;
   } catch (error) {
-    console.error(`Error patching data to ${endpoint}:`, error);
     throw error;
   }
 };
@@ -153,7 +144,6 @@ const httpDelete = async <T>(
     });
     return response.data;
   } catch (error) {
-    console.error(`Error deleting data from ${endpoint}:`, error);
     throw error;
   }
 };

@@ -38,8 +38,11 @@ export async function getNewTokensWithRefreshToken(
 
     const { data } = await result.json();
 
-    const { accessToken, refreshToken: newRefreshToken, sessionToken: newSessionToken } =
-      data;
+    const {
+      accessToken,
+      refreshToken: newRefreshToken,
+      sessionToken: newSessionToken,
+    } = data;
 
     if (accessToken) {
       await setTokenInCookies("accessToken", accessToken);
@@ -59,7 +62,6 @@ export async function getNewTokensWithRefreshToken(
 
     return true;
   } catch (error) {
-    console.error("Error refreshing token:", error);
     return false;
   }
 }
@@ -83,7 +85,6 @@ export async function getUserInfo() {
     });
 
     if (!result.ok) {
-      console.error("Failed to fetch user info:", result.status, result.statusText);
       return null;
     }
 
@@ -91,7 +92,6 @@ export async function getUserInfo() {
 
     return data;
   } catch (error) {
-    console.error("Error fetching user info:", error);
     return null;
   }
 }
@@ -99,9 +99,7 @@ export async function getUserInfo() {
 export async function logoutUser() {
   try {
     await httpClient.post("/auth/logout", {});
-  } catch (error) {
-    console.error("Error calling logout API:", error);
-  }
+  } catch (error) {}
 
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");

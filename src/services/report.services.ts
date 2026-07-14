@@ -13,7 +13,6 @@ export async function createReport(payload: {
     const response = await httpClient.post("/report", payload);
     return response;
   } catch (error: unknown) {
-    console.error("Error creating report:", error);
     return {
       success: false,
       message: getApiErrorMessage(error, "Failed to submit report."),
@@ -27,7 +26,6 @@ export async function getMyReports(queryString = "") {
     const response = await httpClient.get(`/report/my-reports?${queryString}`);
     return response;
   } catch (error: unknown) {
-    console.error("Error fetching reports:", error);
     return {
       success: false,
       message: getApiErrorMessage(error, "Failed to fetch reports."),

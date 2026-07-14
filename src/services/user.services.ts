@@ -8,7 +8,6 @@ export async function getMyProfile() {
     const response = await httpClient.get<any>("/user/me");
     return response;
   } catch (error: any) {
-    console.error("Error fetching profile:", error);
     return {
       success: false,
       message: error.message || "An error occurred while fetching profile.",
@@ -17,16 +16,18 @@ export async function getMyProfile() {
   }
 }
 
-export async function updateProfile(payload: { 
-  name?: string; 
-  profilePhoto?: string; 
-  contactNumber?: string 
+export async function updateProfile(payload: {
+  name?: string;
+  profilePhoto?: string;
+  contactNumber?: string;
 }) {
   try {
-    const response = await httpClient.patch<any>("/user/update-profile", payload);
+    const response = await httpClient.patch<any>(
+      "/user/update-profile",
+      payload,
+    );
     return response;
   } catch (error: any) {
-    console.error("Error updating profile:", error);
     return {
       success: false,
       message: error.message || "An error occurred while updating profile.",
@@ -36,30 +37,29 @@ export async function updateProfile(payload: {
 }
 
 export async function uploadProfileImage(formData: FormData) {
-    try {
-      // The "Turf Formula" uses the "images" key even for single uploads
-      const response = await httpClient.post<any>("/user/upload-image", formData);
-      return response;
-    } catch (error: any) {
-      console.error("Error uploading profile photo:", error);
-      return {
-        success: false,
-        message: error.message || "An error occurred while uploading photo.",
-        data: null,
-      };
-    }
+  try {
+    // The "Turf Formula" uses the "images" key even for single uploads
+    const response = await httpClient.post<any>("/user/upload-image", formData);
+    return response;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "An error occurred while uploading photo.",
+      data: null,
+    };
   }
+}
 
 export async function getFavoriteTurfs() {
   try {
     const response = await httpClient.get("/user/favorites");
     return response;
   } catch (error: unknown) {
-    console.error("Error fetching favorites:", error);
     return {
       success: false,
       message:
-        (error as Error)?.message || "An error occurred while fetching favorites.",
+        (error as Error)?.message ||
+        "An error occurred while fetching favorites.",
       data: [],
     };
   }
@@ -70,11 +70,11 @@ export async function toggleFavoriteTurf(turfId: string) {
     const response = await httpClient.post(`/user/favorites/${turfId}`);
     return response;
   } catch (error: unknown) {
-    console.error("Error toggling favorite:", error);
     return {
       success: false,
       message:
-        (error as Error)?.message || "An error occurred while updating favorites.",
+        (error as Error)?.message ||
+        "An error occurred while updating favorites.",
       data: null,
     };
   }
@@ -87,7 +87,8 @@ export async function deleteProfile() {
   } catch (error: any) {
     return {
       success: false,
-      message: error.message || "An error occurred while deleting your account.",
+      message:
+        error.message || "An error occurred while deleting your account.",
       data: null,
     };
   }

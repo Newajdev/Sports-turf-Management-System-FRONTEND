@@ -27,7 +27,7 @@ export default function BlogCard({ blog }: { blog: BlogItem }) {
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-60" />
         
         <div className="absolute top-4 left-4">
           <span className="px-3 py-1 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-[0.6rem] font-black text-primary uppercase tracking-widest italic">

@@ -20,10 +20,12 @@ export async function createBooking(payload: ICreateBookingPayload) {
     revalidatePath("/dashboard/bookings");
     return response;
   } catch (error: unknown) {
-    console.error("Error creating booking:", error);
     return {
       success: false,
-      message: getApiErrorMessage(error, "An error occurred while creating booking."),
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while creating booking.",
+      ),
       data: null,
     };
   }
@@ -41,7 +43,6 @@ export async function createCustomBooking(payload: ICreateBookingPayload) {
     revalidatePath("/dashboard/bookings");
     return response;
   } catch (error: unknown) {
-    console.error("Error creating custom booking:", error);
     return {
       success: false,
       message: getApiErrorMessage(
@@ -64,10 +65,12 @@ export async function makePaymentForCustomSlot(bookingId: string) {
     );
     return response;
   } catch (error: unknown) {
-    console.error("Error processing payment for custom slot:", error);
     return {
       success: false,
-      message: getApiErrorMessage(error, "An error occurred while processing payment."),
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while processing payment.",
+      ),
       data: null,
     };
   }
@@ -81,10 +84,12 @@ export async function getBookingById(bookingId: string) {
     const response = await httpClient.get(`/booking/${bookingId}`);
     return response;
   } catch (error: unknown) {
-    console.error("Error fetching booking:", error);
     return {
       success: false,
-      message: getApiErrorMessage(error, "An error occurred while fetching booking."),
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while fetching booking.",
+      ),
       data: null,
     };
   }
@@ -95,13 +100,17 @@ export async function getBookingById(bookingId: string) {
  */
 export async function getMyBookings(queryString: string = "") {
   try {
-    const response = await httpClient.get(`/booking/my-bookings?${queryString}`);
+    const response = await httpClient.get(
+      `/booking/my-bookings?${queryString}`,
+    );
     return response;
   } catch (error: unknown) {
-    console.error("Error fetching my bookings:", error);
     return {
       success: false,
-      message: getApiErrorMessage(error, "An error occurred while fetching your bookings."),
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while fetching your bookings.",
+      ),
       data: [],
       meta: undefined,
     };
@@ -111,15 +120,22 @@ export async function getMyBookings(queryString: string = "") {
 /**
  * Owner: Retrieve bookings for a specific turf
  */
-export async function getTurfBookings(turfId: string, queryString: string = "") {
+export async function getTurfBookings(
+  turfId: string,
+  queryString: string = "",
+) {
   try {
-    const response = await httpClient.get(`/booking/turf/${turfId}?${queryString}`);
+    const response = await httpClient.get(
+      `/booking/turf/${turfId}?${queryString}`,
+    );
     return response;
   } catch (error: unknown) {
-    console.error("Error fetching turf bookings:", error);
     return {
       success: false,
-      message: getApiErrorMessage(error, "An error occurred while fetching turf bookings."),
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while fetching turf bookings.",
+      ),
       data: [],
       meta: undefined,
     };
@@ -136,10 +152,12 @@ export async function cancelBooking(id: string) {
     revalidatePath("/turf-owner/dashboard/bookings");
     return response;
   } catch (error: unknown) {
-    console.error("Error cancelling booking:", error);
     return {
       success: false,
-      message: getApiErrorMessage(error, "An error occurred while cancelling booking."),
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while cancelling booking.",
+      ),
       data: null,
     };
   }
@@ -154,10 +172,12 @@ export async function rejectBooking(id: string) {
     revalidatePath("/turf-owner/dashboard/bookings");
     return response;
   } catch (error: unknown) {
-    console.error("Error rejecting booking:", error);
     return {
       success: false,
-      message: getApiErrorMessage(error, "An error occurred while rejecting booking."),
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while rejecting booking.",
+      ),
       data: null,
     };
   }
@@ -172,10 +192,12 @@ export async function acceptBooking(id: string) {
     revalidatePath("/turf-owner/dashboard/bookings");
     return response;
   } catch (error: unknown) {
-    console.error("Error accepting booking:", error);
     return {
       success: false,
-      message: getApiErrorMessage(error, "An error occurred while accepting booking."),
+      message: getApiErrorMessage(
+        error,
+        "An error occurred while accepting booking.",
+      ),
       data: null,
     };
   }

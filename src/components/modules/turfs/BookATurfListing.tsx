@@ -30,7 +30,7 @@ import { ITurf } from "@/interface/turf.interface";
 import { ISportType } from "@/interface/sport-type.interface";
 import type { ApiResponse } from "@/types/api.type";
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 6;
 
 function buildQueryString(params: {
   page: number;
@@ -183,30 +183,31 @@ export default function BookATurfListing({
         badge="Live Availability"
       />
 
-      <div className="container mx-auto px-4 md:px-6 py-10 md:py-14">
-        <div className="rounded-2xl border border-border/60 bg-card/50 backdrop-blur-sm p-4 md:p-5 shadow-sm space-y-4">
+      <div className="container mx-auto px-4 md:px-6 py-10 md:py-14 -mt-28">
+        {/* //-------- */}
+        <div className="relative rounded-2xl border border-border/60 bg-white p-4 md:p-5 shadow-sm space-y-4 z-10">
           <div className="flex flex-col lg:flex-row gap-3">
             <DataTableSearch
               initialValue={searchTerm}
-              placeholder="Search by turf name, address, or sport..."
+              placeholder="Search by turf name, address, or Sports Type..."
               debounceMs={500}
               isLoading={isSearchPending}
               className="flex-1"
-              inputClassName="h-11 rounded-xl bg-background"
+              inputClassName="h-10 rounded-xl bg-background"
               onDebouncedChange={handleSearchChange}
             />
 
             <Select
-              value={sportTypeId || "all"}
+              value={sportTypeId || "All Sports"}
               onValueChange={(v) =>
                 updateParams({ sportTypeId: v === "all" ? null : v }, true)
               }
             >
-              <SelectTrigger className="w-full lg:w-[200px] h-11 rounded-xl">
+              <SelectTrigger className="w-full lg:w-50 h-100 rounded-xl">
                 <SelectValue placeholder="All sports" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All sports</SelectItem>
+                <SelectItem value="all">All Sports</SelectItem>
                 {sportTypes.map((sport) => (
                   <SelectItem key={sport.id} value={sport.id}>
                     {sport.title}
@@ -223,14 +224,18 @@ export default function BookATurfListing({
                 updateParams({ sortBy: field, sortOrder: order });
               }}
             >
-              <SelectTrigger className="w-full lg:w-[200px] h-11 rounded-xl">
+              <SelectTrigger className="w-full lg:w-50 h-20 rounded-xl">
                 <SlidersHorizontal className="h-4 w-4 mr-2 text-muted-foreground" />
                 <SelectValue>{sortLabel}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="rating-desc">Top Rated</SelectItem>
-                <SelectItem value="hourlyRate-asc">Price: Low to High</SelectItem>
-                <SelectItem value="hourlyRate-desc">Price: High to Low</SelectItem>
+                <SelectItem value="hourlyRate-asc">
+                  Price: Low to High
+                </SelectItem>
+                <SelectItem value="hourlyRate-desc">
+                  Price: High to Low
+                </SelectItem>
                 <SelectItem value="name-asc">Name A–Z</SelectItem>
               </SelectContent>
             </Select>
@@ -287,12 +292,15 @@ export default function BookATurfListing({
                 </span>
               ) : (
                 <>
-                  <span className="font-medium text-foreground">{total}</span> venue
+                  <span className="font-medium text-foreground">{total}</span>{" "}
+                  venue
                   {total !== 1 ? "s" : ""} found
                   {searchTerm && (
                     <span>
                       {" "}
-                      for &quot;<span className="text-foreground">{searchTerm}</span>&quot;
+                      for &quot;
+                      <span className="text-foreground">{searchTerm}</span>
+                      &quot;
                     </span>
                   )}
                 </>
@@ -306,15 +314,22 @@ export default function BookATurfListing({
           </div>
         </div>
 
+        {/* //-------- */}
+
         <div
           className={`mt-10 transition-opacity duration-200 ${
-            isSearchPending && turfs.length > 0 ? "opacity-50 pointer-events-none" : ""
+            isSearchPending && turfs.length > 0
+              ? "opacity-50 pointer-events-none"
+              : ""
           }`}
         >
           {showFullSkeleton ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="rounded-2xl border border-border/50 overflow-hidden">
+                <div
+                  key={i}
+                  className="rounded-2xl border border-border/50 overflow-hidden"
+                >
                   <Skeleton className="h-52 w-full" />
                   <div className="p-5 space-y-3">
                     <Skeleton className="h-6 w-3/4" />

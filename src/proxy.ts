@@ -20,14 +20,13 @@ async function refreshTokenMiddleware(refreshToken: string): Promise<boolean> {
     }
     return true;
   } catch (error) {
-    console.error("Error refreshing token in middleware:", error);
     return false;
   }
 }
 
 export async function proxy(request: NextRequest) {
   try {
-    const { pathname } = request.nextUrl; 
+    const { pathname } = request.nextUrl;
     const pathWithQuery = `${pathname}${request.nextUrl.search}`;
     const accessToken = request.cookies.get("accessToken")?.value;
     const refreshToken = request.cookies.get("refreshToken")?.value;
@@ -49,7 +48,6 @@ export async function proxy(request: NextRequest) {
     }
 
     const routerOwner = getRouteOwner(pathname);
-
 
     const isAuth = isAuthRoute(pathname);
 
@@ -79,13 +77,10 @@ export async function proxy(request: NextRequest) {
           },
           headers: response.headers,
         });
-      } catch (error) {
-        console.error("Error refreshing token:", error);
-      }
+      } catch (error) {}
 
       return response;
     }
-
 
     if (
       isAuth &&
@@ -101,7 +96,6 @@ export async function proxy(request: NextRequest) {
     if (pathname === "/auth/reset-password") {
       const email = request.nextUrl.searchParams.get("email");
 
-
       if (accessToken && email) {
         const userInfo = await getUserInfo();
 
@@ -114,8 +108,6 @@ export async function proxy(request: NextRequest) {
         }
       }
 
-
-
       if (email) {
         return NextResponse.next();
       }
@@ -124,7 +116,6 @@ export async function proxy(request: NextRequest) {
       loginUrl.searchParams.set("redirect", pathWithQuery);
       return NextResponse.redirect(loginUrl);
     }
-
 
     if (routerOwner === null) {
       return NextResponse.next();
@@ -136,13 +127,10 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
 
-
-
     if (accessToken) {
       const userInfo = await getUserInfo();
 
       if (userInfo) {
-
         if (userInfo.emailVerified === false) {
           if (pathname !== "/auth/verify-email") {
             const verifyEmailUrl = new URL("/auth/verify-email", request.url);
@@ -158,7 +146,6 @@ export async function proxy(request: NextRequest) {
             new URL(defaultDashboardRoute(userRole as UserRole), request.url),
           );
         }
-
 
         if (userInfo.needPasswordChange) {
           if (
@@ -189,12 +176,9 @@ export async function proxy(request: NextRequest) {
       }
     }
 
-
     if (routerOwner === "COMMON") {
       return NextResponse.next();
     }
-
-
 
     if (
       routerOwner === "SYSTEM_ADMIN" ||
@@ -210,7 +194,6 @@ export async function proxy(request: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
-    console.error("Error in proxy middleware:", error);
     return NextResponse.next();
   }
 }

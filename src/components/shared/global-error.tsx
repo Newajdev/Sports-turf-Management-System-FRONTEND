@@ -16,7 +16,6 @@ interface GlobalErrorProps {
 export function GlobalErrorContent({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
     // Log the error for support tracking
-    console.error("Critical System Error:", error);
   }, [error]);
 
   return (
